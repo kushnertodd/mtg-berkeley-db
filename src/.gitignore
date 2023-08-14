@@ -1,0 +1,6 @@
+__db.*
+*.db
+*.sdb
+*.log
+cmake-build-debug/
+CMakeFiles/

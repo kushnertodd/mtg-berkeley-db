@@ -1,0 +1,37 @@
+{
+  "class_name":"Imdb_request_response",
+  "imdb_request":{
+    "class_name":"Imdb_request",
+    "request":"select_ratings",
+    "arguments":[]
+  },
+  "imdb_request_response":{
+    "class_name":"Ratings_DTO_list",
+    "ratings_dto_list":[
+      {
+        "class_name":"Ratings_DTO",
+        "title_id":"tt0053125",
+        "averageRating":"8.3",
+        "numVotes":"330190"
+      },
+      {
+        "class_name":"Ratings_DTO",
+        "title_id":"tt0056923",
+        "averageRating":"7.9",
+        "numVotes":"79159"
+      },
+      {
+        "class_name":"Ratings_DTO",
+        "title_id":"tt0060522",
+        "averageRating":"7.5",
+        "numVotes":"28194"
+      },
+      {
+        "class_name":"Ratings_DTO",
+        "title_id":"tt0063374",
+        "averageRating":"7.6",
+        "numVotes":"35565"
+      }
+    ]
+  }
+}

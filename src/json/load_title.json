@@ -1,0 +1,7 @@
+{
+  "class_name": "Imdb_request",
+  "request": "load_title",
+  "arguments": [
+    "title.basics.tsv"
+  ]
+}

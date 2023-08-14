@@ -1,0 +1,14 @@
+{
+  "class_name":"Imdb_request_response",
+  "imdb_request":{
+    "class_name":"Imdb_request",
+    "request":"load_ratings",
+    "arguments":[
+      "title.ratings.tsv"
+    ]
+  },
+  "imdb_request_response":{
+    "class_name":"Imdb_request_response",
+    "record_count":"5"
+  }
+}

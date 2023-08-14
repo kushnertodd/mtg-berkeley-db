@@ -1,0 +1,23 @@
+{
+  "class_name": "Bdb_databases_config",
+  "primary_databases": [
+    {
+      "class_name": "Primary_database_config",
+      "name": "vendor",
+      "filename": "vendor.db"
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "inventory",
+      "filename": "inventory.db",
+      "secondary_databases": [
+        {
+          "class_name": "Secondary_database_config",
+          "name": "item_name",
+          "filename": "item_name.sdb",
+          "key_extractor": "get_item_name"
+        }
+      ]
+    }
+  ]
+}

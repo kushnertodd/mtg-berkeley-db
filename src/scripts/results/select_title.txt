@@ -1,0 +1,32 @@
+{
+  "class_name":"Imdb_request_response",
+  "imdb_request":{
+    "class_name":"Imdb_request",
+    "request":"select_title",
+    "arguments":[
+      "million",
+      "0",
+      "20"
+    ]
+  },
+  "imdb_request_response":{
+    "class_name":"Title_DTO_list",
+    "title_dto_list":[
+      {
+        "class_name":"Title_DTO",
+        "title_id":"tt0060522",
+        "titleType":"movie",
+        "primaryTitle":"How to Steal a Million",
+        "isAdult":"0",
+        "startYear":"1966",
+        "runtimeMinutes":"123",
+        "genres":"Comedy,Crime,Romance",
+        "averageRating":"7.5",
+        "numVotes":"28194",
+        "userRating":"",
+        "priority":"",
+        "score":"727"
+      }
+    ]
+  }
+}

@@ -1,0 +1,207 @@
+#include "oatpp/core/Types.hpp"
+#include "oatpp/core/macro/codegen.hpp"
+
+#include OATPP_CODEGEN_BEGIN(DTO) ///< Begin DTO codegen section
+
+/*
+  {
+    "class_name": "Secondary_database_config",
+    "name": "name_id",
+    "filename": "name_id.sdb",
+    "key_extractor": "get_name_id"
+  }
+*/
+class Secondary_database_config : public oatpp::DTO {
+  DTO_INIT(Name, DTO /* extends */)
+
+  DTO_FIELD(String, class, "Secondary_database_config");
+  DTO_FIELD(String, name);
+  DTO_FIELD(String, filename);
+  DTO_FIELD(String, key_extractor);
+};
+
+/*
+  {
+    "class_name": "Primary_database_config",
+    "name": "title",
+    "filename": "title.db"
+  }
+*/
+class Primary_database_config : public oatpp::DTO {
+  DTO_INIT(Name, DTO /* extends */)
+
+  DTO_FIELD(String, class, "Primary_database_config");
+  DTO_FIELD(String, name);
+  DTO_FIELD(String, filename);
+  DTO_FIELD(List<Object<Secondary_database_config>>, secondary_databases);
+};
+
+/*
+  {
+    "class_name": "Bdb_databases_config",
+    "primary_databases": [
+      {
+        "class_name": "Primary_database_config",
+        "name": "title",
+        "filename": "title.db"
+      },
+      {
+        "class_name": "Primary_database_config",
+        "name": "name",
+        "filename": "name.db"
+      },
+      {
+        "class_name": "Primary_database_config",
+        "name": "principals",
+        "filename": "principals.db",
+        "secondary_databases": [
+          {
+            "class_name": "Secondary_database_config",
+            "name": "name_id",
+            "filename": "name_id.sdb",
+            "key_extractor": "get_name_id"
+          },
+          {
+            "class_name": "Secondary_database_config",
+            "name": "title_id",
+            "filename": "title_id.sdb",
+            "key_extractor": "get_principals_title_id"
+          }
+        ]
+      }
+    ]
+  }
+*/
+class Bdb_databases_config : public oatpp::DTO {
+  DTO_INIT(Bdb_databases_config, DTO /* extends */)
+  DTO_FIELD(String, class, "Bdb_databases_config");
+  DTO_FIELD(List<Object<Primary_database_config>>, primary_databases);
+};
+
+/*
+{
+  "class_name": "Imdb_request",
+  "request": "lookup_name",
+  "arguments": [
+    "nm0000026"
+  ]
+}
+*/
+class Imdb_request : public oatpp::DTO {
+
+  DTO_INIT(Title, DTO /* extends */)
+
+  DTO_FIELD(String, class, "Imdb_request");
+  DTO_FIELD(String, request);
+  DTO_FIELD(List<String>, aruments);
+};
+
+/*
+  {
+    "class_name":"Name",
+    "name_id":"nm0000026",
+    "primaryName":"Cary Grant",
+    "birthYear":"1904",
+    "deathYear":"1986",
+    "line":"nm0000026\tCary Grant\t1904\t1986\tactor,soundtrack,producer\ttt0053125,tt0034248,tt0056923,tt0038787"
+  }
+*/
+class Name : public oatpp::DTO {
+
+  DTO_INIT(Name, DTO /* extends */)
+
+  DTO_FIELD(String, class, "Name");
+  DTO_FIELD(String, name_id);
+  DTO_FIELD(String, PrimaryName);
+  DTO_FIELD(String, birthYear);
+  DTO_FIELD(String, deathYear);
+  DTO_FIELD(String, line);
+};
+
+/*
+  {
+    "class_name":"Names",
+    "names":[
+      {
+        "class_name":"Name",
+        "name_id":"nm0000030",
+        "primaryName":"Audrey Hepburn",
+        "birthYear":"1929",
+        "deathYear":"1993",
+        "line":"nm0000030\tAudrey Hepburn\t1929\t1993\tactress,soundtrack\ttt0046250,tt0054698,tt0056923,tt0058385"
+      }
+    ]
+  }
+*/
+class Names : public oatpp::DTO {
+  DTO_INIT(Name, DTO /* extends */)
+
+  DTO_FIELD(String, class, "Names");
+  DTO_FIELD(List<Object<Name>>, names);
+};
+
+/*
+  {
+    "class_name":"Title",
+    "title_id":"tt0060522",
+    "titleType":"movie",
+    "primaryTitle":"How to Steal a Million",
+    "isAdult":"0",
+    "startYear":"1966",
+    "runtimeMinutes":"123",
+    "genres":"Comedy,Crime,Romance",
+    "line":"tt0060522\tmovie\tHow to Steal a Million\tHow to Steal a Million\t0\t1966\t\\N\t123\tComedy,Crime,Romance"
+  }
+*/
+class Title : public oatpp::DTO {
+
+  DTO_INIT(Title, DTO /* extends */)
+
+  DTO_FIELD(String, class, "Title");
+  DTO_FIELD(String, title_id);
+  DTO_FIELD(String, titleType);
+  DTO_FIELD(String, Primarytitle);
+  DTO_FIELD(String, isAdult);
+  DTO_FIELD(String, startYear);
+  DTO_FIELD(String, runtimeMinutes);
+  DTO_FIELD(String, genres);
+  DTO_FIELD(String, line);
+};
+
+/*
+  {
+    "class_name":"Titles",
+    "titles":[
+      {
+        "class_name":"Title",
+        "title_id":"tt0053125",
+        "titleType":"movie",
+        "primaryTitle":"North by Northwest",
+        "isAdult":"0",
+        "startYear":"1959",
+        "runtimeMinutes":"136",
+        "genres":"Action,Adventure,Mystery",
+        "line":"tt0053125\tmovie\tNorth by Northwest\tNorth by Northwest\t0\t1959\t\\N\t136\tAction,Adventure,Mystery"
+      },
+      {
+        "class_name":"Title",
+        "title_id":"tt0056923",
+        "titleType":"movie",
+        "primaryTitle":"Charade",
+        "isAdult":"0",
+        "startYear":"1963",
+        "runtimeMinutes":"113",
+        "genres":"Comedy,Mystery,Romance",
+        "line":"tt0056923\tmovie\tCharade\tCharade\t0\t1963\t\\N\t113\tComedy,Mystery,Romance"
+      }
+    ]
+  }
+*/
+class Titles : public oatpp::DTO {
+  DTO_INIT(Name, DTO /* extends */)
+
+  DTO_FIELD(String, class, "Titles");
+  DTO_FIELD(List<Object<Title>>, titles);
+};
+
+#include OATPP_CODEGEN_END(DTO) ///< End DTO codegen section

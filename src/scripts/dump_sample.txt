@@ -1,0 +1,136 @@
+===========================================
+../data/db/sample/name.db
+ ------------------------------------------
+VERSION=3
+format=print
+type=btree
+db_pagesize=512
+HEADER=END
+ nm0000026\00
+ nm0000026\00Cary Grant\001904\001986\00\00\00\00
+ nm0000030\00
+ nm0000030\00Audrey Hepburn\001929\001993\00\00\00\00
+ nm0000527\00
+ nm0000527\00Walter Matthau\001920\002000\00\00\00\00
+DATA=END
+===========================================
+../data/db/sample/name_tripthongs.db
+ ------------------------------------------
+VERSION=3
+format=print
+type=btree
+duplicates=1
+db_pagesize=512
+HEADER=END
+DATA=END
+===========================================
+../data/db/sample/principals.db
+ ------------------------------------------
+VERSION=3
+format=print
+type=btree
+db_pagesize=512
+HEADER=END
+ 1\00
+ 1\00tt0060522\00nm0000030\00actress\00\00["Nicole Bonnet"]\00
+ 2\00
+ 2\00tt0056923\00nm0000026\00actor\00\00["Peter Joshua"]\00
+ 3\00
+ 3\00tt0056923\00nm0000030\00actress\00\00["Regina Lampert"]\00
+ 4\00
+ 4\00tt0056923\00nm0000527\00actor\00\00["Hamilton Bartholomew"]\00
+ 5\00
+ 5\00tt0053125\00nm0000026\00actor\00\00["Roger Thornhill"]\00
+ 6\00
+ 6\00tt0063374\00nm0000527\00actor\00\\N \00["Oscar Madison"]\00
+DATA=END
+===========================================
+../data/db/sample/principals_name_id.sdb
+ ------------------------------------------
+VERSION=3
+format=print
+type=btree
+duplicates=1
+dupsort=1
+db_pagesize=512
+HEADER=END
+ nm0000026\00
+ 2\00
+ nm0000026\00
+ 5\00
+ nm0000030\00
+ 1\00
+ nm0000030\00
+ 3\00
+ nm0000527\00
+ 4\00
+ nm0000527\00
+ 6\00
+DATA=END
+===========================================
+../data/db/sample/principals_title_id.sdb
+ ------------------------------------------
+VERSION=3
+format=print
+type=btree
+duplicates=1
+dupsort=1
+db_pagesize=512
+HEADER=END
+ tt0053125\00
+ 5\00
+ tt0056923\00
+ 2\00
+ tt0056923\00
+ 3\00
+ tt0056923\00
+ 4\00
+ tt0060522\00
+ 1\00
+ tt0063374\00
+ 6\00
+DATA=END
+===========================================
+../data/db/sample/ratings.db
+ ------------------------------------------
+VERSION=3
+format=print
+type=btree
+db_pagesize=512
+HEADER=END
+ tt0053125\00
+ tt0053125\008.3\00330190\00
+ tt0056923\00
+ tt0056923\007.9\0079159\00
+ tt0060522\00
+ tt0060522\007.5\0028194\00
+ tt0063374\00
+ tt0063374\007.6\0035565\00
+DATA=END
+===========================================
+../data/db/sample/title.db
+ ------------------------------------------
+VERSION=3
+format=print
+type=btree
+db_pagesize=512
+HEADER=END
+ tt0053125\00
+ tt0053125\00movie\00North by Northwest\000\001959\00136\00Action,Adventure,Mystery\00\00\00\00
+ tt0056923\00
+ tt0056923\00movie\00Charade\000\001963\00113\00Comedy,Mystery,Romance\00\00\00\00
+ tt0060522\00
+ tt0060522\00movie\00How to Steal a Million\000\001966\00123\00Comedy,Crime,Romance\00\00\00\00
+ tt0063374\00
+ tt0063374\00movie\00The Odd Couple\000\001968\00105\00Comedy\00\00\00\00
+DATA=END
+===========================================
+../data/db/sample/title_tripthongs.db
+ ------------------------------------------
+VERSION=3
+format=print
+type=btree
+duplicates=1
+db_pagesize=512
+HEADER=END
+DATA=END

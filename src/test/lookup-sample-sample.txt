@@ -1,0 +1,227 @@
+========================================================== 
+lookup titles
+
+looking up tt0060522
+
+
+C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test>..\..\..\build_windows\x64\Debug\db_database_read.exe -h db-sample/ -t tt0060522 
+current directory is 'C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test'
+title:
+	title_id        tt0060522
+	titleType       movie
+	primaryTitle    How to Steal a Million
+	isAdult         0
+	startYear       1966
+	runtimeMinutes  123
+	genres          Comedy,Crime,Romance
+
+name:
+	name_id        nm0000030
+	primaryName    Audrey Hepburn
+	birthYear      1929
+	deathYear      1993
+
+Database db-sample/title_id.sdb is closed.
+Database db-sample/name_id.sdb is closed.
+Database db-sample/title.db is closed.
+Database db-sample/principals.db is closed.
+Database db-sample/name.db is closed.
+
+---------------------------------------------------------- 
+looking up tt0056923
+
+C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test>..\..\..\build_windows\x64\Debug\db_database_read.exe -h db-sample/ -t tt0056923 
+current directory is 'C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test'
+title:
+	title_id        tt0056923
+	titleType       movie
+	primaryTitle    Charade
+	isAdult         0
+	startYear       1963
+	runtimeMinutes  113
+	genres          Comedy,Mystery,Romance
+
+name:
+	name_id        nm0000026
+	primaryName    Cary Grant
+	birthYear      1904
+	deathYear      1986
+
+name:
+	name_id        nm0000030
+	primaryName    Audrey Hepburn
+	birthYear      1929
+	deathYear      1993
+
+name:
+	name_id        nm0000527
+	primaryName    Walter Matthau
+	birthYear      1920
+	deathYear      2000
+
+Database db-sample/title_id.sdb is closed.
+Database db-sample/name_id.sdb is closed.
+Database db-sample/title.db is closed.
+Database db-sample/principals.db is closed.
+Database db-sample/name.db is closed.
+
+---------------------------------------------------------- 
+looking up tt0053125
+
+C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test>..\..\..\build_windows\x64\Debug\db_database_read.exe -h db-sample/ -t tt0053125 
+current directory is 'C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test'
+title:
+	title_id        tt0053125
+	titleType       movie
+	primaryTitle    North by Northwest
+	isAdult         0
+	startYear       1959
+	runtimeMinutes  136
+	genres          Action,Adventure,Mystery
+
+name:
+	name_id        nm0000026
+	primaryName    Cary Grant
+	birthYear      1904
+	deathYear      1986
+
+Database db-sample/title_id.sdb is closed.
+Database db-sample/name_id.sdb is closed.
+Database db-sample/title.db is closed.
+Database db-sample/principals.db is closed.
+Database db-sample/name.db is closed.
+
+---------------------------------------------------------- 
+looking up tt0063374
+
+C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test>..\..\..\build_windows\x64\Debug\db_database_read.exe -h db-sample/ -t tt0063374 
+current directory is 'C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test'
+title:
+	title_id        tt0063374
+	titleType       movie
+	primaryTitle    The Odd Couple
+	isAdult         0
+	startYear       1968
+	runtimeMinutes  105
+	genres          Comedy
+
+name:
+	name_id        nm0000527
+	primaryName    Walter Matthau
+	birthYear      1920
+	deathYear      2000
+
+Database db-sample/title_id.sdb is closed.
+Database db-sample/name_id.sdb is closed.
+Database db-sample/title.db is closed.
+Database db-sample/principals.db is closed.
+Database db-sample/name.db is closed.
+
+========================================================== 
+lookup names
+
+---------------------------------------------------------- 
+looking up nm0000026
+
+
+C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test>..\..\..\build_windows\x64\Debug\db_database_read.exe -h db-sample/ -n nm0000026 
+current directory is 'C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test'
+name:
+	name_id        nm0000026
+	primaryName    Cary Grant
+	birthYear      1904
+	deathYear      1986
+
+title:
+	title_id        tt0056923
+	titleType       movie
+	primaryTitle    Charade
+	isAdult         0
+	startYear       1963
+	runtimeMinutes  113
+	genres          Comedy,Mystery,Romance
+
+title:
+	title_id        tt0053125
+	titleType       movie
+	primaryTitle    North by Northwest
+	isAdult         0
+	startYear       1959
+	runtimeMinutes  136
+	genres          Action,Adventure,Mystery
+
+Database db-sample/title_id.sdb is closed.
+Database db-sample/name_id.sdb is closed.
+Database db-sample/title.db is closed.
+Database db-sample/principals.db is closed.
+Database db-sample/name.db is closed.
+
+---------------------------------------------------------- 
+looking up nm0000030
+
+C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test>..\..\..\build_windows\x64\Debug\db_database_read.exe -h db-sample/ -n nm0000030 
+current directory is 'C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test'
+name:
+	name_id        nm0000030
+	primaryName    Audrey Hepburn
+	birthYear      1929
+	deathYear      1993
+
+title:
+	title_id        tt0060522
+	titleType       movie
+	primaryTitle    How to Steal a Million
+	isAdult         0
+	startYear       1966
+	runtimeMinutes  123
+	genres          Comedy,Crime,Romance
+
+title:
+	title_id        tt0056923
+	titleType       movie
+	primaryTitle    Charade
+	isAdult         0
+	startYear       1963
+	runtimeMinutes  113
+	genres          Comedy,Mystery,Romance
+
+Database db-sample/title_id.sdb is closed.
+Database db-sample/name_id.sdb is closed.
+Database db-sample/title.db is closed.
+Database db-sample/principals.db is closed.
+Database db-sample/name.db is closed.
+
+---------------------------------------------------------- 
+looking up nm0000527
+
+C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test>..\..\..\build_windows\x64\Debug\db_database_read.exe -h db-sample/ -n nm0000527 
+current directory is 'C:\Users\kushn\Dropbox\software\projects\imdb-berkeley-db\src\cxx\bdb_win\db_database_load\test'
+name:
+	name_id        nm0000527
+	primaryName    Walter Matthau
+	birthYear      1920
+	deathYear      2000
+
+title:
+	title_id        tt0056923
+	titleType       movie
+	primaryTitle    Charade
+	isAdult         0
+	startYear       1963
+	runtimeMinutes  113
+	genres          Comedy,Mystery,Romance
+
+title:
+	title_id        tt0063374
+	titleType       movie
+	primaryTitle    The Odd Couple
+	isAdult         0
+	startYear       1968
+	runtimeMinutes  105
+	genres          Comedy
+
+Database db-sample/title_id.sdb is closed.
+Database db-sample/name_id.sdb is closed.
+Database db-sample/title.db is closed.
+Database db-sample/principals.db is closed.
+Database db-sample/name.db is closed.
