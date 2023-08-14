@@ -1,8 +1,0 @@
-bdb_database_load.c
-bdb_database_read.c
-bdb_files.txt
-bdb_common.c
-bdb_common.h
-bdb_principals.txt
-bdb_makefile
-bdb_title.txt

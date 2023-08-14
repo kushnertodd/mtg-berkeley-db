@@ -21,13 +21,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/module/")
 
 include_directories(bdb-lib)
-include_directories(example-lib)
 include_directories(imdb-lib)
 include_directories(util-lib)
 
 include(UseDoxygenDoc)
 add_subdirectory(bdb-lib)
-add_subdirectory(example-lib)
 add_subdirectory(imdb-lib)
 add_subdirectory(util-lib)
 
@@ -153,37 +151,4 @@ target_link_libraries(test_unix_client_request
         PUBLIC ${JSON-C_LIBRARIES}
         )
 
-# examples
-#
-#add_executable(excxx_example_database_load apps/excxx_example_database_load.cpp)
-#
-#target_link_libraries(excxx_example_database_load
-#        PRIVATE example-lib bdb-lib
-#        PUBLIC Oracle::BerkeleyDB
-#        PUBLIC ${JSON-C_LIBRARIES}
-#        PUBLIC OpenSSL::SSL
-#        PUBLIC OpenSSL::Crypto
-#        PUBLIC Threads::Threads
-#        )
-#
-#add_executable(excxx_example_database_read apps/excxx_example_database_read.cpp)
-#
-#target_link_libraries(excxx_example_database_read
-#        PRIVATE example-lib bdb-lib
-#        PUBLIC Oracle::BerkeleyDB
-#        PUBLIC ${JSON-C_LIBRARIES}
-#        PUBLIC OpenSSL::SSL
-#        PUBLIC OpenSSL::Crypto
-#        PUBLIC Threads::Threads
-#        )
-
-# ratings_top_num_votes
-
-add_executable(ratings_top_num_votes apps/ratings_top_num_votes.cpp)
-
-target_link_libraries(ratings_top_num_votes
-        PRIVATE imdb-lib bdb-lib util-lib
-        PUBLIC Oracle::BerkeleyDB
-        PUBLIC ${JSON-C_LIBRARIES}
-        )
 
