@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20.0)
-set(project_name imdb_app)
+set(project_name mtg_app)
 project(${project_name})
 project(${project_name} CXX)
 
@@ -21,12 +21,12 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/module/")
 
 include_directories(bdb-lib)
-include_directories(imdb-lib)
+include_directories(mtg-lib)
 include_directories(util-lib)
 
 include(UseDoxygenDoc)
 add_subdirectory(bdb-lib)
-add_subdirectory(imdb-lib)
+add_subdirectory(mtg-lib)
 add_subdirectory(util-lib)
 
 add_doxygen_doc(
@@ -43,8 +43,6 @@ add_doxygen_doc(
 
 set(BUILD_SHARED_LIBS NO)
 set(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
-
-find_package(oatpp 1.3.0 REQUIRED)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
@@ -64,91 +62,15 @@ set(BerkeleyDB_USE_STATIC_LIBS TRUE)
 find_package(BerkeleyDB REQUIRED)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/FindBerkeleyDB")
 
-# imdb_app
-add_executable(${project_name} apps/${project_name}.cpp)
+# ${PROJECT_NAME}
+add_executable(${PROJECT_NAME} apps/${PROJECT_NAME}.cpp)
 
-target_link_libraries(${project_name} ${project_name}-lib)
-add_dependencies(${project_name} ${project_name}-lib)
-
-add_library(${project_name}-lib
-        oatpp-lib/DTOs.hpp
-        oatpp-lib/imdb_component.hpp
-        oatpp-lib/imdb_controller.cpp
-        oatpp-lib/imdb_controller.hpp
-        oatpp-lib/imdb-dto.hpp
-        )
-
-target_link_libraries(${project_name}-lib
-        PUBLIC oatpp::oatpp
-        PRIVATE imdb-lib bdb-lib util-lib
+target_link_libraries(${PROJECT_NAME}
+        PRIVATE mtg-lib bdb-lib util-lib
         PUBLIC Oracle::BerkeleyDB
         PUBLIC ${JSON-C_LIBRARIES}
         PUBLIC OpenSSL::SSL
         PUBLIC OpenSSL::Crypto
         PUBLIC Threads::Threads
         )
-
-target_include_directories(${project_name}-lib PUBLIC oatpp-lib)
-
-# bdb-unix-lookup
-add_executable(bdb_unix_lookup apps/bdb_unix_lookup.cpp)
-
-target_link_libraries(bdb_unix_lookup
-        PRIVATE imdb-lib bdb-lib util-lib
-        PUBLIC Oracle::BerkeleyDB
-        PUBLIC ${JSON-C_LIBRARIES}
-        PUBLIC OpenSSL::SSL
-        PUBLIC OpenSSL::Crypto
-        PUBLIC Threads::Threads
-        )
-
-# bdb-inet-lookup
-add_executable(bdb_inet_lookup apps/bdb_inet_lookup.cpp)
-
-target_link_libraries(bdb_inet_lookup
-        PRIVATE imdb-lib bdb-lib util-lib
-        PUBLIC Oracle::BerkeleyDB
-        PUBLIC ${JSON-C_LIBRARIES}
-        PUBLIC OpenSSL::SSL
-        PUBLIC OpenSSL::Crypto
-        PUBLIC Threads::Threads
-        )
-
-# socket tests
-add_executable(test_unix_server
-        apps/test_unix_server.cpp)
-
-target_link_libraries(test_unix_server
-        PRIVATE bdb-lib util-lib
-        PUBLIC Oracle::BerkeleyDB
-        PUBLIC ${JSON-C_LIBRARIES}
-        )
-
-add_executable(test_unix_server_loop
-        apps/test_unix_server_loop.cpp)
-
-target_link_libraries(test_unix_server_loop
-        PRIVATE bdb-lib util-lib
-        PUBLIC Oracle::BerkeleyDB
-        PUBLIC ${JSON-C_LIBRARIES}
-        )
-
-add_executable(test_unix_client
-        apps/test_unix_client.cpp)
-
-target_link_libraries(test_unix_client
-        PRIVATE bdb-lib util-lib
-        PUBLIC Oracle::BerkeleyDB
-        PUBLIC ${JSON-C_LIBRARIES}
-        )
-
-add_executable(test_unix_client_request
-        apps/test_unix_client_request.cpp)
-
-target_link_libraries(test_unix_client_request
-        PRIVATE bdb-lib util-lib
-        PUBLIC Oracle::BerkeleyDB
-        PUBLIC ${JSON-C_LIBRARIES}
-        )
-
 

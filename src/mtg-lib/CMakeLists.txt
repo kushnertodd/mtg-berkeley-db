@@ -1,0 +1,38 @@
+add_library(mtg-lib STATIC
+account_dao.cpp
+account_dao.hpp
+account_dto.cpp
+account_dto.hpp
+cards_dao.cpp
+cards_dao.hpp
+cards_dto.cpp
+cards_dto.hpp
+deck_dao.cpp
+deck_dao.hpp
+deck_dto.cpp
+deck_dto.hpp
+mtg_bdb_keys.cpp
+mtg_bdb_keys.hpp
+mtg_dto.hpp
+mtg_global.cpp
+mtg_global.hpp
+mtg_inet_app_init.cpp
+mtg_inet_app_init.hpp
+mtg_inet_request.cpp
+mtg_inet_request.hpp
+mtg_tokens.cpp
+mtg_tokens.hpp
+mtg_unix_app_init.cpp
+mtg_unix_app_init.hpp
+mtg_unix_request.cpp
+mtg_unix_request.hpp
+pool_cards_dao.cpp
+pool_cards_dao.hpp
+pool_cards_dto.cpp
+pool_cards_dto.hpp
+pool_dao.cpp
+pool_dao.hpp
+pool_dto.cpp
+pool_dto.hpp
+        )
+target_include_directories(mtg-lib PUBLIC .)

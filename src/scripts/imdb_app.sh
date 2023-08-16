@@ -1,1 +1,1 @@
-../cmake-build-debug/bin/imdb_app
+../cmake-build-debug/bin/mtg_app

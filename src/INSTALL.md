@@ -1,5 +1,5 @@
-# IMDB Berkeley DB build tools and libraries installation <a id="build-tools-and-libraries-installation"/>
-IMDB Berkeley DB may be built for Linux or Windows.
+# Mtg Berkeley DB build tools and libraries installation <a id="build-tools-and-libraries-installation"/>
+Mtg Berkeley DB may be built for Linux or Windows.
 Instructions to build for these platforms follow.
 
 # Table of Contents
@@ -16,7 +16,6 @@ Instructions to build for these platforms follow.
     - [OpenSSL Library](#linux-openssl-library)
     - [json-c Library](#linux-json-c-library)
     - [Berekley DB Library](#linux-berkeley-db-library)
-    - [OATPP++ Library](#linux-oatpp-library)
 - [Windows development tools and libraries installation](#windows-development)
   - [Windows C++ Development Tools](#windows-c++-development-tools)
     - [Visual Studio](#visual-studio-2022-development)
@@ -26,10 +25,6 @@ Instructions to build for these platforms follow.
   - [Windows C++ Libraries](#windows-c++-libraries)
     - [Berekley DB](#berekley-db-development)
     - [Json-c](#json-c-development)
-    - [OATPP++ application server](#oatpp++-application-server-development)
-- [IMDB database](#imdb-database-development)
-  - [IMDB database Linux Installation](#imdb-database-linux-installation)
-  - [IMDB database Windows Installation](#imdb-database-windows-installation)
 - [Google Cloud](#google-cloud)
   - [Google Cloud account](#google-cloud-account)
   - [Google Cloud web server](#google-cloud-web-server)
@@ -49,7 +44,7 @@ Linux development tools include:
 
 ### JetBrains CLion <a id="jetbrains-clion"/>
 [JetBrains CLion](https://www.jetbrains.com/clion/download/#section=windows) is a free C++ IDE.
-IMDB Berekeley DB is a Cmake project.
+Mtg Berekeley DB is a Cmake project.
 JetBrains has a 
 [tutorial](https://www.jetbrains.com/help/clion/quick-cmake-tutorial.html)
 on setting up CLion for a Cmake project.
@@ -119,7 +114,7 @@ $ sudo apt-get update
 $ sudo apt install git
 ```
 ### Cmake <a id="linux-cmake-tool"/>
-IMDB Berkeley DB is written in C++. 
+Mtg Berkeley DB is written in C++. 
 [Cmake](https://cmake.org/) is used for building C++ applications.
 The build requires the latest version, currently 3.26.1.
 The version available from`apt`is too old to use, so it must be built from source.
@@ -205,9 +200,6 @@ There are some other`configure` arguments described in these files:
 - `$BDB_HOME/docs/installation/build_unix_conf.html`  
 - `$BDB_HOME/docs/installation/build_unix_flags.html` 
 For example, `--disable-shared` allows building static libraries only.
-### OATPP++ Library <a id="linux-oatpp-library"/>
-[OATPP++](https://oatpp.io/) C++ web framework library is used to create a web interface
-- [OATPP++](https://oatpp.io/) application server <a id="oatpp++-application-server-development"/>
 -  Open source C++ web framework
 
   - Windows installation
@@ -244,7 +236,7 @@ This section includes Visual Studio components required to build the project.
 Download and run the 64-bit Git for Windows installer
 from the [Git download website](https://git-scm.com/download/win).
 ### Cmake <a id="windows-cmake-tool"/>
-IMDB Berkeley DB is written in C++. 
+Mtg Berkeley DB is written in C++. 
 [Cmake](https://cmake.org/) is used for building C++ applications.
 The build requires the latest version, currently 3.26.1.
 Select the latest Windows version from the`Windows x64 Installer`
@@ -397,10 +389,7 @@ $ cmake ..
 - include files are in`json-c`and`json-c/build`
 
 
-### OATPP++ application server <a id="oatpp++-application-server-development"/>
-- [IMDB database] <a id="imdb-database-development"/>
-
-## IMDB database <a id="imdb-database"/>
+## Mtg database <a id="mtg-database"/>
 
 - Windows installation
     - Environment variables
@@ -422,19 +411,17 @@ $ cmake ..
 
 
 #### Windows build
-Soft link Berkeley DB and json-c installs to the directory above the IMDB Berkeley home:
+Soft link Berkeley DB and json-c installs to the directory above the Mtg Berkeley home:
 ```
-cd imdb-berkeley-db/..
+cd mtg-berkeley-db/..
 ln -s ../installs/linux/berkeleydb/db-18.1.40 .
 ln -s ../installs/linux/json/json-c .
 ```
 Copy these files from`db-18.1.40\build_windows\x64\Debug`
-to`imdb-berkeley-db\src\cxx\bdb_win\db_database_load`:
+to`mtg-berkeley-db\src\cxx\bdb_win\db_database_load`:
 - `libdb181d.dll`
 - `libdb181d.exp`
 - `libdb181d.lib`
-
-## IMDB database <a id="imdb-database"/>
 
 ## Google Cloud <a id="google-cloud"/>
 This section describes how to set up the Google Cloud website.

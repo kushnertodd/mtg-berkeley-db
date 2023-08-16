@@ -30,7 +30,7 @@ let dialog_mode;
 
 $(document).ready(function () {
     $("#argument_input").hide();
-    create_imdb_request_list();
+    create_mtg_request_list();
     $("#send_request_button").prop("disabled", true);
 
     // change movie dialog
@@ -123,22 +123,22 @@ function clear_table(tbody) {
     }
 }
 
-function create_imdb_request(request, arguments) {
+function create_mtg_request(request, arguments) {
     if (Array.isArray(arguments)) {
-        return '{"class_name":"Imdb_request",' + '"request":"' + request + '",'
+        return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
             + '"arguments":["' + arguments.join('","') + '"]}';
     } else {
         if (request === "select_title" || request === "select_name")
-            return '{"class_name":"Imdb_request",' + '"request":"' + request + '",'
+            return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
                 + '"arguments":["' + arguments + '", "15", "8"]}';
         //+ '"arguments":["' + arguments + '", "0", "20"]}';
         else {
             let request_descriptor = request_parameters[request];
             if (request_descriptor.needs_argument) {
-                return '{"class_name":"Imdb_request",' + '"request":"' + request + '",'
+                return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
                     + '"arguments":["' + arguments + '"]}';
             } else {
-                return '{"class_name":"Imdb_request",' + '"request":"' + request + '",'
+                return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
                     + '"arguments":[]}';
             }
         }
@@ -147,11 +147,11 @@ function create_imdb_request(request, arguments) {
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces
 // https://stackoverflow.com/questions/14643617/create-table-using-javascript
-function create_imdb_table(table_type) {
+function create_mtg_table(table_type) {
     <!-- list of header column names -->
     let headers = table_headers[table_type];
     // disable context menu on right click
-    let tbody = get_imdb_table_tbody_DOM_object();
+    let tbody = get_mtg_table_tbody_DOM_object();
     clear_table(tbody);
     let tr = document.createElement('TR');
     tbody.appendChild(tr);
@@ -167,8 +167,8 @@ function create_imdb_table(table_type) {
     }
 }
 
-function create_imdb_request_list() {
-    let select_request_list = document.getElementById("imdb_select_request");
+function create_mtg_request_list() {
+    let select_request_list = document.getElementById("mtg_select_request");
     for (const opt in request_parameters) {
         let el = document.createElement("option");
         let request_descriptor = request_parameters[opt];
@@ -181,34 +181,34 @@ function create_imdb_request_list() {
 function display_response(request_name, result_obj) {
     switch (request_name) {
         case 'lookup_name':
-            create_imdb_table("name");
-            imdb_table_append_actor(result_obj.imdb_request_response);
+            create_mtg_table("name");
+            mtg_table_append_actor(result_obj.mtg_request_response);
             break;
         case 'lookup_title':
-            create_imdb_table("title");
-            imdb_table_append_movie(result_obj.imdb_request_response);
+            create_mtg_table("title");
+            mtg_table_append_movie(result_obj.mtg_request_response);
             break;
         case 'search_name':
-            create_imdb_table("name");
-            imdb_table_append_actors(result_obj.imdb_request_response);
+            create_mtg_table("name");
+            mtg_table_append_actors(result_obj.mtg_request_response);
             break;
         case 'search_title':
-            create_imdb_table("title");
-            imdb_table_append_movies(result_obj.imdb_request_response);
+            create_mtg_table("title");
+            mtg_table_append_movies(result_obj.mtg_request_response);
             break;
         case 'select_name':
-            create_imdb_table("name");
-            imdb_table_append_actors(result_obj.imdb_request_response);
+            create_mtg_table("name");
+            mtg_table_append_actors(result_obj.mtg_request_response);
             break;
         case 'select_title':
-            create_imdb_table("title");
-            imdb_table_append_movies(result_obj.imdb_request_response);
+            create_mtg_table("title");
+            mtg_table_append_movies(result_obj.mtg_request_response);
             break;
         case 'update_name':
-            imdb_table_replace_actor(result_obj.imdb_request_response);
+            mtg_table_replace_actor(result_obj.mtg_request_response);
             break;
         case 'update_title':
-            imdb_table_replace_movie(result_obj.imdb_request_response);
+            mtg_table_replace_movie(result_obj.mtg_request_response);
             break;
         default:
             console.log("unexpected result request: " + request_name);
@@ -219,161 +219,161 @@ function display_response(request_name, result_obj) {
 let movie_selection_list = undefined;
 
 // get movie table body DOM object
-function get_imdb_select_request_DOM_object() {
+function get_mtg_select_request_DOM_object() {
     if (movie_selection_list === undefined) movie_selection_list =
-        document.getElementById("imdb_select_request");
+        document.getElementById("mtg_select_request");
     return movie_selection_list;
 }
 
 // cache movie table div DOM object
-let imdb_table_div = undefined;
+let mtg_table_div = undefined;
 
 // get movie table div DOM object
-function get_imdb_table_div_DOM_object() {
-    if (imdb_table_div === undefined) {
-        imdb_table_div = document.getElementById("imdb_table");
+function get_mtg_table_div_DOM_object() {
+    if (mtg_table_div === undefined) {
+        mtg_table_div = document.getElementById("mtg_table");
     }
-    return imdb_table_div;
+    return mtg_table_div;
 }
 
 // cache movie table DOM object
-let imdb_table = undefined;
+let mtg_table = undefined;
 
 // get movie table DOM object
-function get_imdb_table_DOM_object() {
-    if (imdb_table === undefined) {
-        let imdb_table_div = get_imdb_table_div_DOM_object();
-        imdb_table = document.createElement('TABLE');
-        imdb_table_div.appendChild(imdb_table);
-        imdb_table.id = "imdb_table";
+function get_mtg_table_DOM_object() {
+    if (mtg_table === undefined) {
+        let mtg_table_div = get_mtg_table_div_DOM_object();
+        mtg_table = document.createElement('TABLE');
+        mtg_table_div.appendChild(mtg_table);
+        mtg_table.id = "mtg_table";
     }
-    return imdb_table;
+    return mtg_table;
 }
 
 // cache movie table DOM object
-let imdb_table_tbody = undefined;
+let mtg_table_tbody = undefined;
 
 // get movie table DOM object
-function get_imdb_table_tbody_DOM_object() {
-    if (imdb_table_tbody === undefined) {
-        let table = get_imdb_table_DOM_object();
-        imdb_table_tbody = document.createElement('TBODY');
-        table.appendChild(imdb_table_tbody);
+function get_mtg_table_tbody_DOM_object() {
+    if (mtg_table_tbody === undefined) {
+        let table = get_mtg_table_DOM_object();
+        mtg_table_tbody = document.createElement('TBODY');
+        table.appendChild(mtg_table_tbody);
     }
-    return imdb_table_tbody;
+    return mtg_table_tbody;
 }
 
-function imdb_table_append_actor(response) {
-    let tbody = get_imdb_table_tbody_DOM_object();
+function mtg_table_append_actor(response) {
+    let tbody = get_mtg_table_tbody_DOM_object();
     // add new row
     let tr = document.createElement('TR');
     tbody.appendChild(tr);
 
     // add id
     let id = response.name_id;
-    imdb_actor_table_cell_add_text(tr, "id", id);
+    mtg_actor_table_cell_add_text(tr, "id", id);
 
     // add new movie name
     let name = response.primaryName;
     tr.actor = name;
-    imdb_actor_table_cell_add_text(tr, "name", name);
+    mtg_actor_table_cell_add_text(tr, "name", name);
 
     // add born date
     let born = response.birthYear;
-    imdb_actor_table_cell_add_text(tr, "born", born);
+    mtg_actor_table_cell_add_text(tr, "born", born);
 
     // add new died date
     let died = response.deathYear;
-    imdb_actor_table_cell_add_text(tr, "died", died);
+    mtg_actor_table_cell_add_text(tr, "died", died);
 
     // add new movie user rating vote count
     let user_rating = response.userRating;
-    imdb_actor_table_cell_add_text(tr, "user_rating", user_rating);
+    mtg_actor_table_cell_add_text(tr, "user_rating", user_rating);
 
     // add new movie user rating vote count
     let priority = response.priority;
-    imdb_actor_table_cell_add_text(tr, "priority", priority);
+    mtg_actor_table_cell_add_text(tr, "priority", priority);
 
 }
 
-function imdb_table_append_actors(response) {
+function mtg_table_append_actors(response) {
     let name_dto_list = response.name_dto_list;
     for (let name_dto = 0;
          name_dto < name_dto_list.length;
          name_dto++) {
-        imdb_table_append_actor(name_dto_list[name_dto]);
+        mtg_table_append_actor(name_dto_list[name_dto]);
     }
 }
 
-function imdb_table_append_movie(response) {
-    let tbody = get_imdb_table_tbody_DOM_object();
+function mtg_table_append_movie(response) {
+    let tbody = get_mtg_table_tbody_DOM_object();
     // add new row
     let tr = document.createElement('TR');
     tbody.appendChild(tr);
 
     // add id
     let id = response.title_id;
-    imdb_movie_table_cell_add_text(tr, "id", id);
+    mtg_movie_table_cell_add_text(tr, "id", id);
 
     // add new movie name
     let title = response.primaryTitle;
     tr.movie = title;
-    imdb_movie_table_cell_add_text(tr, "title", title);
+    mtg_movie_table_cell_add_text(tr, "title", title);
 
     // add actors
     let year = response.startYear;
-    imdb_movie_table_cell_add_text(tr, "year", year);
+    mtg_movie_table_cell_add_text(tr, "year", year);
 
     // add new movie user ratings
     let rating = response.averageRating;
-    imdb_movie_table_cell_add_text(tr, "rating", rating);
+    mtg_movie_table_cell_add_text(tr, "rating", rating);
 
     // add new movie user rating vote count
     let num_votes =
         response.numVotes.toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    imdb_movie_table_cell_add_text(tr, "num_votes", num_votes);
+    mtg_movie_table_cell_add_text(tr, "num_votes", num_votes);
 
     // add new movie user rating vote count
     let user_rating = response.userRating;
-    imdb_movie_table_cell_add_text(tr, "user_rating", user_rating);
+    mtg_movie_table_cell_add_text(tr, "user_rating", user_rating);
 
     // add new movie user rating vote count
     let priority = response.priority;
-    imdb_movie_table_cell_add_text(tr, "priority", priority);
+    mtg_movie_table_cell_add_text(tr, "priority", priority);
 }
 
-function imdb_table_append_movies(response) {
+function mtg_table_append_movies(response) {
     let title_dto_list = response.title_dto_list;
     for (let title_dto = 0; title_dto < title_dto_list.length; title_dto++) {
-        imdb_table_append_movie(title_dto_list[title_dto]);
+        mtg_table_append_movie(title_dto_list[title_dto]);
     }
 }
 
 // add new text cell to movie table row
-function imdb_movie_table_cell_add_text(tr, cellName, cellText) {
+function mtg_movie_table_cell_add_text(tr, cellName, cellText) {
     let td = document.createElement('TD');
     td.tag = cellName;
-    imdb_movie_table_cell_setup_onclick_handler(td);
+    mtg_movie_table_cell_setup_onclick_handler(td);
     tr.appendChild(td);
-    //imdb_table_cell_setup_onclick_handler(td);
+    //mtg_table_cell_setup_onclick_handler(td);
     td.appendChild(document.createTextNode(cellText));
 }
 
 // add new text cell to movie table row
-function imdb_actor_table_cell_add_text(tr, cellName, cellText) {
+function mtg_actor_table_cell_add_text(tr, cellName, cellText) {
     let td = document.createElement('TD');
     td.tag = cellName;
-    imdb_actor_table_cell_setup_onclick_handler(td);
+    mtg_actor_table_cell_setup_onclick_handler(td);
     tr.appendChild(td);
-    //imdb_table_cell_setup_onclick_handler(td);
+    //mtg_table_cell_setup_onclick_handler(td);
     td.appendChild(document.createTextNode(cellText));
 }
 
 // enable clicking movie table row to highlight row
 let actor_row_selected;
 
-function imdb_actor_table_cell_setup_onclick_handler(cell) {
+function mtg_actor_table_cell_setup_onclick_handler(cell) {
     // do something on onclick event for cells
     cell.addEventListener('contextmenu', function (e) {
         e.preventDefault();
@@ -386,7 +386,7 @@ function imdb_actor_table_cell_setup_onclick_handler(cell) {
 // enable clicking movie table row to highlight row
 let movie_row_selected;
 
-function imdb_movie_table_cell_setup_onclick_handler(cell) {
+function mtg_movie_table_cell_setup_onclick_handler(cell) {
     // do something on onclick event for cells
     cell.addEventListener('contextmenu', function (e) {
         e.preventDefault();
@@ -397,88 +397,88 @@ function imdb_movie_table_cell_setup_onclick_handler(cell) {
 }
 
 // extract movie name from first cell of movie table row
-function imdb_table_title_for_row(tr) {
-    let td = imdb_table_td_for_tag(tr, "title");
+function mtg_table_title_for_row(tr) {
+    let td = mtg_table_td_for_tag(tr, "title");
     return td.textContent;
 }
 
 // extract movie name from first cell of movie table row
-function imdb_table_actor_name_id_for_row(tr) {
-    let td = imdb_table_td_for_tag(tr, "id");
+function mtg_table_actor_name_id_for_row(tr) {
+    let td = mtg_table_td_for_tag(tr, "id");
     return td.textContent;
 }
 
 // extract movie name from first cell of movie table row
-function imdb_table_movie_title_id_for_row(tr) {
-    let td = imdb_table_td_for_tag(tr, "id");
+function mtg_table_movie_title_id_for_row(tr) {
+    let td = mtg_table_td_for_tag(tr, "id");
     return td.textContent;
 }
 
-function imdb_table_replace_actor(actor) {
+function mtg_table_replace_actor(actor) {
     // find and replace row
     let name_id = actor.name_id;
-    let tr = imdb_table_row_by_actor_name_id(name_id);
+    let tr = mtg_table_row_by_actor_name_id(name_id);
     if (tr === undefined) {
-        imdb_table_add_actor(actor);
+        mtg_table_add_actor(actor);
     } else {
-        let actor_title_id_td = imdb_table_td_for_tag(tr, "id");
+        let actor_title_id_td = mtg_table_td_for_tag(tr, "id");
         actor_title_id_td.textContent = actor["name_id"];
 
-        let actor_name_td = imdb_table_td_for_tag(tr, "name");
+        let actor_name_td = mtg_table_td_for_tag(tr, "name");
         actor_name_td.textContent = actor["primaryName"];
 
-        let actor_born_td = imdb_table_td_for_tag(tr, "born");
+        let actor_born_td = mtg_table_td_for_tag(tr, "born");
         actor_born_td.textContent = actor["birthYear"];
 
-        let actor_died_td = imdb_table_td_for_tag(tr, "died");
+        let actor_died_td = mtg_table_td_for_tag(tr, "died");
         actor_died_td.textContent = actor["deathYear"];
 
-        let actor_user_rating_td = imdb_table_td_for_tag(tr, "user_rating");
+        let actor_user_rating_td = mtg_table_td_for_tag(tr, "user_rating");
         actor_user_rating_td.textContent = actor["userRating"];
 
-        let actor_priority_td = imdb_table_td_for_tag(tr, "priority");
+        let actor_priority_td = mtg_table_td_for_tag(tr, "priority");
         actor_priority_td.textContent = actor["priority"];
     }
 }
 
-function imdb_table_replace_movie(movie) {
+function mtg_table_replace_movie(movie) {
     // find and replace row
     let title_id = movie.title_id;
-    let tr = imdb_table_row_by_movie_title_id(title_id);
+    let tr = mtg_table_row_by_movie_title_id(title_id);
     if (tr === undefined) {
-        imdb_table_add_movie(movie);
+        mtg_table_add_movie(movie);
     } else {
-        let movie_title_id_td = imdb_table_td_for_tag(tr, "id");
+        let movie_title_id_td = mtg_table_td_for_tag(tr, "id");
         movie_title_id_td.textContent = movie["title_id"];
 
-        let movie_title_td = imdb_table_td_for_tag(tr, "title");
+        let movie_title_td = mtg_table_td_for_tag(tr, "title");
         movie_title_td.textContent = movie["primaryTitle"];
 
-        let movie_year_td = imdb_table_td_for_tag(tr, "year");
+        let movie_year_td = mtg_table_td_for_tag(tr, "year");
         movie_year_td.textContent = movie["startYear"];
 
-        let movie_rating_td = imdb_table_td_for_tag(tr, "rating");
+        let movie_rating_td = mtg_table_td_for_tag(tr, "rating");
         movie_rating_td.textContent = movie["averageRating"];
 
-        let movie_num_votes_td = imdb_table_td_for_tag(tr, "num_votes");
+        let movie_num_votes_td = mtg_table_td_for_tag(tr, "num_votes");
         movie_num_votes_td.textContent =
             movie["numVotes"].toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-        let movie_user_rating_td = imdb_table_td_for_tag(tr, "user_rating");
+        let movie_user_rating_td = mtg_table_td_for_tag(tr, "user_rating");
         movie_user_rating_td.textContent = movie["userRating"];
 
-        let movie_priority_td = imdb_table_td_for_tag(tr, "priority");
+        let movie_priority_td = mtg_table_td_for_tag(tr, "priority");
         movie_priority_td.textContent = movie["priority"];
     }
 }
 
 // return movie table row associated with actor name
-function imdb_table_row_by_actor_name_id(name_id) {
-    let rows = imdb_table_rows();
+function mtg_table_row_by_actor_name_id(name_id) {
+    let rows = mtg_table_rows();
     for (let i = 1; i < rows.length; i++) {
         let row = rows[i];
-        let row_name_id = imdb_table_actor_name_id_for_row(row);
+        let row_name_id = mtg_table_actor_name_id_for_row(row);
         if (row_name_id === name_id) {
             return row;
         }
@@ -487,11 +487,11 @@ function imdb_table_row_by_actor_name_id(name_id) {
 }
 
 // return movie table row associated with movie title
-function imdb_table_row_by_movie_title_id(title_id) {
-    let rows = imdb_table_rows();
+function mtg_table_row_by_movie_title_id(title_id) {
+    let rows = mtg_table_rows();
     for (let i = 1; i < rows.length; i++) {
         let row = rows[i];
-        let row_title_id = imdb_table_movie_title_id_for_row(row);
+        let row_title_id = mtg_table_movie_title_id_for_row(row);
         if (row_title_id === title_id) {
             return row;
         }
@@ -500,12 +500,12 @@ function imdb_table_row_by_movie_title_id(title_id) {
 }
 
 // return all movie table rows
-function imdb_table_rows() {
-    let tbody = get_imdb_table_tbody_DOM_object();
+function mtg_table_rows() {
+    let tbody = get_mtg_table_tbody_DOM_object();
     return tbody.getElementsByTagName('tr');
 }
 
-function imdb_table_td_for_tag(tr, tag) {
+function mtg_table_td_for_tag(tr, tag) {
     let childNodes = tr.childNodes;
     for (let i = 0; i < childNodes.length; i++) {
         let td = childNodes[i];
@@ -517,7 +517,7 @@ function imdb_table_td_for_tag(tr, tag) {
 }
 
 function request_selected() {
-    let opt = $("#imdb_select_request")[0].value;
+    let opt = $("#mtg_select_request")[0].value;
     let request_descriptor = request_parameters[opt];
     if (request_descriptor.needs_argument) {
         let argument_input_el = $("#argument_input");
@@ -535,9 +535,9 @@ function save_actor_request(dialog) {
     let name_id = $("#change-actor-name-id")[0].textContent;
     let user_rating = $("#change-actor-user-rating")[0].value;
     let priority = $("#change-actor-priority")[0].value;
-    let req = create_imdb_request("update_name",
+    let req = create_mtg_request("update_name",
         [name_id, user_rating, priority]);
-    send_imdb_request(req, save_actor_request_success, save_actor_request_failure);
+    send_mtg_request(req, save_actor_request_success, save_actor_request_failure);
 }
 
 
@@ -548,9 +548,9 @@ function save_actor_request_failure(req) {
 function save_actor_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.imdb_request_response.class_name);
+    console.log("class name: " + result_obj.mtg_request_response.class_name);
     console.log(data);
-    let request_name = result_obj.imdb_request.request;
+    let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
 }
 
@@ -558,9 +558,9 @@ function save_movie_request(dialog) {
     let title_id = $("#change-movie-title-id")[0].textContent;
     let user_rating = $("#change-movie-user-rating")[0].value;
     let priority = $("#change-movie-priority")[0].value;
-    let req = create_imdb_request("update_title",
+    let req = create_mtg_request("update_title",
         [title_id, user_rating, priority]);
-    send_imdb_request(req, save_movie_request_success, save_movie_request_failure);
+    send_mtg_request(req, save_movie_request_success, save_movie_request_failure);
 }
 
 
@@ -571,35 +571,35 @@ function save_movie_request_failure(req) {
 function save_movie_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.imdb_request_response.class_name);
+    console.log("class name: " + result_obj.mtg_request_response.class_name);
     console.log(data);
-    let request_name = result_obj.imdb_request.request;
+    let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
 }
 
 function search_actor_element() {
-    let name_id_td = imdb_table_td_for_tag(actor_row_selected, "id");
+    let name_id_td = mtg_table_td_for_tag(actor_row_selected, "id");
     let name_id_text = name_id_td.textContent;
-    let payload = create_imdb_request("search_title", name_id_text);
-    send_imdb_request(payload, send_movie_request_success, send_movie_request_failure);
+    let payload = create_mtg_request("search_title", name_id_text);
+    send_mtg_request(payload, send_movie_request_success, send_movie_request_failure);
     return false;
 }
 
 function search_movie_element() {
-    let title_id_td = imdb_table_td_for_tag(movie_row_selected, "id");
+    let title_id_td = mtg_table_td_for_tag(movie_row_selected, "id");
     let title_id_text = title_id_td.textContent;
-    let payload = create_imdb_request("search_name", title_id_text);
-    send_imdb_request(payload, send_movie_request_success, send_movie_request_failure);
+    let payload = create_mtg_request("search_name", title_id_text);
+    send_mtg_request(payload, send_movie_request_success, send_movie_request_failure);
     return false;
 }
 
 function select_actor_elements() {
-    let name_id_td = imdb_table_td_for_tag(actor_row_selected, "id");
-    let name_td = imdb_table_td_for_tag(actor_row_selected, "name");
-    let born_td = imdb_table_td_for_tag(actor_row_selected, "born");
-    let died_td = imdb_table_td_for_tag(actor_row_selected, "died");
-    let user_rating_td = imdb_table_td_for_tag(actor_row_selected, "user_rating");
-    let priority_td = imdb_table_td_for_tag(actor_row_selected, "priority");
+    let name_id_td = mtg_table_td_for_tag(actor_row_selected, "id");
+    let name_td = mtg_table_td_for_tag(actor_row_selected, "name");
+    let born_td = mtg_table_td_for_tag(actor_row_selected, "born");
+    let died_td = mtg_table_td_for_tag(actor_row_selected, "died");
+    let user_rating_td = mtg_table_td_for_tag(actor_row_selected, "user_rating");
+    let priority_td = mtg_table_td_for_tag(actor_row_selected, "priority");
 
     let name_id_text = name_id_td.textContent;
     let name_text = name_td.textContent;
@@ -623,13 +623,13 @@ function select_actor_elements() {
 }
 
 function select_movie_elements() {
-    let title_id_td = imdb_table_td_for_tag(movie_row_selected, "id");
-    let title_td = imdb_table_td_for_tag(movie_row_selected, "title");
-    let year_td = imdb_table_td_for_tag(movie_row_selected, "year");
-    let rating_td = imdb_table_td_for_tag(movie_row_selected, "rating");
-    let votes_td = imdb_table_td_for_tag(movie_row_selected, "num_votes");
-    let user_rating_td = imdb_table_td_for_tag(movie_row_selected, "user_rating");
-    let priority_td = imdb_table_td_for_tag(movie_row_selected, "priority");
+    let title_id_td = mtg_table_td_for_tag(movie_row_selected, "id");
+    let title_td = mtg_table_td_for_tag(movie_row_selected, "title");
+    let year_td = mtg_table_td_for_tag(movie_row_selected, "year");
+    let rating_td = mtg_table_td_for_tag(movie_row_selected, "rating");
+    let votes_td = mtg_table_td_for_tag(movie_row_selected, "num_votes");
+    let user_rating_td = mtg_table_td_for_tag(movie_row_selected, "user_rating");
+    let priority_td = mtg_table_td_for_tag(movie_row_selected, "priority");
 
     let title_id_text = title_id_td.textContent;
     let title_text = title_td.textContent;
@@ -655,14 +655,14 @@ function select_movie_elements() {
     priority_el[0].value = priority_text;
 }
 
-// run imdb_request
+// run mtg_request
 // success: return data
 // fail: return null
-function send_imdb_request(req, success_callback, failure_callback) {
+function send_mtg_request(req, success_callback, failure_callback) {
     try {
         $.ajax({
-            //url: "http://34.106.93.238:8000/imdb-request-dto",
-            url: "http://localhost:8000/imdb-request-dto",
+            //url: "http://34.106.93.238:8000/mtg-request-dto",
+            url: "http://localhost:8000/mtg-request-dto",
             type: "POST",
             data: req,
             success: function (result) {
@@ -677,7 +677,7 @@ function send_imdb_request(req, success_callback, failure_callback) {
 }
 
 function send_movie_request() {
-    let request = $("#imdb_select_request")[0].value;
+    let request = $("#mtg_select_request")[0].value;
     let argument_el = $('#argument_input')[0];
     let argument = argument_el.value;
     let request_descriptor = request_parameters[request];
@@ -685,8 +685,8 @@ function send_movie_request() {
         argument_el.placeholder = "Request requires value";
         return false;
     }
-    let payload = create_imdb_request(request, argument);
-    send_imdb_request(payload, send_movie_request_success, send_movie_request_failure);
+    let payload = create_mtg_request(request, argument);
+    send_mtg_request(payload, send_movie_request_success, send_movie_request_failure);
     return false;
 }
 
@@ -697,8 +697,8 @@ function send_movie_request_failure(req) {
 function send_movie_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.imdb_request_response.class_name);
+    console.log("class name: " + result_obj.mtg_request_response.class_name);
     console.log(data);
-    let request_name = result_obj.imdb_request.request;
+    let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
 }

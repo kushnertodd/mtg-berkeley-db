@@ -8,6 +8,6 @@ if [ ! -f $json ] ; then
   echo $json missing 
   exit
 fi
-#curl -v --http0.9 -d @$json -X POST https://34.106.93.238/imdb-request-dto --output test/$request.txt 2>/dev/null
-echo curl -v --http0.9 -d @$json -X POST http://34.106.93.238/imdb-request-dto 
-curl -v --http0.9 -d @$json -X POST http://34.106.93.238:8000/imdb-request-dto 2>/dev/null
+#curl -v --http0.9 -d @$json -X POST https://34.106.93.238/mtg-request-dto --output test/$request.txt 2>/dev/null
+echo curl -v --http0.9 -d @$json -X POST http://34.106.93.238/mtg-request-dto
+curl -v --http0.9 -d @$json -X POST http://34.106.93.238:8000/mtg-request-dto 2>/dev/null

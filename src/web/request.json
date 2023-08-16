@@ -1,1 +1,1 @@
-{"class_name":"Imdb_request","request":"load_name","arguments":["../../data/tsv-sample/name.basics.tsv"]}
+{"class_name":"Mtg_request","request":"load_name","arguments":["../../data/tsv-sample/name.basics.tsv"]}

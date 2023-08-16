@@ -1,5 +1,5 @@
 {
-  "class_name": "Imdb_request",
+  "class_name": "Mtg_request",
   "request": "lookup_title",
   "arguments": [
     "tt0060522"

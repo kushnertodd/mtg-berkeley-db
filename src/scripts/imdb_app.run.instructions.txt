@@ -1,5 +1,5 @@
-Run from separate shells in this directory (imdb-berkeley-db/src/scripts).
+Run from separate shells in this directory (mtg-berkeley-db/src/scripts).
 
 $ ../cmake-build-debug/bin/bdb_unix_lookup   -d ../json/bdb-databases.json  -h ../data/db/sample -t ../data/tsv/sample
-$ ../cmake-build-debug/bin/imdb_app
+$ ../cmake-build-debug/bin/mtg_app
 $ sh check.sh

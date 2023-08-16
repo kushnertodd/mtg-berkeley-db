@@ -1,7 +1,7 @@
-# IMDB Berkeley DB
-This project implements an IMDB search website using Berkeley DB.
+# Mtg Berkeley DB
+This project implements an Mtg search website using Berkeley DB.
 - this repo:  
- https://github.com/kushnertodd/imdb-berkeley-db
+ https://github.com/kushnertodd/mtg-berkeley-db
 
 # Table of Contents
 - [Usage](#usage)
@@ -10,21 +10,20 @@ This project implements an IMDB search website using Berkeley DB.
   - [Linux](#linux-architecture)
   - [Berekley DB](#berekley-db-architecture)
   - [Json-c](#json-c-architecture)
-  - [OATPP++ application server](#oatpp++-application-server-architecture)
-  - [IMDB database](#imdb-database-architecture)
+  - [Mtg database](#mtg-database-architecture)
 
 ## Usage <a name="usage"/>
 ### Web interface <a name="web-interface-usage"/>
 
-The web interface can be tested as follows (from git branch `v2.0_oatpp` on).
-Run from separate shells in `imdb-berkeley-db/src/scripts`.
+The web interface can be tested as follows (from git branch `vx.0` on).
+Run from separate shells in `mtg-berkeley-db/src/scripts`.
 The curl command  `src/scripts/request.sh` runs a 
 `load_name/sample database request.
 ```sh
 $ cd src/scripts
-$ ./cmake-build-debug/bin/bdb_unix_lookup   -d json/bdb-databases.json  -h ../imdb-data/db-sample
-$ ./cmake-build-debug/bin/imdb_lookup
-$ curl -d '@request.json' -X POST http://localhost:8000/imdb-request-dto
+$ ./cmake-build-debug/bin/bdb_unix_lookup   -d json/bdb-databases.json  -h ../mtg-data/db-sample
+$ ./cmake-build-debug/bin/mtg_lookup
+$ curl -d '@request.json' -X POST http://localhost:8000/mtg-request-dto
 ```
 ## Architecture <a name="architecture"/>
 It will consist of:
@@ -69,7 +68,6 @@ These are useful tutorials and resources for using json-c:
 json-c API documentation can be found at:
 - [json-c Documentation](https://json-c.github.io/json-c/json-c-0.16/doc/html/index.html)
 
-### OATPP++ application server <a name="oatpp++-application-server-architecture"/>
-### IMDB database <a name="imdb-database-architecture"/>
+### Mtg database <a name="mtg-database-architecture"/>
 
 

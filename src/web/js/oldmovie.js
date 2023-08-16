@@ -643,13 +643,13 @@ function rest_read_movies() {
     // }
 }
 
-// run imdb_request
+// run mtg_request
 // success: return data
 // fail: return null
-function rest_imdb_request(req, success_callback, failure_callback) {
+function rest_mtg_request(req, success_callback, failure_callback) {
     let res =
         $.post(
-            "http://localhost:8000/imdb-request-dto",
+            "http://localhost:8000/mtg-request-dto",
             JSON.stringify(req),
             function (data, status, xhr) {
                 if (success_callback)
@@ -661,7 +661,7 @@ function rest_imdb_request(req, success_callback, failure_callback) {
             .fail(function () {
                 if (failure_callback)
                     failure_callback();
-                console.log("rest_imdb_request error");
+                console.log("rest_mtg_request error");
                 return null;
             })
             .always(function () {
@@ -673,11 +673,11 @@ function rest_imdb_request(req, success_callback, failure_callback) {
 function rest_lookup_actor(name_id) {
     let req =
         {
-            "class_name": "Imdb_request",
+            "class_name": "Mtg_request",
             "request": "lookup_name",
             "arguments": [name_id]
         };
-    let data = rest_imdb_request(req);
+    let data = rest_mtg_request(req);
     if (data)
         return data.name;
     else
@@ -688,11 +688,11 @@ function rest_lookup_actor(name_id) {
 function rest_lookup_movie(title_id) {
     let req =
         {
-            "class_name": "Imdb_request",
+            "class_name": "Mtg_request",
             "request": "lookup_title",
             "arguments": [title_id]
         };
-    let data = rest_imdb_request(req);
+    let data = rest_mtg_request(req);
     if (data)
         return data.title;
     else
@@ -703,11 +703,11 @@ function rest_lookup_movie(title_id) {
 function rest_search_actors(title_id) {
     let req =
         {
-            "class_name": "Imdb_request",
+            "class_name": "Mtg_request",
             "request": "search_name",
             "arguments": [title_id]
         };
-    let data = rest_imdb_request(req);
+    let data = rest_mtg_request(req);
     if (data)
         return data.names;
     else
@@ -718,11 +718,11 @@ function rest_search_actors(title_id) {
 function rest_search_movies(name_id) {
     let req =
         {
-            "class_name": "Imdb_request",
+            "class_name": "Mtg_request",
             "request": "search_title",
             "arguments": [name_id]
         };
-    let data = rest_imdb_request(req);
+    let data = rest_mtg_request(req);
     if (data)
         return data.titles;
     else
@@ -733,11 +733,11 @@ function rest_search_movies(name_id) {
 function rest_select_actors() {
     let req =
         {
-            "class_name": "Imdb_request",
+            "class_name": "Mtg_request",
             "request": "select_name",
             "arguments": []
         };
-    let data = rest_imdb_request(req);
+    let data = rest_mtg_request(req);
     if (data)
         return data.names;
     else
@@ -759,11 +759,11 @@ function rest_select_movies_failure_callback() {
 function rest_select_movies(rest_select_movies_success_callback, rest_select_movies_failure_callback) {
     let req =
         {
-            "class_name": "Imdb_request",
+            "class_name": "Mtg_request",
             "request": "select_title",
             "arguments": []
         };
-    rest_imdb_request(req, rest_select_movies_success_callback, rest_select_movies_failure_callback);
+    rest_mtg_request(req, rest_select_movies_success_callback, rest_select_movies_failure_callback);
 }
 
 function select_elements() {

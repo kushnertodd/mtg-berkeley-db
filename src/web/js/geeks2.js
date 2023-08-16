@@ -6,9 +6,9 @@ $(document).ready(function() {
     //$.ajax({url: "http://cryptogram.org",
     //$.ajax({url: "http://cryptogram.org",
     //$.ajax({url: "http://127.0.0.1:8000/hello",
-    $.ajax({url: "http://127.0.0.1:8000/imdb-request-dto",
+    $.ajax({url: "http://127.0.0.1:8000/mtg-request-dto",
             type: "POST",
-            data: '{"class_name":"Imdb_request","request":"load_name","arguments":["../../data/tsv-sample/name.basics.tsv"]}',
+            data: '{"class_name":"Mtg_request","request":"load_name","arguments":["../../data/tsv-sample/name.basics.tsv"]}',
     success: function(result) {
       //$("#h11").html(result);
       var data = JSON.stringify(result);

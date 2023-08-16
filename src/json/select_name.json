@@ -1,5 +1,5 @@
 {
-  "class_name": "Imdb_request",
+  "class_name": "Mtg_request",
   "request": "select_name",
   "arguments": [
      "cary hepburn",

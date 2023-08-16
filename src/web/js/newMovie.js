@@ -626,14 +626,14 @@ function rest_refresh_movies() {
 function rest_read_movies() {
     let req =
         {
-            "class_name": "Imdb_request",
+            "class_name": "Mtg_request",
             "request": "select_title",
             "arguments": []
         };
     let movies;
     let res =
         $.post(
-            "http://localhost:8000/imdb-request-dto",
+            "http://localhost:8000/mtg-request-dto",
             JSON.stringify(req),
             function (data, status, xhr) {
                 alert("success");
