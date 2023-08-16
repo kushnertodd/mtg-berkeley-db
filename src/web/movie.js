@@ -582,6 +582,7 @@ function search_actor_element() {
     let name_id_text = name_id_td.textContent;
     let payload = create_imdb_request("search_title", name_id_text);
     send_imdb_request(payload, send_movie_request_success, send_movie_request_failure);
+    return false;
 }
 
 function search_movie_element() {
@@ -589,6 +590,7 @@ function search_movie_element() {
     let title_id_text = title_id_td.textContent;
     let payload = create_imdb_request("search_name", title_id_text);
     send_imdb_request(payload, send_movie_request_success, send_movie_request_failure);
+    return false;
 }
 
 function select_actor_elements() {
@@ -659,7 +661,8 @@ function select_movie_elements() {
 function send_imdb_request(req, success_callback, failure_callback) {
     try {
         $.ajax({
-            url: "http://34.106.93.238:8000/imdb-request-dto",
+            //url: "http://34.106.93.238:8000/imdb-request-dto",
+            url: "http://localhost:8000/imdb-request-dto",
             type: "POST",
             data: req,
             success: function (result) {
@@ -680,10 +683,11 @@ function send_movie_request() {
     let request_descriptor = request_parameters[request];
     if (argument === "" && request_descriptor.needs_argument) {
         argument_el.placeholder = "Request requires value";
-        return;
+        return false;
     }
     let payload = create_imdb_request(request, argument);
     send_imdb_request(payload, send_movie_request_success, send_movie_request_failure);
+    return false;
 }
 
 function send_movie_request_failure(req) {

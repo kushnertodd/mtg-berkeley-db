@@ -30,6 +30,10 @@ Instructions to build for these platforms follow.
 - [IMDB database](#imdb-database-development)
   - [IMDB database Linux Installation](#imdb-database-linux-installation)
   - [IMDB database Windows Installation](#imdb-database-windows-installation)
+- [Google Cloud](#google-cloud)
+  - [Google Cloud account](#google-cloud-account)
+  - [Google Cloud web server](#google-cloud-web-server)
+  - [Google Cloud api server](#google-cloud-api-server)
 
 # Linux development tools and libraries <a id="linux-development"/>
 These are instructions to prepare the Linux build environment.
@@ -430,7 +434,64 @@ to`imdb-berkeley-db\src\cxx\bdb_win\db_database_load`:
 - `libdb181d.exp`
 - `libdb181d.lib`
 
+## IMDB database <a id="imdb-database"/>
 
+## Google Cloud <a id="google-cloud"/>
+This section describes how to set up the Google Cloud website.
+### Google Cloud account <a id="google-cloud-account"/>
+- Setting up [Google Workspace](https://support.google.com/a/answer/6365252?hl=en-NZ) (optional)  
+You essentially need a Google Workspace account to set up Google Cloud.
+It lets you set up a domain name.
+It costs from $6 to $18 per user per month.
+Business Standard for $12 is a good option.
+To set up Google Workspace for one person, see [this](https://support.google.com/a/answer/9212585).
+  - Set up Admin Console
+  - Set up billing
+  - Set up [domain name](https://support.google.com/domains/answer/3453651?hl=en)
+  - Set up email
+- Setting up [Cloud Identity](https://cloud.google.com/identity/docs/set-up-cloud-identity-admin)
+- Setting up a [project](https://console.cloud.google.com/welcome/new?pli=1)
+### Google Cloud web server <a id="google-cloud-web-server"/>
+The Google Cloud website is a basic [Apache server](https://cloud.google.com/compute/docs/tutorials/basic-webserver-apache).
+- Set up a [Compute Engine](https://cloud.google.com/endpoints/docs/openapi/get-started-compute-engine-docker) VM instance.
+- Install the [Google Cloud command line](https://cloud.google.com/sdk/docs/install)
+- Set up [ssh keys](https://cloud.google.com/sdk/gcloud/reference/compute/config-ssh)
+```
+$ gcloud computer config-ssh
+```
+- Open your Google Compute Engine console to see your VMs
+- Copy the external IP address
+- Select the SSH link next to your VM
+- Install Apache:
+```
+$ sudo apt update && sudo apt -y install apache2
+```
+  - Create a test home web page:
+```
+$ echo '<!doctype html><html><body><h1>Hello World!</h1></body></html>' | sudo tee /var/www/html/index.html
+```
+ 
+  - Connect to the website and verify that you see a "Hello World!" page.
+  - Select Upload File to upload files to the VM
+  - Copy the files to the Apache web page directory
+```
+$ sudo cp [files] /var/www/html 
+```
+  - Connect to the external IP address to test that the web pages appear:
+`http://`*external ip*
+- Attach your [domain](![img_1.png](img_1.png)) to the site
+## Google Cloud api server <a id="google-cloud-api-server"/>
+Similarly:
+- Create a VM
+- Copy the external IP address
+- Statically link the api server
+- Create the api server as a docker image
+- Connect to the VM with SSH
+- Upload the api server executable and files required to build the docker image
+- Build the docker image
+- Run the docker image with the `-d` (daemonize) option
+- Modify the javascript jquery ajax call to use the external IP address
+- test the html web page using the javascript
 
 
 
