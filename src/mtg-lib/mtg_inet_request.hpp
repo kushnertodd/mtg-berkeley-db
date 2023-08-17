@@ -38,7 +38,7 @@ class Mtg_inet_request {
   Mtg_inet_request() = default;
   Mtg_inet_request(json_object *jobj, Bdb_errors &errors);
   void from_json(json_object *jobj, Bdb_errors &errors);
-  json_object *process_load_name_request(Mtg_inet_app_init &Mtg_inet_app_init,
+  json_object *process_load_card_request(Mtg_inet_app_init &Mtg_inet_app_init,
                                          Bdb_errors &errors);
   json_object *process_load_principals_request(Mtg_inet_app_init &Mtg_inet_app_init,
                                                Bdb_errors &errors);

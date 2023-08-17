@@ -50,30 +50,30 @@ void Mtg_inet_request::from_json(json_object *jobj, Bdb_errors &errors) {
   }
 }
 
-json_object *Mtg_inet_request::process_load_name_request(Mtg_inet_app_init &mtg_inet_app_init, Bdb_errors &errors) {
+json_object *Mtg_inet_request::process_load_card_request(Mtg_inet_app_init &mtg_inet_app_init, Bdb_errors &errors) {
   if (arguments.empty())
-    errors.add("Mtg_inet_request::process_load_name_request", "1", "missing mtg load name request arguments");
-  Primary_database_config name_primary_database_config;
-  mtg_inet_app_init.bdb_databases_config.select("name", name_primary_database_config, errors);
+    errors.add("Mtg_inet_request::process_load_card_request", "1", "missing mtg load card request arguments");
+  Primary_database_config card_primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("card", card_primary_database_config, errors);
   if (!errors.has()) {
     std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
         std::make_unique<Mtg_bdb_key_extractor>();
     Primary_database
-        name_db(name_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+        card_db(card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
     if (!errors.has()) {
-      Primary_database_config name_tripthongs_primary_database_config;
-      mtg_inet_app_init.bdb_databases_config.select("name_tripthongs",
-                                                     name_tripthongs_primary_database_config,
+      Primary_database_config card_tripthongs_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("card_tripthongs",
+                                                     card_tripthongs_primary_database_config,
                                                      errors);
       if (!errors.has()) {
-        Primary_database name_tripthongs_db(name_tripthongs_primary_database_config,
+        Primary_database card_tripthongs_db(card_tripthongs_primary_database_config,
                                             mtg_bdb_key_extractor.get(),
                                             mtg_inet_app_init.db_home,
                                             errors);
         if (!errors.has()) {
           std::string text_file = mtg_inet_app_init.tsv_home + "/" + arguments.at(0);
           Timer timer;
-          int count = 0;//Name_DAO::load(name_db.bdb_db, name_tripthongs_db.bdb_db, text_file, errors, tab);
+          int count = 0;//Card_DAO::load(card_db.bdb_db, card_tripthongs_db.bdb_db, text_file, errors, tab);
           timer.end();
           if (errors.has()) return nullptr;
           if (!errors.has())
