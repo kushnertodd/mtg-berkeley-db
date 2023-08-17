@@ -13,11 +13,6 @@
 
 class Pool_card_DAO {
  public:
-  static int load(Bdb_dbp &pool_card_db,
-                  Bdb_dbp &pool_card_tripthong_bdb_db,
-                  const std::string &text_file,
-                  Bdb_errors &errors,
-                  char delimiter = tab);
 
   static void lookup(Bdb_dbp &pool_card_db,
                      const std::string &pool_card_id,

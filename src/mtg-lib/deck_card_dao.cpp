@@ -3,23 +3,6 @@
 #include "deck_card_dao.hpp"
 
 /*!
- * @brief load deck_card database from delimited record file
- * @param deck_card_db deck_card database to which to save
- * @param text_file deck_card records with fields corresponding to dto
- * @param errors if save fails
- * @param delimiter record delimiter
- * @return count of records saved
- */
-int Deck_card_DAO::load(Bdb_dbp &deck_card_db,
-                   Bdb_dbp &deck_card_tripthong_bdb_db,
-                   const std::string &text_file,
-                   Bdb_errors &errors,
-                   char delimiter) {
-  return Bdb_DAO::load<Deck_card_DTO_key,
-                       Deck_card_DTO>(deck_card_db, text_file, errors, delimiter);
-}
-
-/*!
  * @brief select deck_card from database based on deck_card id
  * @param deck_card_db deck_card database to which to save
  * @param deck_card_id deck_card record key

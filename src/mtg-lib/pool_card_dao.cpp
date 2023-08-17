@@ -3,23 +3,6 @@
 #include "pool_card_dao.hpp"
 
 /*!
- * @brief load pool_card database from delimited record file
- * @param pool_card_db pool_card database to which to save
- * @param text_file pool_card records with fields corresponding to dto
- * @param errors if save fails
- * @param delimiter record delimiter
- * @return count of records saved
- */
-int Pool_card_DAO::load(Bdb_dbp &pool_card_db,
-                   Bdb_dbp &pool_card_tripthong_bdb_db,
-                   const std::string &text_file,
-                   Bdb_errors &errors,
-                   char delimiter) {
-  return Bdb_DAO::load<Pool_card_DTO_key,
-                       Pool_card_DTO>(pool_card_db, text_file, errors, delimiter);
-}
-
-/*!
  * @brief select pool_card from database based on pool_card id
  * @param pool_card_db pool_card database to which to save
  * @param pool_card_id pool_card record key

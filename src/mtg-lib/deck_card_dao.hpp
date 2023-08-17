@@ -13,11 +13,6 @@
 
 class Deck_card_DAO {
  public:
-  static int load(Bdb_dbp &deck_card_db,
-                  Bdb_dbp &deck_card_tripthong_bdb_db,
-                  const std::string &text_file,
-                  Bdb_errors &errors,
-                  char delimiter = tab);
 
   static void lookup(Bdb_dbp &deck_card_db,
                      const std::string &deck_card_id,
