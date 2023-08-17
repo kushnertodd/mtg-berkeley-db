@@ -3,47 +3,59 @@
   "primary_databases": [
     {
       "class_name": "Primary_database_config",
-      "name": "title",
-      "filename": "title.db"
+      "name": "account",
+      "filename": "account.db"
     },
     {
       "class_name": "Primary_database_config",
-      "name": "title_tripthongs",
-      "filename": "title_tripthongs.db",
-      "has_duplicates": "true"
+      "name": "deck",
+      "filename": "deck.db"
     },
     {
       "class_name": "Primary_database_config",
-      "name": "name",
-      "filename": "name.db"
+      "name": "pool",
+      "filename": "pool.db"
     },
     {
       "class_name": "Primary_database_config",
-      "name": "name_tripthongs",
-      "filename": "name_tripthongs.db",
-      "has_duplicates": "true"
+      "name": "card",
+      "filename": "card.db"
     },
     {
       "class_name": "Primary_database_config",
-      "name": "ratings",
-      "filename": "ratings.db"
-    },
-    {
-      "class_name": "Primary_database_config",
-      "name": "principals",
-      "filename": "principals.db",
+      "name": "deck_card",
+      "filename": "deck_card.db",
       "secondary_databases": [
         {
           "class_name": "Secondary_database_config",
-          "name": "principals_name_id",
-          "filename": "principals_name_id.sdb",
-          "key_extractor": "get_principals_name_id"
+          "name": "deck_card_card",
+          "filename": "deck_card_card.sdb",
+          "key_extractor": "get_deck_card_card_id"
         },
         {
           "class_name": "Secondary_database_config",
-          "name": "principals_title_id",
-          "filename": "principals_title_id.sdb",
-          "key_extractor": "get_principals_title_id"
+          "name": "deck_card_deck",
+          "filename": "deck_card_deck.sdb",
+          "key_extractor": "get_deck_card_deck_id"
+        }
+      ]
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "pool_card",
+      "filename": "pool_card.db",
+      "secondary_databases": [
+        {
+          "class_name": "Secondary_database_config",
+          "name": "pool_card_card",
+          "filename": "pool_card_card.sdb",
+          "key_extractor": "get_pool_card_card_id"
+        },
+        {
+          "class_name": "Secondary_database_config",
+          "name": "pool_card_pool",
+          "filename": "pool_card_pool.sdb",
+          "key_extractor": "get_pool_card_pool_id"
         }
       ]
     }
