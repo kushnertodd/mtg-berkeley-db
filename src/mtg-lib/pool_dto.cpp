@@ -108,6 +108,9 @@ Pool_DTO_key::Pool_DTO_key(void *buffer) {
   deserialize(buffer);
 }
 
+Pool_DTO_key::Pool_DTO_key(const Pool_card_DTO &pool_card_DTO) :
+    pool_id(pool_card_DTO.pool_id) {}
+
 size_t Pool_DTO_key::buffer_size() const {
   size_t len = 0;
   len += Bdb_serialization::buffer_len_string(pool_id);

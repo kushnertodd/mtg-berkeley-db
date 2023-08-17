@@ -122,6 +122,9 @@ Deck_DTO_key::Deck_DTO_key(void *buffer) {
   deserialize(buffer);
 }
 
+Deck_DTO_key::Deck_DTO_key(const Deck_card_DTO &deck_card_DTO) :
+    deck_id(deck_card_DTO.deck_id) {}
+
 size_t Deck_DTO_key::buffer_size() const {
   size_t len = 0;
   len += Bdb_serialization::buffer_len_string(deck_id);

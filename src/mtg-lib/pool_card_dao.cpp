@@ -103,18 +103,3 @@ void Pool_card_DAO::select_by_key_list(Bdb_dbp &pool_card_db,
       break;
   }
 }
-
-void Pool_card_DAO::update(Bdb_dbp &pool_card_db,
-                      const std::string &pool_card_id,
-                      const std::string &user_ratings,
-                      const std::string &priority,
-                      Pool_card_DTO &pool_card_dto,
-                      Bdb_errors &errors) {
-  Pool_card_DTO_key pool_card_dto_key(pool_card_id);
-  Bdb_DAO::lookup<Pool_card_DTO_key,
-                  Pool_card_DTO>(pool_card_db, pool_card_dto_key, pool_card_dto, errors);
-  pool_card_dto.user_rating = user_ratings;
-  pool_card_dto.priority = priority;
-  Bdb_DAO::save<Pool_card_DTO_key,
-                Pool_card_DTO>(pool_card_db, pool_card_dto_key, pool_card_dto, errors);
-}

@@ -5,6 +5,7 @@
 #include "bdb_key_extractor.hpp"
 #include "bdb_errors.hpp"
 #include "bdb_serializable.hpp"
+#include "pool_card_dto.hpp"
 
 class Pool_DTO { // use Mtg_DTO as pattern but do not inherit
  public:
@@ -40,6 +41,7 @@ class Pool_DTO_key {
   explicit Pool_DTO_key(const Pool_DTO &pool_dto);
   explicit Pool_DTO_key(std::string pool_id_);
   explicit Pool_DTO_key(void *buffer);
+  explicit Pool_DTO_key(const Pool_card_DTO &pool_card_DTO);
   Pool_DTO_key &operator=(const Pool_DTO_key &pool_key) = default;
   Pool_DTO_key &operator=(Pool_DTO_key &&pool_key) noexcept = default;
 

@@ -1,3 +1,4 @@
+#include <cstring>
 #include <sstream>
 #include <utility>
 #include "bdb_json_utils.hpp"
@@ -7,10 +8,6 @@
 
 Deck_card_DTO::Deck_card_DTO(void *buffer) {
   deserialize(buffer);
-}
-
-Deck_card_DTO::Deck_card_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
-  parse(count, line, errors, delimiter);
 }
 
 size_t Deck_card_DTO::buffer_size() const {
@@ -46,60 +43,34 @@ void Deck_card_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
     card_id = Bdb_json_utils::get_json_string("Deck_card_DTO::from_json", "5", jobj, "birthYear", errors);
 }
 
-/*
- * Used to extract a principal name_id from a
- * principals database record. This function is used to create
- * keys for secondary database records.
- */
 int Deck_card_DTO::get_deck_card_deck_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
   Bdb_errors errors;
-  Principals_DTO principals_dto(pdata->get_data());
+  Deck_card_DTO deck_card_DTO(pdata->get_data());
   // key memory is malloc()'d, berkeley db will free
   std::memset((void *) skey, 0, sizeof(Dbt));
   skey->set_flags(DB_DBT_APPMALLOC);
-  std::string name_id = principals_dto.name_id;
-  size_t keylen = name_id.size() + 1;
-  char *name_id_buf = (char *) malloc(keylen);
-  std::strcpy(name_id_buf, name_id.c_str());
-  // Now set the secondary key's data to be the name_id
-  skey->set_data(name_id_buf);
+  std::string deck_id = deck_card_DTO.deck_id;
+  size_t keylen = deck_id.size() + 1;
+  char *deck_id_buf = (char *) malloc(keylen);
+  std::strcpy(deck_id_buf, deck_id.c_str());
+  skey->set_data(deck_id_buf);
   skey->set_size(keylen);
   return 0;
 }
 
-void Deck_card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
-  // nconst	primaryPrincipals	birthYear	deathYear	primaryProfession	knownForTitle
-  std::vector<std::string> token_list = Bdb_tokens::tokenize(line, delimiter);
-  int i = 0;
-  for (const std::string &token_str: token_list) {
-    switch (i) {
-      case 0: {
-        deck_card_id = token_str;
-        if (deck_card_id == "\\N")
-          errors.add("Deck_card_DTO::create", "1", "required deck_card_id == '\\N'");
-        break;
-      }
-      case 1: {
-        deck_id = token_str;
-        if (deck_id == "\\N")
-          errors.add("Deck_card_DTO::create", "2", "required primaryDeck_card_id == '\\N'");
-        break;
-      }
-      case 2: {
-        break;
-      }
-      default: {
-        errors.add("Deck_card_DTO::create", "3", "too many deck_card fields on line "
-            + Bdb_tokens::line_print(count, line));
-      }
-    }
-    i++;
-  }
-  // Store the tokens as per structure members , where (i==0) is first member and so on..
-  if (i != 3) {
-    errors.add("Deck_card_DTO::create", "4", "too few deck_card fields on line "
-        + Bdb_tokens::line_print(count, line));
-  }
+int Deck_card_DTO::get_deck_card_card_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
+  Bdb_errors errors;
+  Deck_card_DTO deck_card_DTO(pdata->get_data());
+  // key memory is malloc()'d, berkeley db will free
+  std::memset((void *) skey, 0, sizeof(Dbt));
+  skey->set_flags(DB_DBT_APPMALLOC);
+  std::string card_id = deck_card_DTO.card_id;
+  size_t keylen = card_id.size() + 1;
+  char *card_id_buf = (char *) malloc(keylen);
+  std::strcpy(card_id_buf, card_id.c_str());
+  skey->set_data(card_id_buf);
+  skey->set_size(keylen);
+  return 0;
 }
 
 void *Deck_card_DTO::serialize(void *buffer) const {

@@ -10,12 +10,8 @@ class Pool_card_DTO { // use Mtg_DTO as pattern but do not inherit
  public:
   static std::string class_pool_card() { return "Pool_card_DTO"; }
   std::string pool_card_id{};
-  std::string primary_pool_card{};
-  std::string birth_year{};
-  std::string death_year{};
-  std::string user_rating{};
-  std::string priority{};
-  std::string score{};
+  std::string card_id{};
+  std::string pool_id{};
 
   Pool_card_DTO() = default;
   Pool_card_DTO(const Pool_card_DTO &pool_card_) = default;
@@ -23,14 +19,13 @@ class Pool_card_DTO { // use Mtg_DTO as pattern but do not inherit
   Pool_card_DTO &operator=(const Pool_card_DTO &pool_card_) = default;
   Pool_card_DTO &operator=(Pool_card_DTO &&pool_card_) = default;
   explicit Pool_card_DTO(void *buffer);
-  Pool_card_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void from_json(json_object *jobj, Bdb_errors &errors);
+  static int get_pool_card_pool_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
+  static int get_pool_card_card_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
   [[nodiscard]] inline std::string get_id() const { return pool_card_id; }
-  [[nodiscard]] inline std::string get_text() const { return primary_pool_card; }
-  void parse(int count, const std::string &line, Bdb_errors &errors, char delimiter);
   void *serialize(void *buffer) const;
   json_object *to_json(Bdb_errors &errors) const;
   [[nodiscard]] std::string to_string() const;

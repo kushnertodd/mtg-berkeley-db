@@ -103,18 +103,3 @@ void Deck_card_DAO::select_by_key_list(Bdb_dbp &deck_card_db,
       break;
   }
 }
-
-void Deck_card_DAO::update(Bdb_dbp &deck_card_db,
-                      const std::string &deck_card_id,
-                      const std::string &user_ratings,
-                      const std::string &priority,
-                      Deck_card_DTO &deck_card_dto,
-                      Bdb_errors &errors) {
-  Deck_card_DTO_key deck_card_dto_key(deck_card_id);
-  Bdb_DAO::lookup<Deck_card_DTO_key,
-                  Deck_card_DTO>(deck_card_db, deck_card_dto_key, deck_card_dto, errors);
-  deck_card_dto.user_rating = user_ratings;
-  deck_card_dto.priority = priority;
-  Bdb_DAO::save<Deck_card_DTO_key,
-                Deck_card_DTO>(deck_card_db, deck_card_dto_key, deck_card_dto, errors);
-}

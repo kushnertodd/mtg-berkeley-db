@@ -41,11 +41,4 @@ class Deck_card_DAO {
                                  Deck_card_DTO_key_list &deck_card_DTO_key_list,
                                  Deck_card_DTO_list &deck_card_DTO_list,
                                  Bdb_errors &errors);
-
-  static void update(Bdb_dbp &deck_card_db,
-                     const std::string &deck_card_id,
-                     const std::string &user_ratings,
-                     const std::string &priority,
-                     Deck_card_DTO &deck_card_dto,
-                     Bdb_errors &errors);
 };

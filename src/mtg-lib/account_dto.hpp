@@ -27,6 +27,7 @@ class Account_DTO { // use Mtg_DTO as pattern but do not inherit
   void *deserialize(void *buffer);
   void from_json(json_object *jobj, Bdb_errors &errors);
   [[nodiscard]] inline std::string get_id() const { return account_id; }
+  [[nodiscard]] inline std::string get_text() const { return username; }
   void parse(int count, const std::string &line, Bdb_errors &errors, char delimiter);
   void *serialize(void *buffer) const;
   json_object *to_json(Bdb_errors &errors) const;

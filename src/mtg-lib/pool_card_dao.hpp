@@ -41,11 +41,4 @@ class Pool_card_DAO {
                                  Pool_card_DTO_key_list &pool_card_DTO_key_list,
                                  Pool_card_DTO_list &pool_card_DTO_list,
                                  Bdb_errors &errors);
-
-  static void update(Bdb_dbp &pool_card_db,
-                     const std::string &pool_card_id,
-                     const std::string &user_ratings,
-                     const std::string &priority,
-                     Pool_card_DTO &pool_card_dto,
-                     Bdb_errors &errors);
 };
