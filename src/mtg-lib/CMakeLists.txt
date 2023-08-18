@@ -22,17 +22,9 @@ add_library(mtg-lib STATIC
         mtg_global.hpp
         mtg_inet_app_init.cpp
         mtg_inet_app_init.hpp
-        mtg_inet_request.cpp
-        mtg_inet_request.hpp
+        mtg_request.cpp
+        mtg_request.hpp
         mtg_tokens.cpp
         mtg_tokens.hpp
-        pool_card_dao.cpp
-        pool_card_dao.hpp
-        pool_card_dto.cpp
-        pool_card_dto.hpp
-        pool_dao.cpp
-        pool_dao.hpp
-        pool_dto.cpp
-        pool_dto.hpp
         )
 target_include_directories(mtg-lib PUBLIC .)

@@ -38,7 +38,8 @@ class Bdb_errors {
   static std::string class_name() { return "Bdb_errors"; }
 
   [[nodiscard]] bool has() const;
-  json_object *to_json();
+  [[nodiscard]] json_object *to_json() const;
+  [[nodiscard]] std::string to_json_string() const;
   std::string to_string();
 };
 

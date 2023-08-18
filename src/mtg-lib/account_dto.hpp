@@ -14,6 +14,7 @@ class Account_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string username{};
   std::string email{};
   std::string created{};
+  std::string score{};
 
   Account_DTO() = default;
   Account_DTO(const Account_DTO &account_) = default;

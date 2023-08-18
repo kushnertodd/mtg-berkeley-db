@@ -93,7 +93,7 @@ bool Bdb_errors::has() const {
  * json formatted error messages
  * @return json-c object handle
  */
-json_object *Bdb_errors::to_json() {
+json_object *Bdb_errors::to_json() const {
   json_object *root = json_object_new_object();
   if (!root) {
     return nullptr;
@@ -114,6 +114,11 @@ json_object *Bdb_errors::to_json() {
     json_object_put(root);
     return nullptr;
   }
+}
+
+std::string Bdb_errors::to_json_string() const {
+  return json_object_to_json_string_ext(to_json(),
+                                        JSON_C_TO_STRING_PRETTY);
 }
 
 /*!

@@ -8,14 +8,28 @@
     },
     {
       "class_name": "Primary_database_config",
-      "name": "account_name_tripthongs",
-      "filename": "account_name_tripthongs.db",
+      "name": "account_email_tripthongs",
+      "filename": "account_email_tripthongs.db",
+      "has_duplicates": "true"
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "account_username_tripthongs",
+      "filename": "account_username_tripthongs.db",
       "has_duplicates": "true"
     },
     {
       "class_name": "Primary_database_config",
       "name": "card",
-      "filename": "card.db"
+      "filename": "card.db",
+      "secondary_databases": [
+        {
+          "class_name": "Secondary_database_config",
+          "name": "card_type_id",
+          "filename": "card_type_id.sdb",
+          "key_extractor": "get_card_type_id"
+        }
+      ]
     },
     {
       "class_name": "Primary_database_config",
@@ -26,7 +40,15 @@
     {
       "class_name": "Primary_database_config",
       "name": "deck",
-      "filename": "deck.db"
+      "filename": "deck.db",
+      "secondary_databases": [
+        {
+          "class_name": "Secondary_database_config",
+          "name": "deck_account_id",
+          "filename": "deck_account_id.sdb",
+          "key_extractor": "get_deck_account_id"
+        }
+      ]
     },
     {
       "class_name": "Primary_database_config",
@@ -52,30 +74,6 @@
       "name": "deck_name_tripthongs",
       "filename": "deck_name_tripthongs.db",
       "has_duplicates": "true"
-    },
-    {
-      "class_name": "Primary_database_config",
-      "name": "pool_card",
-      "filename": "pool_card.db",
-      "secondary_databases": [
-        {
-          "class_name": "Secondary_database_config",
-          "name": "pool_card_card",
-          "filename": "pool_card_card.sdb",
-          "key_extractor": "get_pool_card_card_id"
-        },
-        {
-          "class_name": "Secondary_database_config",
-          "name": "pool_card_pool",
-          "filename": "pool_card_pool.sdb",
-          "key_extractor": "get_pool_card_pool_id"
-        }
-      ]
-    },
-    {
-      "class_name": "Primary_database_config",
-      "name": "pool",
-      "filename": "pool.db"
     }
   ]
 }

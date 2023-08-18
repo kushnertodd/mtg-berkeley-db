@@ -5,7 +5,6 @@
 #include "bdb_tokens.hpp"
 #include "card_dto.hpp"
 #include "deck_card_dto.hpp"
-#include "pool_card_dto.hpp"
 
 Card_DTO::Card_DTO(void *buffer) {
   deserialize(buffer);
@@ -121,9 +120,6 @@ Card_DTO_key::Card_DTO_key(std::string card_id_) : card_id(std::move(card_id_)) 
 Card_DTO_key::Card_DTO_key(void *buffer) {
   deserialize(buffer);
 }
-
-Card_DTO_key::Card_DTO_key(const Pool_card_DTO &pool_card_DTO) :
-    card_id(pool_card_DTO.card_id) {}
 
 Card_DTO_key::Card_DTO_key(const Deck_card_DTO &deck_card_DTO) :
     card_id(deck_card_DTO.card_id) {}
