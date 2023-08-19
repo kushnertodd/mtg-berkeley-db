@@ -59,38 +59,29 @@ void Account_DTO::parse(int count, const std::string &line, Bdb_errors &errors, 
     switch (i) {
       case 0: {
         account_id = token_str;
-        if (account_id == "\\N")
-          errors.add("Account_DTO::create", "1", "required account_id == '\\N'");
         break;
       }
       case 1: {
         username = token_str;
-        if (username == "\\N")
-          errors.add("Account_DTO::create", "2", "required primaryAccount_id == '\\N'");
         break;
       }
       case 2: {
-        email = (token_str == "\\N" ? "" : token_str);
+        email = token_str;
         break;
       }
       case 3: {
-        created = (token_str == "\\N" ? "" : token_str);
-        break;
-      }
-      case 4: // drop through
-      case 5: {
+        created = token_str;
         break;
       }
       default: {
-        errors.add("Account_DTO::create", "3", "too many account fields on line "
+        errors.add("Account_DTO::parse", "1", "too many account fields on line "
             + Bdb_tokens::line_print(count, line));
       }
     }
     i++;
   }
-  // Store the tokens as per structure members , where (i==0) is first member and so on..
-  if (i != 6) {
-    errors.add("Account_DTO::create", "4", "too few account fields on line "
+  if (i < 4) {
+    errors.add("Account_DTO::parse", "4", "too few account fields on line "
         + Bdb_tokens::line_print(count, line));
   }
 }

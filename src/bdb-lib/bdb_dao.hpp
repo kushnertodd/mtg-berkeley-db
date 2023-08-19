@@ -172,6 +172,31 @@ class Bdb_DAO {
   }
 
   /*!
+ * @brief select account key list using account account_id to search account account_id->account key secondary database
+ * @param account_account_id_sdb account account_id->account key secondary database
+ * @param account_id secondary database search key
+ * @param dto_key_list selected account key list
+ * @param errors if account key not found
+ */
+  template<typename K, typename KL, typename T, typename TL>
+  static void select_by_key_list(Bdb_dbp &bdb_db,
+                                 KL &bdb_dto_key_list,
+                                 TL &bdb_dto_list,
+                                 Bdb_errors &errors) {
+    for (K &bdb_dto_key: bdb_dto_key_list.list) {
+      T bdb_dto;
+      Bdb_DAO::lookup<K, T>(bdb_db,
+                            bdb_dto_key,
+                            bdb_dto,
+                            errors);
+      if (!errors.has())
+        bdb_dto_list.add(bdb_dto);
+      else
+        break;
+    }
+  }
+
+  /*!
  * @brief select principals key list using name id to search name id->principals key secondary database
  * @param principals_name_id_sdb name id->principals key secondary database
  * @param name_id secondary database search key

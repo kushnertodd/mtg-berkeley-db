@@ -31,11 +31,6 @@ class Account_DAO {
                          Account_DTO_list &account_dto_list,
                          Bdb_errors &errors);
 
-  static void select_all_key(Bdb_dbp &account_db,
-                             Account_DTO_key &account_dto_key,
-                             Account_DTO_list &account_dto_list,
-                             Bdb_errors &errors);
-
   static void select_by_key_list(Bdb_dbp &account_db,
                                  Account_DTO_key_list &account_DTO_key_list,
                                  Account_DTO_list &account_DTO_list,

@@ -11,9 +11,9 @@
  * @return count of records saved
  */
 int Account_DAO::load(Bdb_dbp &account_db,
-                   const std::string &text_file,
-                   Bdb_errors &errors,
-                   char delimiter) {
+                      const std::string &text_file,
+                      Bdb_errors &errors,
+                      char delimiter) {
   return Bdb_DAO::load<Account_DTO_key,
                        Account_DTO>(account_db, text_file, errors, delimiter);
 }
@@ -26,9 +26,9 @@ int Account_DAO::load(Bdb_dbp &account_db,
  * @param errors if save fails
  */
 void Account_DAO::lookup(Bdb_dbp &account_db,
-                      const std::string &account_id,
-                      Account_DTO &account_dto,
-                      Bdb_errors &errors) {
+                         const std::string &account_id,
+                         Account_DTO &account_dto,
+                         Bdb_errors &errors) {
   Account_DTO_key account_dto_key(account_id);
   Bdb_DAO::lookup<Account_DTO_key,
                   Account_DTO>(account_db, account_dto_key, account_dto, errors);
@@ -61,24 +61,6 @@ void Account_DAO::select_all(Bdb_dbp &account_db, Account_DTO_list &account_dto_
 }
 
 /*!
- * @brief select all account dto records from database from key
- * @param account_db account database to select from
- * @param account_dto_list all account dtos in database matching key
- * @param errors if select fails
- * @details selects all duplicate records from key if duplicates allowed
- */
-void Account_DAO::select_all_key(Bdb_dbp &account_db,
-                              Account_DTO_key &account_dto_key,
-                              Account_DTO_list &account_dto_list,
-                              Bdb_errors &errors) {
-  Bdb_cursor bdb_cursor(account_db, errors);
-  if (!errors.has())
-    bdb_cursor.dto_list_get_key<Account_DTO_key,
-                                Account_DTO,
-                                Account_DTO_list>(account_dto_key, account_dto_list, errors);
-}
-
-/*!
  * @brief select account key list using account account_id to search account account_id->account key secondary database
  * @param account_account_id_sdb account account_id->account key secondary database
  * @param account_id secondary database search key
@@ -86,21 +68,13 @@ void Account_DAO::select_all_key(Bdb_dbp &account_db,
  * @param errors if account key not found
  */
 void Account_DAO::select_by_key_list(Bdb_dbp &account_db,
-                                  Account_DTO_key_list &account_DTO_key_list,
-                                  Account_DTO_list &account_DTO_list,
-                                  Bdb_errors &errors) {
-  for (Account_DTO_key &account_DTO_key: account_DTO_key_list.list) {
-    Account_DTO account_dto;
-    Bdb_DAO::lookup<Account_DTO_key,
-                    Account_DTO>(account_db,
-                              account_DTO_key,
-                              account_dto,
-                              errors);
-    if (!errors.has())
-      account_DTO_list.add(account_dto);
-    else
-      break;
-  }
+                                     Account_DTO_key_list &account_DTO_key_list,
+                                     Account_DTO_list &account_DTO_list,
+                                     Bdb_errors &errors) {
+  Bdb_DAO::select_by_key_list<Account_DTO_key,
+                              Account_DTO_key_list,
+                              Account_DTO,
+                              Account_DTO_list>(account_db, account_DTO_key_list, account_DTO_list, errors);
 }
 
 void Account_DAO::update(Bdb_dbp &account_db,
@@ -108,8 +82,8 @@ void Account_DAO::update(Bdb_dbp &account_db,
                          const std::string &username,
                          const std::string &email,
                          const std::string &created,
-                      Account_DTO &account_dto,
-                      Bdb_errors &errors) {
+                         Account_DTO &account_dto,
+                         Bdb_errors &errors) {
   Account_DTO_key account_dto_key(account_id);
   Bdb_DAO::lookup<Account_DTO_key,
                   Account_DTO>(account_db, account_dto_key, account_dto, errors);
