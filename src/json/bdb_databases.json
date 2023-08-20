@@ -16,12 +16,6 @@
     },
     {
       "class_name": "Primary_database_config",
-      "name": "account_email_tripthongs",
-      "filename": "account_email_tripthongs.db",
-      "has_duplicates": "true"
-    },
-    {
-      "class_name": "Primary_database_config",
       "name": "account_username_tripthongs",
       "filename": "account_username_tripthongs.db",
       "has_duplicates": "true"
