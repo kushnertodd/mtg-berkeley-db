@@ -69,19 +69,29 @@ void Account_DAO::select_all(Bdb_dbp &account_db, Account_DTO_list &account_dto_
  * @brief select account key list using account account_id to search account account_id->account key secondary database
  * @param account_account_id_sdb account account_id->account key secondary database
  * @param account_id secondary database search key
- * @param account_DTO_key_list selected account key list
+ * @param account_dto_key_list selected account key list
  * @param errors if account key not found
  */
-void Account_DAO::select_by_key_list(Bdb_dbp &account_db,
-                                     Account_DTO_key_list &account_DTO_key_list,
-                                     Account_DTO_list &account_DTO_list,
+void Account_DAO::select_all_email(Bdb_dbp &account_db,
+                                     Bdb_dbp &account_email_sdb,
+                                     const std::string &email,
+                                     Account_DTO_list &account_dto_list,
                                      Bdb_errors &errors) {
+  Account_DTO_key account_dto_key(email); // TODO: kludge, replacing account_id
+  Account_DTO_key_list account_dto_key_list;
+  Bdb_cursor bdb_cursor(account_email_sdb, errors);
+  if (!errors.has())
+    bdb_cursor.dto_list_get_key<Account_DTO_key,
+                                Account_DTO_key,
+                                Account_DTO_key_list>(account_dto_key,
+                                                      account_dto_key_list,
+                                                      errors);
   Bdb_DAO::select_by_key_list<Account_DTO_key,
                               Account_DTO_key_list,
                               Account_DTO,
                               Account_DTO_list>(account_db,
-                                                account_DTO_key_list,
-                                                account_DTO_list,
+                                                account_dto_key_list,
+                                                account_dto_list,
                                                 errors);
 }
 

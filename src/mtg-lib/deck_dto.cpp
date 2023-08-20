@@ -108,7 +108,7 @@ std::string Deck_DTO::to_string() const {
   return os.str();
 }
 
-Deck_DTO_key::Deck_DTO_key(const Deck_DTO &deck_DTO) : deck_id(deck_DTO.deck_id) {}
+Deck_DTO_key::Deck_DTO_key(const Deck_DTO &deck_dto) : deck_id(deck_dto.deck_id) {}
 
 Deck_DTO_key::Deck_DTO_key(std::string deck_id_) : deck_id(std::move(deck_id_)) {}
 
@@ -116,8 +116,8 @@ Deck_DTO_key::Deck_DTO_key(void *buffer) {
   deserialize(buffer);
 }
 
-Deck_DTO_key::Deck_DTO_key(const Deck_card_DTO &deck_card_DTO) :
-    deck_id(deck_card_DTO.deck_id) {}
+Deck_DTO_key::Deck_DTO_key(const Deck_card_DTO &deck_card_dto) :
+    deck_id(deck_card_dto.deck_id) {}
 
 size_t Deck_DTO_key::buffer_size() const {
   size_t len = 0;

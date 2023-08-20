@@ -32,9 +32,10 @@ class Card_DAO {
                          Card_DTO_list &card_dto_list,
                          Bdb_errors &errors);
 
-  static void select_by_key_list(Bdb_dbp &card_db,
-                                 Card_DTO_key_list &card_DTO_key_list,
-                                 Card_DTO_list &card_DTO_list,
+  static void select_all_type_id(Bdb_dbp &account_db,
+                                 Bdb_dbp &account_email_sdb,
+                                 const std::string &type_id,
+                                 Card_DTO_list &card_dto_list,
                                  Bdb_errors &errors);
 
   static void update(Bdb_dbp &card_db,

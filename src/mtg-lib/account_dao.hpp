@@ -32,9 +32,10 @@ class Account_DAO {
                          Account_DTO_list &account_dto_list,
                          Bdb_errors &errors);
 
-  static void select_by_key_list(Bdb_dbp &account_db,
-                                 Account_DTO_key_list &account_DTO_key_list,
-                                 Account_DTO_list &account_DTO_list,
+  static void select_all_email(Bdb_dbp &account_db,
+                               Bdb_dbp &account_email_sdb,
+                               const std::string &email,
+                                 Account_DTO_list &account_dto_list,
                                  Bdb_errors &errors);
 
   static void update(Bdb_dbp &account_db,

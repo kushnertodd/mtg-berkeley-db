@@ -72,16 +72,26 @@ void Card_DAO::select_all(Bdb_dbp &card_db, Card_DTO_list &card_dto_list, Bdb_er
  * @param card_DTO_key_list selected card key list
  * @param errors if card key not found
  */
-void Card_DAO::select_by_key_list(Bdb_dbp &card_db,
-                                  Card_DTO_key_list &card_DTO_key_list,
-                                  Card_DTO_list &card_DTO_list,
+void Card_DAO::select_all_type_id(Bdb_dbp &card_db,
+                                  Bdb_dbp &card_type_id_sdb,
+                                  const std::string &type_id,
+                                  Card_DTO_list &card_dto_list,
                                   Bdb_errors &errors) {
+  Card_DTO_key card_dto_key(type_id); // TODO: kludge, replacing card_id
+  Card_DTO_key_list card_dto_key_list;
+  Bdb_cursor bdb_cursor(card_type_id_sdb, errors);
+  if (!errors.has())
+    bdb_cursor.dto_list_get_key<Card_DTO_key,
+                                Card_DTO_key,
+                                Card_DTO_key_list>(card_dto_key,
+                                                   card_dto_key_list,
+                                                   errors);
   Bdb_DAO::select_by_key_list<Card_DTO_key,
                               Card_DTO_key_list,
                               Card_DTO,
                               Card_DTO_list>(card_db,
-                                             card_DTO_key_list,
-                                             card_DTO_list,
+                                             card_dto_key_list,
+                                             card_dto_list,
                                              errors);
 }
 

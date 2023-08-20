@@ -117,8 +117,8 @@ Card_DTO_key::Card_DTO_key(void *buffer) {
   deserialize(buffer);
 }
 
-Card_DTO_key::Card_DTO_key(const Deck_card_DTO &deck_card_DTO) :
-    card_id(deck_card_DTO.card_id) {}
+Card_DTO_key::Card_DTO_key(const Deck_card_DTO &deck_card_dto) :
+    card_id(deck_card_dto.card_id) {}
 
 size_t Card_DTO_key::buffer_size() const {
   size_t len = 0;

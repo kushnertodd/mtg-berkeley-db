@@ -26,6 +26,7 @@ int main(int argc, const char **argv) {
             break;
           Mtg_request mtg_request(request, errors);
           Mtg_request_response mtg_request_response(errors);
+          mtg_request_response.add_request(mtg_request.request_json);
           if (!errors.has())
             Mtg_request_handler::handle(mtg_inet_app_init, mtg_request, mtg_request_response, errors);
           std::string response_string;

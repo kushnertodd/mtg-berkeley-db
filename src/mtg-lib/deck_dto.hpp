@@ -43,7 +43,7 @@ class Deck_DTO_key {
   explicit Deck_DTO_key(const Deck_DTO &deck_dto);
   explicit Deck_DTO_key(std::string deck_id_);
   explicit Deck_DTO_key(void *buffer);
-  explicit Deck_DTO_key(const Deck_card_DTO &deck_card_DTO);
+  explicit Deck_DTO_key(const Deck_card_DTO &deck_card_dto);
   Deck_DTO_key &operator=(const Deck_DTO_key &deck_key) = default;
   Deck_DTO_key &operator=(Deck_DTO_key &&deck_key) noexcept = default;
 

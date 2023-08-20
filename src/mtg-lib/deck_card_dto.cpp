@@ -49,11 +49,11 @@ void Deck_card_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
 
 int Deck_card_DTO::get_deck_card_deck_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
   Bdb_errors errors;
-  Deck_card_DTO deck_card_DTO(pdata->get_data());
+  Deck_card_DTO deck_card_dto(pdata->get_data());
   // key memory is malloc()'d, berkeley db will free
   std::memset((void *) skey, 0, sizeof(Dbt));
   skey->set_flags(DB_DBT_APPMALLOC);
-  std::string deck_id = deck_card_DTO.deck_id;
+  std::string deck_id = deck_card_dto.deck_id;
   size_t keylen = deck_id.size() + 1;
   char *deck_id_buf = (char *) malloc(keylen);
   std::strcpy(deck_id_buf, deck_id.c_str());
@@ -64,11 +64,11 @@ int Deck_card_DTO::get_deck_card_deck_id(Db *dbp, const Dbt *pkey, const Dbt *pd
 
 int Deck_card_DTO::get_deck_card_card_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
   Bdb_errors errors;
-  Deck_card_DTO deck_card_DTO(pdata->get_data());
+  Deck_card_DTO deck_card_dto(pdata->get_data());
   // key memory is malloc()'d, berkeley db will free
   std::memset((void *) skey, 0, sizeof(Dbt));
   skey->set_flags(DB_DBT_APPMALLOC);
-  std::string card_id = deck_card_DTO.card_id;
+  std::string card_id = deck_card_dto.card_id;
   size_t keylen = card_id.size() + 1;
   char *card_id_buf = (char *) malloc(keylen);
   std::strcpy(card_id_buf, card_id.c_str());
@@ -139,7 +139,7 @@ std::string Deck_card_DTO::to_string() const {
   return os.str();
 }
 
-Deck_card_DTO_key::Deck_card_DTO_key(const Deck_card_DTO &deck_card_DTO) : deck_card_id(deck_card_DTO.deck_card_id) {}
+Deck_card_DTO_key::Deck_card_DTO_key(const Deck_card_DTO &deck_card_dto) : deck_card_id(deck_card_dto.deck_card_id) {}
 
 Deck_card_DTO_key::Deck_card_DTO_key(std::string deck_card_id_) : deck_card_id(std::move(deck_card_id_)) {}
 

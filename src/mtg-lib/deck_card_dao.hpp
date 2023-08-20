@@ -51,7 +51,7 @@ class Deck_card_DAO {
 
   static void search_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
                                  const std::string &card_id,
-                                 Deck_card_DTO_key_list &deck_card_DTO_key_list,
+                                 Deck_card_DTO_key_list &deck_card_dto_key_list,
                                  Bdb_errors &errors);
 
   static void select_all(Bdb_dbp &deck_card_db,
@@ -59,13 +59,13 @@ class Deck_card_DAO {
                          Bdb_errors &errors);
 
   static void select_by_key_list(Bdb_dbp &deck_card_db,
-                                 Deck_card_DTO_key_list &deck_card_DTO_key_list,
-                                 Deck_card_DTO_list &deck_card_DTO_list,
+                                 Deck_card_DTO_key_list &deck_card_dto_key_list,
+                                 Deck_card_DTO_list &deck_card_dto_list,
                                  Bdb_errors &errors);
 
   static void select_deck_list(Bdb_dbp &deck_db,
                                Deck_card_DTO_list &deck_card_key_list,
-                               Deck_DTO_list &deck_DTO_list,
+                               Deck_DTO_list &deck_dto_list,
                                Bdb_errors &errors);
 
   static void select_card_list(Bdb_dbp &card_db,

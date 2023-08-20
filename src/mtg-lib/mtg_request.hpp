@@ -75,22 +75,22 @@ class Mtg_account_request_handler {
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,
                      Bdb_errors &errors);
-  static json_object *load(Mtg_inet_app_init &Mtg_inet_app_init,
-                           const Mtg_request &mtg_request,
-                           Mtg_request_response &mtg_request_response,
-                           Bdb_errors &errors);
+  static bool load(Mtg_inet_app_init &Mtg_inet_app_init,
+                   const Mtg_request &mtg_request,
+                   Mtg_request_response &mtg_request_response,
+                   Bdb_errors &errors);
   static bool lookup(Mtg_inet_app_init &mtg_inet_app_init,
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,
                      Bdb_errors &errors);
-  static bool search_username(Mtg_inet_app_init &mtg_inet_app_init,
-                              const Mtg_request &mtg_request,
-                              Mtg_request_response &mtg_request_response,
-                              Bdb_errors &errors);
-  static bool search_email(Mtg_inet_app_init &mtg_inet_app_init,
-                           const Mtg_request &mtg_request,
-                           Mtg_request_response &mtg_request_response,
-                           Bdb_errors &errors);
+  static bool match_username(Mtg_inet_app_init &mtg_inet_app_init,
+                             const Mtg_request &mtg_request,
+                             Mtg_request_response &mtg_request_response,
+                             Bdb_errors &errors);
+  static bool select_all_email(Mtg_inet_app_init &mtg_inet_app_init,
+                               const Mtg_request &mtg_request,
+                               Mtg_request_response &mtg_request_response,
+                               Bdb_errors &errors);
   static bool select_all(Mtg_inet_app_init &mtg_inet_app_init,
                          const Mtg_request &mtg_request,
                          Mtg_request_response &mtg_request_response,
@@ -107,30 +107,30 @@ class Mtg_card_request_handler {
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,
                      Bdb_errors &errors);
-  static json_object *load(Mtg_inet_app_init &Mtg_inet_app_init,
-                           const Mtg_request &mtg_request,
-                           Mtg_request_response &mtg_request_response,
-                           Bdb_errors &errors);
+  static bool load(Mtg_inet_app_init &Mtg_inet_app_init,
+                   const Mtg_request &mtg_request,
+                   Mtg_request_response &mtg_request_response,
+                   Bdb_errors &errors);
   static bool lookup(Mtg_inet_app_init &mtg_inet_app_init,
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,
                      Bdb_errors &errors);
-  static bool search_name(Mtg_inet_app_init &mtg_inet_app_init,
-                          const Mtg_request &mtg_request,
-                          Mtg_request_response &mtg_request_response,
-                          Bdb_errors &errors);
+  static bool match_name(Mtg_inet_app_init &mtg_inet_app_init,
+                         const Mtg_request &mtg_request,
+                         Mtg_request_response &mtg_request_response,
+                         Bdb_errors &errors);
   static bool select_all(Mtg_inet_app_init &mtg_inet_app_init,
                          const Mtg_request &mtg_request,
                          Mtg_request_response &mtg_request_response,
                          Bdb_errors &errors);
-  static bool select_decks(Mtg_inet_app_init &mtg_inet_app_init,
-                           const Mtg_request &mtg_request,
-                           Mtg_request_response &mtg_request_response,
-                           Bdb_errors &errors);
-  static bool select_type_id(Mtg_inet_app_init &mtg_inet_app_init,
-                             const Mtg_request &mtg_request,
-                             Mtg_request_response &mtg_request_response,
-                             Bdb_errors &errors);
+  static bool select_all_decks(Mtg_inet_app_init &mtg_inet_app_init,
+                               const Mtg_request &mtg_request,
+                               Mtg_request_response &mtg_request_response,
+                               Bdb_errors &errors);
+  static bool select_all_type_id(Mtg_inet_app_init &mtg_inet_app_init,
+                                 const Mtg_request &mtg_request,
+                                 Mtg_request_response &mtg_request_response,
+                                 Bdb_errors &errors);
   static bool update(Mtg_inet_app_init &mtg_inet_app_init,
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,
@@ -143,34 +143,30 @@ class Mtg_deck_request_handler {
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,
                      Bdb_errors &errors);
-  static json_object *load(Mtg_inet_app_init &Mtg_inet_app_init,
-                           const Mtg_request &mtg_request,
-                           Mtg_request_response &mtg_request_response,
-                           Bdb_errors &errors);
+  static bool load(Mtg_inet_app_init &Mtg_inet_app_init,
+                   const Mtg_request &mtg_request,
+                   Mtg_request_response &mtg_request_response,
+                   Bdb_errors &errors);
   static bool lookup(Mtg_inet_app_init &mtg_inet_app_init,
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,
                      Bdb_errors &errors);
-  static bool search_name(Mtg_inet_app_init &mtg_inet_app_init,
-                          const Mtg_request &mtg_request,
-                          Mtg_request_response &mtg_request_response,
-                          Bdb_errors &errors);
-  static bool select_account_id(Mtg_inet_app_init &mtg_inet_app_init,
-                                const Mtg_request &mtg_request,
-                                Mtg_request_response &mtg_request_response,
-                                Bdb_errors &errors);
+  static bool match_name(Mtg_inet_app_init &mtg_inet_app_init,
+                         const Mtg_request &mtg_request,
+                         Mtg_request_response &mtg_request_response,
+                         Bdb_errors &errors);
   static bool select_all(Mtg_inet_app_init &mtg_inet_app_init,
                          const Mtg_request &mtg_request,
                          Mtg_request_response &mtg_request_response,
                          Bdb_errors &errors);
+  static bool select_all_account_id(Mtg_inet_app_init &mtg_inet_app_init,
+                                    const Mtg_request &mtg_request,
+                                    Mtg_request_response &mtg_request_response,
+                                    Bdb_errors &errors);
   static bool select_all_cards(Mtg_inet_app_init &mtg_inet_app_init,
                                const Mtg_request &mtg_request,
                                Mtg_request_response &mtg_request_response,
                                Bdb_errors &errors);
-//  static bool select_cards_type_id(Mtg_inet_app_init &mtg_inet_app_init,
-//                                   const Mtg_request &mtg_request,
-//                                   Mtg_request_response &mtg_request_response,
-//                                   Bdb_errors &errors);
   static bool select_other_cards(Mtg_inet_app_init &mtg_inet_app_init,
                                  const Mtg_request &mtg_request,
                                  Mtg_request_response &mtg_request_response,
@@ -187,8 +183,8 @@ class Mtg_deck_card_request_handler {
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,
                      Bdb_errors &errors);
-  static json_object *load(Mtg_inet_app_init &Mtg_inet_app_init,
-                           const Mtg_request &mtg_request,
-                           Mtg_request_response &mtg_request_response,
-                           Bdb_errors &errors);
+  static bool load(Mtg_inet_app_init &Mtg_inet_app_init,
+                   const Mtg_request &mtg_request,
+                   Mtg_request_response &mtg_request_response,
+                   Bdb_errors &errors);
 };

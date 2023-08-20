@@ -1,3 +1,4 @@
+#include <cstring>
 #include <sstream>
 #include <utility>
 #include "bdb_json_utils.hpp"
@@ -49,6 +50,21 @@ void Account_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   if (!errors.has())
     // parse: ' { "created": ... `
     created = Bdb_json_utils::get_json_string("Account_DTO::from_json", "4", jobj, "created", errors);
+}
+
+int Account_DTO::get_account_email(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
+  Bdb_errors errors;
+  Account_DTO account_dto(pdata->get_data());
+  // key memory is malloc()'d, berkeley db will free
+  std::memset((void *) skey, 0, sizeof(Dbt));
+  skey->set_flags(DB_DBT_APPMALLOC);
+  std::string email = account_dto.email;
+  size_t keylen = email.size() + 1;
+  char *card_id_buf = (char *) malloc(keylen);
+  std::strcpy(card_id_buf, email.c_str());
+  skey->set_data(card_id_buf);
+  skey->set_size(keylen);
+  return 0;
 }
 
 void Account_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
@@ -118,7 +134,7 @@ std::string Account_DTO::to_string() const {
   return os.str();
 }
 
-Account_DTO_key::Account_DTO_key(const Account_DTO &account_DTO) : account_id(account_DTO.account_id) {}
+Account_DTO_key::Account_DTO_key(const Account_DTO &account_dto) : account_id(account_dto.account_id) {}
 
 Account_DTO_key::Account_DTO_key(std::string account_id_) : account_id(std::move(account_id_)) {}
 
