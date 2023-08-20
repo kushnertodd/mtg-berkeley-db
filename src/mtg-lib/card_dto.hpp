@@ -11,7 +11,6 @@ class Card_DTO { // use Mtg_DTO as pattern but do not inherit
  public:
   static std::string class_card() { return "Card_DTO"; }
   std::string card_id{};
-  std::string in_pool{};
   std::string name{};
   std::string type_id{};
   std::string score{};
@@ -64,7 +63,6 @@ class Card_DTO_list {
 
 class Card_DTO_key_list {
  public:
-  static std::string class_card() { return "Card_DTO_key_list"; }
   std::list<Card_DTO_key> list;
   void add(Card_DTO_key &card_dto_key) { list.push_back(card_dto_key); }
 };

@@ -9,12 +9,18 @@
 #include "bdb_db.hpp"
 #include "bdb_errors.hpp"
 #include "bdb_common.hpp"
-#include "deck_card_dto.hpp"
 #include "card_dto.hpp"
+#include "deck_dto.hpp"
+#include "deck_card_dto.hpp"
 #include "bdb_tokens.hpp"
 
 class Deck_card_DAO {
  public:
+  static int load(Bdb_dbp &deck_card_db,
+                  const std::string &text_file,
+                  Bdb_errors &errors,
+                  char delimiter = tab);
+
   static void lookup(Bdb_dbp &deck_card_db,
                      const std::string &deck_card_id,
                      Deck_card_DTO &deck_card_dto,
@@ -37,25 +43,20 @@ class Deck_card_DAO {
                                  Bdb_errors &errors);
 
   static void search_by_card(Bdb_dbp &deck_card_card_id_sdb,
-                              Bdb_dbp &deck_card_db,
-                              Bdb_dbp &deck_db,
-                              const std::string &card_id,
-                              Deck_DTO_list &deck_dto_list,
-                              Bdb_errors &errors);
+                             Bdb_dbp &deck_card_db,
+                             Bdb_dbp &deck_db,
+                             const std::string &card_id,
+                             Deck_DTO_list &deck_dto_list,
+                             Bdb_errors &errors);
 
   static void search_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
-                                  const std::string &card_id,
-                                  Deck_card_DTO_key_list &deck_card_DTO_key_list,
-                                  Bdb_errors &errors);
+                                 const std::string &card_id,
+                                 Deck_card_DTO_key_list &deck_card_DTO_key_list,
+                                 Bdb_errors &errors);
 
   static void select_all(Bdb_dbp &deck_card_db,
                          Deck_card_DTO_list &deck_card_dto_list,
                          Bdb_errors &errors);
-
-  static void select_all_key(Bdb_dbp &card_db,
-                             Deck_card_DTO_key &deck_card_dto_key,
-                             Deck_card_DTO_list &deck_card_dto_list,
-                             Bdb_errors &errors);
 
   static void select_by_key_list(Bdb_dbp &deck_card_db,
                                  Deck_card_DTO_key_list &deck_card_DTO_key_list,
@@ -68,7 +69,7 @@ class Deck_card_DAO {
                                Bdb_errors &errors);
 
   static void select_card_list(Bdb_dbp &card_db,
-                                Deck_card_DTO_list &deck_card_dto_list,
-                                Card_DTO_list &card_dto_list,
-                                Bdb_errors &errors);
+                               Deck_card_DTO_list &deck_card_dto_list,
+                               Card_DTO_list &card_dto_list,
+                               Bdb_errors &errors);
 };

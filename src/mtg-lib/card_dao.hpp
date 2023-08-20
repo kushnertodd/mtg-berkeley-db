@@ -32,11 +32,6 @@ class Card_DAO {
                          Card_DTO_list &card_dto_list,
                          Bdb_errors &errors);
 
-  static void select_all_key(Bdb_dbp &card_db,
-                             Card_DTO_key &card_dto_key,
-                             Card_DTO_list &card_dto_list,
-                             Bdb_errors &errors);
-
   static void select_by_key_list(Bdb_dbp &card_db,
                                  Card_DTO_key_list &card_DTO_key_list,
                                  Card_DTO_list &card_DTO_list,

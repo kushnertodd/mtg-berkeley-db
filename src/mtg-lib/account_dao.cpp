@@ -11,11 +11,16 @@
  * @return count of records saved
  */
 int Account_DAO::load(Bdb_dbp &account_db,
+                      Bdb_dbp &account_tripthong_bdb_db,
                       const std::string &text_file,
                       Bdb_errors &errors,
                       char delimiter) {
-  return Bdb_DAO::load<Account_DTO_key,
-                       Account_DTO>(account_db, text_file, errors, delimiter);
+  return Bdb_DAO::load_tripthongs<Account_DTO_key,
+                                  Account_DTO>(account_db,
+                                               account_tripthong_bdb_db,
+                                               text_file,
+                                               errors,
+                                               delimiter);
 }
 
 /*!
@@ -74,7 +79,10 @@ void Account_DAO::select_by_key_list(Bdb_dbp &account_db,
   Bdb_DAO::select_by_key_list<Account_DTO_key,
                               Account_DTO_key_list,
                               Account_DTO,
-                              Account_DTO_list>(account_db, account_DTO_key_list, account_DTO_list, errors);
+                              Account_DTO_list>(account_db,
+                                                account_DTO_key_list,
+                                                account_DTO_list,
+                                                errors);
 }
 
 void Account_DAO::update(Bdb_dbp &account_db,

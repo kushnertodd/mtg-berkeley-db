@@ -10,6 +10,10 @@ Deck_card_DTO::Deck_card_DTO(void *buffer) {
   deserialize(buffer);
 }
 
+Deck_card_DTO::Deck_card_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
+  parse(count, line, errors, delimiter);
+}
+
 size_t Deck_card_DTO::buffer_size() const {
   size_t len = 0;
   len += Bdb_serialization::buffer_len_string(deck_card_id);
@@ -36,11 +40,11 @@ void Deck_card_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   // parse: ' { "deck_card_id": ... `
   deck_card_id = Bdb_json_utils::get_json_string("Deck_card_DTO::from_json", "1", jobj, "deck_card_id", errors);
   if (!errors.has())
-    // parse: ' { primaryDeck_card": ... `
-    deck_id = Bdb_json_utils::get_json_string("Deck_card_DTO::from_json", "4", jobj, "primaryDeck_card", errors);
+    // parse: ' { deck_id": ... `
+    deck_id = Bdb_json_utils::get_json_string("Deck_card_DTO::from_json", "2", jobj, "deck_id", errors);
   if (!errors.has())
-    // parse: ' { "birthYear": ... `
-    card_id = Bdb_json_utils::get_json_string("Deck_card_DTO::from_json", "5", jobj, "birthYear", errors);
+    // parse: ' { "card_id": ... `
+    card_id = Bdb_json_utils::get_json_string("Deck_card_DTO::from_json", "3", jobj, "card_id", errors);
 }
 
 int Deck_card_DTO::get_deck_card_deck_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
@@ -73,6 +77,38 @@ int Deck_card_DTO::get_deck_card_card_id(Db *dbp, const Dbt *pkey, const Dbt *pd
   return 0;
 }
 
+void Deck_card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
+  // nconst	primaryPrincipals	birthYear	deathYear	primaryProfession	knownForTitle
+  std::vector<std::string> token_list = Bdb_tokens::tokenize(line, delimiter);
+  int i = 0;
+  for (const std::string &token_str: token_list) {
+    switch (i) {
+      case 0: {
+        deck_card_id = token_str;
+        break;
+      }
+      case 1: {
+        deck_id = token_str;
+        break;
+      }
+      case 2: {
+        card_id = token_str;
+        break;
+      }
+      default: {
+        errors.add("Card_DTO::create", "3", "too many card fields on line "
+            + Bdb_tokens::line_print(count, line));
+      }
+    }
+    i++;
+  }
+  // Store the tokens as per structure members , where (i==0) is first member and so on..
+  if (i < 3) {
+    errors.add("Deck_card_DTO::create", "4", "too few card fields on line "
+        + Bdb_tokens::line_print(count, line));
+  }
+}
+
 void *Deck_card_DTO::serialize(void *buffer) const {
   auto *p = (unsigned char *) buffer;
   p = (unsigned char *) Bdb_serialization::serialize_string(deck_card_id, p);
@@ -97,8 +133,8 @@ json_object *Deck_card_DTO::to_json(Bdb_errors &errors) const {
 std::string Deck_card_DTO::to_string() const {
   std::ostringstream os;
   os << "deck_card:" << std::endl;
-  os << "\tdeck_card_id        " << deck_card_id << std::endl;
-  os << "\tdeck_id    " << deck_id << std::endl;
+  os << "\tdeck_card_id " << deck_card_id << std::endl;
+  os << "\tdeck_id      " << deck_id << std::endl;
   os << "\tcard_id      " << card_id << std::endl;
   return os.str();
 }

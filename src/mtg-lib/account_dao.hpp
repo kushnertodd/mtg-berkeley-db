@@ -14,6 +14,7 @@
 class Account_DAO {
  public:
   static int load(Bdb_dbp &account_db,
+                  Bdb_dbp &account_tripthong_bdb_db,
                   const std::string &text_file,
                   Bdb_errors &errors,
                   char delimiter = tab);

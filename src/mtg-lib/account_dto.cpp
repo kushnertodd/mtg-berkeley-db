@@ -41,18 +41,17 @@ void Account_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   // parse: ' { "account_id": ... `
   account_id = Bdb_json_utils::get_json_string("Account_DTO::from_json", "1", jobj, "account_id", errors);
   if (!errors.has())
-    // parse: ' { primaryAccount": ... `
-    username = Bdb_json_utils::get_json_string("Account_DTO::from_json", "2", jobj, "email", errors);
+    // parse: ' { username": ... `
+    username = Bdb_json_utils::get_json_string("Account_DTO::from_json", "2", jobj, "username", errors);
   if (!errors.has())
-    // parse: ' { "birthYear": ... `
+    // parse: ' { "email": ... `
     email = Bdb_json_utils::get_json_string("Account_DTO::from_json", "3", jobj, "email", errors);
   if (!errors.has())
-    // parse: ' { "deathYear": ... `
+    // parse: ' { "created": ... `
     created = Bdb_json_utils::get_json_string("Account_DTO::from_json", "4", jobj, "created", errors);
 }
 
 void Account_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
-  // nconst	primaryPrincipals	birthYear	deathYear	primaryProfession	knownForTitle
   std::vector<std::string> token_list = Bdb_tokens::tokenize(line, delimiter);
   int i = 0;
   for (const std::string &token_str: token_list) {
@@ -103,19 +102,19 @@ json_object *Account_DTO::to_json(Bdb_errors &errors) const {
   }
   json_object_object_add(root, "class_account", json_object_new_string(class_account().c_str()));
   json_object_object_add(root, "account_id", json_object_new_string(account_id.c_str()));
-  json_object_object_add(root, "primaryAccount", json_object_new_string(username.c_str()));
-  json_object_object_add(root, "birthYear", json_object_new_string(email.c_str()));
-  json_object_object_add(root, "deathYear", json_object_new_string(created.c_str()));
+  json_object_object_add(root, "username", json_object_new_string(username.c_str()));
+  json_object_object_add(root, "email", json_object_new_string(email.c_str()));
+  json_object_object_add(root, "created", json_object_new_string(created.c_str()));
   return root;
 }
 
 std::string Account_DTO::to_string() const {
   std::ostringstream os;
   os << "account:" << std::endl;
-  os << "\taccount_id        " << account_id << std::endl;
-  os << "\tprimaryAccount    " << username << std::endl;
-  os << "\tbirthYear      " << email << std::endl;
-  os << "\tdeathYear      " << created << std::endl;
+  os << "\taccount_id  " << account_id << std::endl;
+  os << "\tusername    " << username << std::endl;
+  os << "\temail      " << email << std::endl;
+  os << "\tcreated     " << created << std::endl;
   return os.str();
 }
 

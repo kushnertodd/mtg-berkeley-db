@@ -10,15 +10,11 @@
 #include "card_dao.hpp"
 #include "card_dto.hpp"
 #include "deck_card_dao.hpp"
-#include "deck_card_dto.hpp"
 #include "deck_dao.hpp"
 #include "deck_dto.hpp"
 #include "mtg_bdb_keys.hpp"
 #include "mtg_dto.hpp"
-#include "mtg_global.hpp"
 #include "mtg_inet_app_init.hpp"
-#include "mtg_request.hpp"
-#include "mtg_tokens.hpp"
 #include "misc_utils.hpp"
 #include "timer.hpp"
 #include "mtg_request.hpp"
@@ -41,15 +37,6 @@ Mtg_request::Mtg_request(const std::string &request, Bdb_errors &errors) {
     from_json(request_json, errors);
 }
 
-/*
-  {
-    "class_name": "mtg_request",
-    "request": "mtg_load",
-    "arguments": [
-      "../data/title.basics.tsv"
-    ]
-  }
- */
 void Mtg_request::from_json(json_object *jobj, Bdb_errors &errors) {
   // parse: ' { "class_name": ... `
   std::string jobj_class_name =
@@ -97,7 +84,7 @@ json_object *Mtg_request::to_json(Bdb_errors &errors) {
 
 std::string Mtg_request::to_string() const {
   std::ostringstream os;
-  os << "mtg_request:" << std::endl;
+  os << "mtg_request:   " << std::endl;
   os << "request        " << request << std::endl;
   os << "arguments       " << std::endl;
   for (const auto &argument: arguments)
@@ -160,7 +147,8 @@ void Mtg_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
   mtg_request_response.add_response(mtg_request.request_json);
   if (!Mtg_account_request_handler::handle(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_card_request_handler::handle(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_deck_request_handler::handle(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
+      && !Mtg_deck_request_handler::handle(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_deck_card_request_handler::handle(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
     errors.add("Mtg_request_handler::handle", "", "invalid request: " + mtg_request.request);
 }
 
@@ -170,12 +158,52 @@ bool Mtg_account_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
                                          const Mtg_request &mtg_request,
                                          Mtg_request_response &mtg_request_response,
                                          Bdb_errors &errors) {
-  if (!Mtg_account_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+  if (!Mtg_account_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_account_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_account_request_handler::search_username(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_account_request_handler::search_email(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_account_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
+      && !Mtg_account_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_account_request_handler::update(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
     return false;
   return true;
+}
+
+json_object *Mtg_account_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
+                                               const Mtg_request &mtg_request,
+                                               Mtg_request_response &mtg_request_response,
+                                               Bdb_errors &errors) {
+  if (mtg_request.arguments.empty())
+    errors.add("Mtg_inet_request::process_load_account_request", "1", "missing mtg load account request arguments");
+  Primary_database_config account_primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("account", account_primary_database_config, errors);
+  if (!errors.has()) {
+    std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+        std::make_unique<Mtg_bdb_key_extractor>();
+    Primary_database
+        account_db(account_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+    if (!errors.has()) {
+      Primary_database_config account_tripthongs_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("account_tripthongs",
+                                                    account_tripthongs_primary_database_config,
+                                                    errors);
+      if (!errors.has()) {
+        Primary_database account_tripthongs_db(account_tripthongs_primary_database_config,
+                                               mtg_bdb_key_extractor.get(),
+                                               mtg_inet_app_init.db_home,
+                                               errors);
+        if (!errors.has()) {
+          std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
+          Timer timer;
+          int count = Account_DAO::load(account_db.bdb_db, account_tripthongs_db.bdb_db, text_file, errors, tab);
+          timer.end();
+          if (errors.has()) return nullptr;
+          if (!errors.has())
+            return Mtg_request_response::to_load_response(count, timer, errors);
+        }
+      }
+    }
+  }
+  return nullptr;
 }
 
 bool Mtg_account_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
@@ -429,6 +457,38 @@ bool Mtg_account_request_handler::select_all(Mtg_inet_app_init &mtg_inet_app_ini
   return true;
 }
 
+bool Mtg_account_request_handler::update(Mtg_inet_app_init &mtg_inet_app_init,
+                                         const Mtg_request &mtg_request,
+                                         Mtg_request_response &mtg_request_response,
+                                         Bdb_errors &errors) {
+  if (mtg_request.request != "account_update")
+    return false;
+  if (mtg_request.arguments.size() < 4)
+    errors.add("Mtg_account_request_handler::process_update_account_request", "1", "missing account_id");
+  Primary_database_config primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("account", primary_database_config, errors);
+  if (!errors.has()) {
+    std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+        std::make_unique<Mtg_bdb_key_extractor>();
+    Primary_database
+        account_db(primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+    if (!errors.has()) {
+      std::string account_id = mtg_request.arguments.at(0);
+      std::string username = mtg_request.arguments.at(1);
+      std::string email = mtg_request.arguments.at(2);
+      std::string created = mtg_request.arguments.at(2);
+      Account_DTO account_dto;
+      Account_DAO::update(account_db.bdb_db, account_id, username, email, created, account_dto, errors);
+      if (!errors.has()) {
+        json_object *account_json = account_dto.to_json(errors);
+        if (!errors.has()) {
+          return account_json;
+        }
+      }
+    }
+  }
+  return true;
+}
 
 // Mtg_card_request_handler methods
 
@@ -436,13 +496,53 @@ bool Mtg_card_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
                                       const Mtg_request &mtg_request,
                                       Mtg_request_response &mtg_request_response,
                                       Bdb_errors &errors) {
-  if (!Mtg_card_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+  if (!Mtg_card_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_card_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_card_request_handler::search_name(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_card_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_card_request_handler::select_decks(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_card_request_handler::select_type_id(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
+      && !Mtg_card_request_handler::select_type_id(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_card_request_handler::update(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
     return false;
   return true;
+}
+
+json_object *Mtg_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
+                                            const Mtg_request &mtg_request,
+                                            Mtg_request_response &mtg_request_response,
+                                            Bdb_errors &errors) {
+  if (mtg_request.arguments.empty())
+    errors.add("Mtg_inet_request::process_load_card_request", "1", "missing mtg load card request arguments");
+  Primary_database_config card_primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("card", card_primary_database_config, errors);
+  if (!errors.has()) {
+    std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+        std::make_unique<Mtg_bdb_key_extractor>();
+    Primary_database
+        card_db(card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+    if (!errors.has()) {
+      Primary_database_config card_tripthongs_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("card_tripthongs",
+                                                    card_tripthongs_primary_database_config,
+                                                    errors);
+      if (!errors.has()) {
+        Primary_database card_tripthongs_db(card_tripthongs_primary_database_config,
+                                            mtg_bdb_key_extractor.get(),
+                                            mtg_inet_app_init.db_home,
+                                            errors);
+        if (!errors.has()) {
+          std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
+          Timer timer;
+          int count = Card_DAO::load(card_db.bdb_db, card_tripthongs_db.bdb_db, text_file, errors, tab);
+          timer.end();
+          if (errors.has()) return nullptr;
+          if (!errors.has())
+            return Mtg_request_response::to_load_response(count, timer, errors);
+        }
+      }
+    }
+  }
+  return nullptr;
 }
 
 bool Mtg_card_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
@@ -628,15 +728,15 @@ bool Mtg_card_request_handler::select_decks(Mtg_inet_app_init &mtg_inet_app_init
         deck_card_title_id_sdb(deck_card_title_id_secondary_database_config, mtg_inet_app_init.db_home, errors);
     if (!errors.has()) {
       std::string title_id = mtg_request.arguments.at(0);
-      Card_DTO_list card_dto_list;
+      Deck_DTO_list deck_dto_list;
       Deck_card_DAO::search_by_card(deck_card_title_id_sdb.bdb_db,
                                     deck_card_db.bdb_db,
                                     card_db.bdb_db,
                                     title_id,
-                                    card_dto_list,
+                                    deck_dto_list,
                                     errors);
       if (!errors.has()) {
-        json_object *card_dto_list_json = card_dto_list.to_json(errors);
+        json_object *card_dto_list_json = deck_dto_list.to_json(errors);
         if (!errors.has()) {
           return card_dto_list_json;
         }
@@ -655,6 +755,37 @@ bool Mtg_card_request_handler::select_type_id(Mtg_inet_app_init &mtg_inet_app_in
   return true;
 }
 
+bool Mtg_card_request_handler::update(Mtg_inet_app_init &mtg_inet_app_init,
+                                      const Mtg_request &mtg_request,
+                                      Mtg_request_response &mtg_request_response,
+                                      Bdb_errors &errors) {
+  if (mtg_request.request != "card_update")
+    return false;
+  if (mtg_request.arguments.size() < 4)
+    errors.add("Mtg_card_request_handler::process_update_card_request", "1", "missing card_id");
+  Primary_database_config primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("card", primary_database_config, errors);
+  if (!errors.has()) {
+    std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+        std::make_unique<Mtg_bdb_key_extractor>();
+    Primary_database card_db(primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+    if (!errors.has()) {
+      std::string card_id = mtg_request.arguments.at(0);
+      std::string name = mtg_request.arguments.at(1);
+      std::string email = mtg_request.arguments.at(2);
+      std::string type_id = mtg_request.arguments.at(3);
+      Card_DTO card_dto;
+      Card_DAO::update(card_db.bdb_db, card_id, name, type_id, card_dto, errors);
+      if (!errors.has()) {
+        json_object *card_json = card_dto.to_json(errors);
+        if (!errors.has()) {
+          return card_json;
+        }
+      }
+    }
+  }
+  return true;
+}
 
 // Mtg_deck_request_handler methods
 
@@ -662,15 +793,55 @@ bool Mtg_deck_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
                                       const Mtg_request &mtg_request,
                                       Mtg_request_response &mtg_request_response,
                                       Bdb_errors &errors) {
-  if (!Mtg_deck_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+  if (!Mtg_deck_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_deck_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::search_name(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_account_id(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_all_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_deck_request_handler::select_cards_type_id(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_deck_request_handler::select_other_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
+//      && !Mtg_deck_request_handler::select_cards_type_id(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_deck_request_handler::select_other_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_deck_request_handler::update(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
     return false;
   return true;
+}
+
+json_object *Mtg_deck_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
+                                            const Mtg_request &mtg_request,
+                                            Mtg_request_response &mtg_request_response,
+                                            Bdb_errors &errors) {
+  if (mtg_request.arguments.empty())
+    errors.add("Mtg_inet_request::process_load_deck_request", "1", "missing mtg load deck request arguments");
+  Primary_database_config deck_primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("deck", deck_primary_database_config, errors);
+  if (!errors.has()) {
+    std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+        std::make_unique<Mtg_bdb_key_extractor>();
+    Primary_database
+        deck_db(deck_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+    if (!errors.has()) {
+      Primary_database_config deck_tripthongs_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("deck_tripthongs",
+                                                    deck_tripthongs_primary_database_config,
+                                                    errors);
+      if (!errors.has()) {
+        Primary_database deck_tripthongs_db(deck_tripthongs_primary_database_config,
+                                            mtg_bdb_key_extractor.get(),
+                                            mtg_inet_app_init.db_home,
+                                            errors);
+        if (!errors.has()) {
+          std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
+          Timer timer;
+          int count = Deck_DAO::load(deck_db.bdb_db, deck_tripthongs_db.bdb_db, text_file, errors, tab);
+          timer.end();
+          if (errors.has()) return nullptr;
+          if (!errors.has())
+            return Mtg_request_response::to_load_response(count, timer, errors);
+        }
+      }
+    }
+  }
+  return nullptr;
 }
 
 bool Mtg_deck_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
@@ -807,6 +978,7 @@ bool Mtg_deck_request_handler::select_account_id(Mtg_inet_app_init &mtg_inet_app
                                                  Bdb_errors &errors) {
   if (mtg_request.request != "deck_select_account_id")
     return false;
+  return true;
 }
 
 bool Mtg_deck_request_handler::select_all(Mtg_inet_app_init &mtg_inet_app_init,
@@ -882,51 +1054,6 @@ bool Mtg_deck_request_handler::select_all_cards(Mtg_inet_app_init &mtg_inet_app_
   return true;
 }
 
-bool Mtg_deck_request_handler::select_cards_type_id(Mtg_inet_app_init &mtg_inet_app_init,
-                                                    const Mtg_request &mtg_request,
-                                                    Mtg_request_response &mtg_request_response,
-                                                    Bdb_errors &errors) {
-  if (mtg_request.request != "deck_select_card_type_id")
-    return false;
-  if (mtg_request.arguments.empty())
-    errors.add("Mtg_request::process_search_card_request", "1", "missing type_id");
-  Primary_database_config deck_card_primary_database_config;
-  mtg_inet_app_init.bdb_databases_config.select("deck_card", deck_card_primary_database_config, errors);
-  Secondary_database_config deck_card_type_id_secondary_database_config;
-  deck_card_primary_database_config.select("deck_card_type_id",
-                                           deck_card_type_id_secondary_database_config,
-                                           errors);
-  Primary_database_config card_primary_database_config;
-  mtg_inet_app_init.bdb_databases_config.select("card", card_primary_database_config, errors);
-  std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
-      std::make_unique<Mtg_bdb_key_extractor>();
-  Primary_database
-      card_db(card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
-  Primary_database
-      deck_card_db(deck_card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home,
-                   errors);
-  Secondary_database
-      deck_card_type_id_sdb(deck_card_type_id_secondary_database_config, mtg_inet_app_init.db_home, errors);
-  if (!errors.has()) {
-    std::string type_id = mtg_request.arguments.at(0);
-    Card_DTO_list card_dto_list;
-    Deck_card_DAO::search_by_type_id(deck_card_type_id_sdb.bdb_db,
-                                     deck_card_db.bdb_db,
-                                     card_db.bdb_db,
-                                     type_id,
-                                     card_dto_list,
-                                     errors);
-    // TODO: convert deck_card list to type_id list
-    if (!errors.has()) {
-      json_object *card_dto_list_json = card_dto_list.to_json(errors);
-      if (!errors.has()) {
-        return card_dto_list_json;
-      }
-    }
-    return true;
-  }
-}
-
 bool Mtg_deck_request_handler::select_other_cards(Mtg_inet_app_init &mtg_inet_app_init,
                                                   const Mtg_request &mtg_request,
                                                   Mtg_request_response &mtg_request_response,
@@ -934,5 +1061,74 @@ bool Mtg_deck_request_handler::select_other_cards(Mtg_inet_app_init &mtg_inet_ap
   if (mtg_request.request != "deck_select_other_cards")
     return false;
   return true;
+}
+
+bool Mtg_deck_request_handler::update(Mtg_inet_app_init &mtg_inet_app_init,
+                                      const Mtg_request &mtg_request,
+                                      Mtg_request_response &mtg_request_response,
+                                      Bdb_errors &errors) {
+  if (mtg_request.request != "deck_update")
+    return false;
+  if (mtg_request.arguments.size() < 4)
+    errors.add("Mtg_deck_request_handler::process_update_deck_request", "1", "missing deck_id");
+  Primary_database_config primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("deck", primary_database_config, errors);
+  if (!errors.has()) {
+    std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+        std::make_unique<Mtg_bdb_key_extractor>();
+    Primary_database deck_db(primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+    if (!errors.has()) {
+      std::string deck_id = mtg_request.arguments.at(0);
+      std::string name = mtg_request.arguments.at(1);
+      std::string account_id = mtg_request.arguments.at(2);
+      std::string type_id = mtg_request.arguments.at(3);
+      Deck_DTO deck_dto;
+      Deck_DAO::update(deck_db.bdb_db, deck_id, account_id, name, deck_dto, errors);
+      if (!errors.has()) {
+        json_object *deck_json = deck_dto.to_json(errors);
+        if (!errors.has()) {
+          return deck_json;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+// Mtg_deck_card_request_handler methods
+
+bool Mtg_deck_card_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
+                                           const Mtg_request &mtg_request,
+                                           Mtg_request_response &mtg_request_response,
+                                           Bdb_errors &errors) {
+  if (!Mtg_deck_card_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
+    return false;
+  return true;
+}
+
+json_object *Mtg_deck_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
+                                                 const Mtg_request &mtg_request,
+                                                 Mtg_request_response &mtg_request_response,
+                                                 Bdb_errors &errors) {
+  if (mtg_request.arguments.empty())
+    errors.add("Mtg_inet_request::process_load_deck_card_request", "1", "missing mtg load deck_card request arguments");
+  Primary_database_config deck_card_primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("deck_card", deck_card_primary_database_config, errors);
+  if (!errors.has()) {
+    std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+        std::make_unique<Mtg_bdb_key_extractor>();
+    Primary_database
+        deck_card_db(deck_card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+    if (!errors.has()) {
+      std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
+      Timer timer;
+      int count = Deck_card_DAO::load(deck_card_db.bdb_db, text_file, errors, tab);
+      timer.end();
+      if (errors.has()) return nullptr;
+      if (!errors.has())
+        return Mtg_request_response::to_load_response(count, timer, errors);
+    }
+  }
+  return nullptr;
 }
 

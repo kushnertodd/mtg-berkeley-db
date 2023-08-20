@@ -63,7 +63,6 @@ class Deck_DTO_list {
 
 class Deck_DTO_key_list {
  public:
-  static std::string class_deck() { return "Deck_DTO_key_list"; }
   std::list<Deck_DTO_key> list;
   void add(Deck_DTO_key &deck_dto_key) { list.push_back(deck_dto_key); }
 };

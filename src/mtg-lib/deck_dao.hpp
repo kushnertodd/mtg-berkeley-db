@@ -14,6 +14,7 @@
 class Deck_DAO {
  public:
   static int load(Bdb_dbp &deck_db,
+                  Bdb_dbp &deck_tripthong_bdb_db,
                   const std::string &text_file,
                   Bdb_errors &errors,
                   char delimiter = tab);
@@ -30,11 +31,6 @@ class Deck_DAO {
   static void select_all(Bdb_dbp &deck_db,
                          Deck_DTO_list &deck_dto_list,
                          Bdb_errors &errors);
-
-  static void select_all_key(Bdb_dbp &deck_db,
-                             Deck_DTO_key &deck_dto_key,
-                             Deck_DTO_list &deck_dto_list,
-                             Bdb_errors &errors);
 
   static void select_by_key_list(Bdb_dbp &deck_db,
                                  Deck_DTO_key_list &deck_DTO_key_list,

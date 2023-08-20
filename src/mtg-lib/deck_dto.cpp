@@ -38,7 +38,7 @@ void Deck_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
     errors.add("Deck_DTO::from_json", "2", "not class Deck_DTO");
   // parse: ' { "deck_id": ... `
   if (!errors.has())
-  deck_id = Bdb_json_utils::get_json_string("Deck_DTO::from_json", "1", jobj, "deck_id", errors);
+    deck_id = Bdb_json_utils::get_json_string("Deck_DTO::from_json", "1", jobj, "deck_id", errors);
   if (!errors.has())
     account_id = Bdb_json_utils::get_json_string("Deck_DTO::from_json", "2", jobj, "account_id", errors);
   if (!errors.has())
@@ -54,20 +54,14 @@ void Deck_DTO::parse(int count, const std::string &line, Bdb_errors &errors, cha
     switch (i) {
       case 0: {
         deck_id = token_str;
-        if (deck_id == "\\N")
-          errors.add("Deck_DTO::create", "1", "required deck_id == '\\N'");
         break;
       }
       case 1: {
         account_id = token_str;
-        if (deck_id == "\\N")
-          errors.add("Deck_DTO::create", "1", "required account_id == '\\N'");
         break;
       }
       case 2: {
         name = token_str;
-        if (name == "\\N")
-          errors.add("Deck_DTO::create", "2", "required name == '\\N'");
         break;
       }
       default: {
@@ -78,7 +72,7 @@ void Deck_DTO::parse(int count, const std::string &line, Bdb_errors &errors, cha
     i++;
   }
   // Store the tokens as per structure members , where (i==0) is first member and so on..
-  if (i != 3) {
+  if (i < 3) {
     errors.add("Deck_DTO::create", "4", "too few deck fields on line "
         + Bdb_tokens::line_print(count, line));
   }
@@ -101,7 +95,7 @@ json_object *Deck_DTO::to_json(Bdb_errors &errors) const {
   json_object_object_add(root, "class_deck", json_object_new_string(class_deck().c_str()));
   json_object_object_add(root, "deck_id", json_object_new_string(deck_id.c_str()));
   json_object_object_add(root, "account_id", json_object_new_string(deck_id.c_str()));
-  json_object_object_add(root, "primaryDeck", json_object_new_string(name.c_str()));
+  json_object_object_add(root, "name", json_object_new_string(name.c_str()));
   return root;
 }
 

@@ -40,11 +40,11 @@ void Card_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   // parse: ' { "card_id": ... `
   card_id = Bdb_json_utils::get_json_string("Card_DTO::from_json", "1", jobj, "card_id", errors);
   if (!errors.has())
-    // parse: ' { primaryCard": ... `
-    name = Bdb_json_utils::get_json_string("Card_DTO::from_json", "4", jobj, "primaryCard", errors);
+    // parse: ' { name": ... `
+    name = Bdb_json_utils::get_json_string("Card_DTO::from_json", "4", jobj, "name", errors);
   if (!errors.has())
-    // parse: ' { "birthYear": ... `
-    type_id = Bdb_json_utils::get_json_string("Card_DTO::from_json", "5", jobj, "type_id", errors);
+    // parse: ' { "type_id": ... `
+    type_id = Bdb_json_utils::get_json_string("Card_DTO::type_id", "5", jobj, "type_id", errors);
 }
 
 void Card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
@@ -55,18 +55,14 @@ void Card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, cha
     switch (i) {
       case 0: {
         card_id = token_str;
-        if (card_id == "\\N")
-          errors.add("Card_DTO::create", "1", "required card_id == '\\N'");
         break;
       }
       case 1: {
         name = token_str;
-        if (name == "\\N")
-          errors.add("Card_DTO::create", "2", "required primaryCard_id == '\\N'");
         break;
       }
       case 2: {
-        type_id = (token_str == "\\N" ? "" : token_str);
+        type_id = token_str;
         break;
       }
       default: {
@@ -77,7 +73,7 @@ void Card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, cha
     i++;
   }
   // Store the tokens as per structure members , where (i==0) is first member and so on..
-  if (i != 3) {
+  if (i < 3) {
     errors.add("Card_DTO::create", "4", "too few card fields on line "
         + Bdb_tokens::line_print(count, line));
   }
@@ -99,8 +95,8 @@ json_object *Card_DTO::to_json(Bdb_errors &errors) const {
   }
   json_object_object_add(root, "class_card", json_object_new_string(class_card().c_str()));
   json_object_object_add(root, "card_id", json_object_new_string(card_id.c_str()));
-  json_object_object_add(root, "primaryCard", json_object_new_string(name.c_str()));
-  json_object_object_add(root, "birthYear", json_object_new_string(type_id.c_str()));
+  json_object_object_add(root, "name", json_object_new_string(name.c_str()));
+  json_object_object_add(root, "type_id", json_object_new_string(type_id.c_str()));
   return root;
 }
 
@@ -108,8 +104,8 @@ std::string Card_DTO::to_string() const {
   std::ostringstream os;
   os << "card:" << std::endl;
   os << "\tcard_id        " << card_id << std::endl;
-  os << "\tprimaryCard    " << name << std::endl;
-  os << "\tbirthYear      " << type_id << std::endl;
+  os << "\tname    " << name << std::endl;
+  os << "\ttype_id      " << type_id << std::endl;
   return os.str();
 }
 

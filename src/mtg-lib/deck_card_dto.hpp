@@ -19,6 +19,7 @@ class Deck_card_DTO { // use Mtg_DTO as pattern but do not inherit
   Deck_card_DTO &operator=(const Deck_card_DTO &deck_card_) = default;
   Deck_card_DTO &operator=(Deck_card_DTO &&deck_card_) = default;
   explicit Deck_card_DTO(void *buffer);
+  Deck_card_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
@@ -26,6 +27,7 @@ class Deck_card_DTO { // use Mtg_DTO as pattern but do not inherit
   static int get_deck_card_deck_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
   static int get_deck_card_card_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
   [[nodiscard]] inline std::string get_id() const { return deck_card_id; }
+  void parse(int count, const std::string &line, Bdb_errors &errors, char delimiter);
   void *serialize(void *buffer) const;
   json_object *to_json(Bdb_errors &errors) const;
   [[nodiscard]] std::string to_string() const;
@@ -59,7 +61,6 @@ class Deck_card_DTO_list {
 
 class Deck_card_DTO_key_list {
  public:
-  static std::string class_deck_card() { return "Deck_card_DTO_key_list"; }
   std::list<Deck_card_DTO_key> list;
   void add(Deck_card_DTO_key &deck_card_dto_key) { list.push_back(deck_card_dto_key); }
 };

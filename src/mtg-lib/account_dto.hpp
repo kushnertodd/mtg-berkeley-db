@@ -63,7 +63,6 @@ class Account_DTO_list {
 
 class Account_DTO_key_list {
  public:
-  static std::string class_account() { return "Account_DTO_key_list"; }
   std::list<Account_DTO_key> list;
   void add(Account_DTO_key &account_dto_key) { list.push_back(account_dto_key); }
 };
