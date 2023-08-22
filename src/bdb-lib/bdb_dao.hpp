@@ -16,7 +16,7 @@
 class Bdb_DAO {
  public:
   /*!
-   * @brief load and save data DTOs from delimited text file records
+   * @brief load and save delimited text file data DTO records
    * @param bdb_db database handle
    * @param text_file delimited file, fields match data DTO T
    * @param errors invalid text file, bdb save failure

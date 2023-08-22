@@ -11,6 +11,12 @@
           "name": "account_email",
           "filename": "account_email.sdb",
           "key_extractor": "get_account_email"
+        },
+        {
+          "class_name": "Secondary_database_config",
+          "name": "account_username",
+          "filename": "account_username.sdb",
+          "key_extractor": "get_account_username"
         }
       ]
     },
@@ -25,6 +31,12 @@
       "name": "card",
       "filename": "card.db",
       "secondary_databases": [
+        {
+          "class_name": "Secondary_database_config",
+          "name": "card_name",
+          "filename": "card_name.sdb",
+          "key_extractor": "get_card_name"
+        },
         {
           "class_name": "Secondary_database_config",
           "name": "card_type_id",
@@ -49,6 +61,12 @@
           "name": "deck_account_id",
           "filename": "deck_account_id.sdb",
           "key_extractor": "get_deck_account_id"
+        },
+        {
+          "class_name": "Secondary_database_config",
+          "name": "deck_name",
+          "filename": "deck_name.sdb",
+          "key_extractor": "get_deck_name"
         }
       ]
     },
