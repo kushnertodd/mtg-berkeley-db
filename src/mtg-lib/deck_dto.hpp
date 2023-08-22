@@ -16,10 +16,6 @@ class Deck_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string score{};
 
   Deck_DTO() = default;
-  Deck_DTO(const Deck_DTO &deck_) = default;
-  Deck_DTO(Deck_DTO &&deck_) = default;
-  Deck_DTO &operator=(const Deck_DTO &deck_) = default;
-  Deck_DTO &operator=(Deck_DTO &&deck_) = default;
   explicit Deck_DTO(void *buffer);
   Deck_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
 
@@ -38,14 +34,10 @@ class Deck_DTO_key {
  public:
   std::string deck_id{};
   Deck_DTO_key() = default;
-  Deck_DTO_key(const Deck_DTO_key &deck_key) = default;
-  Deck_DTO_key(Deck_DTO_key &&deck_key) noexcept = default;
   explicit Deck_DTO_key(const Deck_DTO &deck_dto);
   explicit Deck_DTO_key(std::string deck_id_);
   explicit Deck_DTO_key(void *buffer);
   explicit Deck_DTO_key(const Deck_card_DTO &deck_card_dto);
-  Deck_DTO_key &operator=(const Deck_DTO_key &deck_key) = default;
-  Deck_DTO_key &operator=(Deck_DTO_key &&deck_key) noexcept = default;
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
