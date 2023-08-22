@@ -99,11 +99,6 @@ class Bdb_databases_config {
   Bdb_databases_config() = default;
   Bdb_databases_config(json_object *jobj, Bdb_errors &errors);
 
-//  Bdb_databases_config(const Bdb_databases_config &other) = default;
-//  Bdb_databases_config &operator=(const Bdb_databases_config &other) = default;
-//  Bdb_databases_config(Bdb_databases_config &&other) = default;
-//  Bdb_databases_config &operator=(Bdb_databases_config &&other) = default;
-
   void from_json(json_object *jobj, Bdb_errors &errors);
   void select(const std::string &db_name, Primary_database_config &primary_database_config, Bdb_errors &errors);
   json_object *to_json(Bdb_errors &errors);
