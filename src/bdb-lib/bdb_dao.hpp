@@ -11,7 +11,7 @@
 #include "bdb_file_io.hpp"
 #include "bdb_common.hpp"
 #include "bdb_serialization.hpp"
-#include "bdb_tripthongs_dto.hpp"
+#include "bdb_triplets_dto.hpp"
 
 class Bdb_DAO {
  public:
@@ -47,9 +47,9 @@ class Bdb_DAO {
   }
 
 /*!
-   * @brief load and save data DTOs with tripthongs from delimited text file records
+   * @brief load and save data DTOs with triplets from delimited text file records
    * @param bdb_db database handle
-   * @param tripthong_bdb_db bdb_db database handle
+   * @param triplet_bdb_db bdb_db database handle
    * @param text_file delimited file, fields match data DTO T
    * @param errors invalid text file, bdb save failure
    * @param delimiter file record separator
@@ -58,16 +58,16 @@ class Bdb_DAO {
    * @precondition key DTO K has a constructor K(data DTO T)
    */
   template<typename K, typename T>
-  static int load_tripthongs(Bdb_dbp &bdb_db,
-                             Bdb_dbp &tripthong_bdb_db,
-                             const std::string &text_file,
-                             Bdb_errors &errors,
-                             char delimiter = tab) {
+  static int load_triplets(Bdb_dbp &bdb_db,
+                           Bdb_dbp &triplet_bdb_db,
+                           const std::string &text_file,
+                           Bdb_errors &errors,
+                           char delimiter = tab) {
     int count{};
     Bdb_File_IO_text_read fread(text_file, errors);
     if (!errors.has()) {
       std::string line;
-      std::map<std::string, std::list<Bdb_text_id_occurence>> bdb_tripthongs_dto_map;
+      std::map<std::string, std::list<Bdb_text_id_occurence>> bdb_triplets_dto_map;
       for (count = 0; fread.getline(line, errors) && !errors.has(); count++) {
         Bdb_file_IO::progress(count);
         if (count > 0) {
@@ -78,23 +78,23 @@ class Bdb_DAO {
           else
             break;
           if (!errors.has()) {
-            // load tripthongs
-            Bdb_text_tripthongs bdb_text_tripthongs(bdb_data_dto.get_text());
-            for (const auto &bdb_text_tripthong_occurence: bdb_text_tripthongs.list) {
-              bdb_tripthongs_dto_map[bdb_text_tripthong_occurence.tripthong].emplace_back(
+            // load triplets
+            Bdb_text_triplets bdb_text_triplets(bdb_data_dto.get_text());
+            for (const auto &bdb_text_triplet_occurence: bdb_text_triplets.list) {
+              bdb_triplets_dto_map[bdb_text_triplet_occurence.triplet].emplace_back(
                   bdb_data_dto.get_id(),
-                  bdb_text_tripthongs.tripthongs_count,
-                  bdb_text_tripthong_occurence.occurrence_count);
+                  bdb_text_triplets.triplets_count,
+                  bdb_text_triplet_occurence.occurrence_count);
             }
           }
         }
       }
       if (!errors.has())
-        for (auto &bdb_tripthongs_dto_map_entry: bdb_tripthongs_dto_map) {
-          std::string tripthong{bdb_tripthongs_dto_map_entry.first};
-          Bdb_tripthongs_DTO_key bdb_tripthongs_DTO_key(tripthong);
-          for (const auto &bdb_text_id_occurrence: bdb_tripthongs_dto_map_entry.second) {
-            save(tripthong_bdb_db, bdb_tripthongs_DTO_key, bdb_text_id_occurrence, errors);
+        for (auto &bdb_triplets_dto_map_entry: bdb_triplets_dto_map) {
+          std::string triplet{bdb_triplets_dto_map_entry.first};
+          Bdb_triplets_DTO_key bdb_triplets_DTO_key(triplet);
+          for (const auto &bdb_text_id_occurrence: bdb_triplets_dto_map_entry.second) {
+            save(triplet_bdb_db, bdb_triplets_DTO_key, bdb_text_id_occurrence, errors);
             if (errors.has())
               break;
           }
@@ -197,23 +197,104 @@ class Bdb_DAO {
   }
 
   /*!
+ * @brief select account key list using account account_id to search account account_id->account key secondary database
+ * @tparam PT primary db dto type
+ * @tparam PK primary db dto key type
+ * @tparam PL primary db dto list type
+ * @tparam ST secondary db dto type
+ * @tparam SK secondary db dto key type
+ * @tparam SL secondary db dto list type
+ * @param account_account_id_sdb account account_id->account key secondary database
+ * @param account_id secondary database search key
+ * @param dto_key_list selected account key list
+ * @param errors if account key not found
+ */
+  template<
+      typename PT,
+      typename PK,
+      typename PKL,
+      typename PTL,
+      typename SK
+  >
+  static void select_by_secondary_db_key(
+      Bdb_dbp &bdb_secondary_db,
+      Bdb_dbp &bdb_primary_db,
+      SK &bdb_secondary_dto_key,
+      PTL &bdb_primary_dto_list,
+      Bdb_errors &errors) {
+    Bdb_cursor bdb_cursor(bdb_secondary_db, errors);
+    PKL bdb_primary_dto_key_list;
+    if (!errors.has())
+      bdb_cursor.dto_get_duplicate_list<SK, PK, PKL>
+          (bdb_secondary_dto_key, bdb_primary_dto_key_list, errors);
+    if (!errors.has())
+      Bdb_DAO::select_by_key_list<PK, PKL, PT, PTL>
+          (bdb_primary_db, bdb_primary_dto_key_list, bdb_primary_dto_list, errors);
+  }
+
+  /*!
+ * @brief select account key list using account account_id to search account account_id->account key secondary database
+ * @tparam PT primary db dto type
+ * @tparam PK primary db dto key type
+ * @tparam PL primary db dto list type
+ * @tparam ST secondary db dto type
+ * @tparam SK secondary db dto key type
+ * @tparam SL secondary db dto list type
+ * @param account_account_id_sdb account account_id->account key secondary database
+ * @param account_id secondary database search key
+ * @param dto_key_list selected account key list
+ * @param errors if account key not found
+ */
+  template<
+      typename PT,
+      typename PK,
+      typename PTL,
+      typename JT,
+      typename JK,
+      typename JKL,
+      typename JTL,
+      typename SK
+  >
+  static void select_join_by_secondary_db_key(
+      Bdb_dbp &bdb_secondary_db,
+      Bdb_dbp &bdb_join_db,
+      Bdb_dbp &bdb_primary_db,
+      SK &bdb_secondary_dto_key,
+      PTL &bdb_primary_dto_list,
+      Bdb_errors &errors) {
+    JKL bdb_join_dto_key_list;
+    JTL bdb_join_dto_list;
+    select_by_secondary_db_key<JT, JK, JKL, SK>
+        (bdb_secondary_db, bdb_join_db, bdb_secondary_dto_key, bdb_join_dto_list);
+    if (!errors.has())
+      for (JT &bdb_join_dto: bdb_join_dto_list) {
+        PK bdb_primary_dto_key(bdb_join_dto);
+        PT bdb_primary_dto;
+        Bdb_DAO::lookup<PK, PT>(bdb_primary_db, bdb_primary_dto_key, bdb_primary_dto, errors);
+        if (!errors.has())
+          bdb_primary_dto_list.add(bdb_primary_dto);
+        else break;
+      }
+  }
+
+  /*!
  * @brief select principals key list using name id to search name id->principals key secondary database
  * @param principals_name_id_sdb name id->principals key secondary database
  * @param name_id secondary database search key
  * @param principals_DTO_key_list selected principals key list
  * @param errors if name key not found
  */
-  static void select_tripthongs_by_key_list(Bdb_dbp &tripthong_bdb_db,
-                                            const std::string &tripthong,
-                                            Bdb_text_id_occurrence_list &bdb_text_id_occurrence_list,
-                                            Bdb_errors &errors) {
-    Bdb_cursor bdb_cursor(tripthong_bdb_db, errors);
-    Bdb_tripthongs_DTO_key bdb_tripthongs_DTO_key(tripthong);
-    bdb_cursor.dto_list_get_key<Bdb_tripthongs_DTO_key,
-                                Bdb_text_id_occurence,
-                                Bdb_text_id_occurrence_list>(bdb_tripthongs_DTO_key,
-                                                             bdb_text_id_occurrence_list,
-                                                             errors);
+  static void select_triplets_by_key_list(Bdb_dbp &triplet_bdb_db,
+                                          const std::string &triplet,
+                                          Bdb_text_id_occurrence_list &bdb_text_id_occurrence_list,
+                                          Bdb_errors &errors) {
+    Bdb_cursor bdb_cursor(triplet_bdb_db, errors);
+    Bdb_triplets_DTO_key bdb_triplets_DTO_key(triplet);
+    bdb_cursor.dto_get_duplicate_list<Bdb_triplets_DTO_key,
+                                      Bdb_text_id_occurence,
+                                      Bdb_text_id_occurrence_list>(bdb_triplets_DTO_key,
+                                                                   bdb_text_id_occurrence_list,
+                                                                   errors);
   }
 };
 

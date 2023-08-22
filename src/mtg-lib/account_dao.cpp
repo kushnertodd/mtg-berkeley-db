@@ -11,13 +11,13 @@
  * @return count of records saved
  */
 int Account_DAO::load(Bdb_dbp &account_db,
-                      Bdb_dbp &account_tripthong_bdb_db,
+                      Bdb_dbp &account_triplet_bdb_db,
                       const std::string &text_file,
                       Bdb_errors &errors,
                       char delimiter) {
-  return Bdb_DAO::load_tripthongs<Account_DTO_key,
+  return Bdb_DAO::load_triplets<Account_DTO_key,
                                   Account_DTO>(account_db,
-                                               account_tripthong_bdb_db,
+                                               account_triplet_bdb_db,
                                                text_file,
                                                errors,
                                                delimiter);
@@ -60,7 +60,7 @@ void Account_DAO::save(Bdb_dbp &account_db, Account_DTO &account_dto, Bdb_errors
 void Account_DAO::select_all(Bdb_dbp &account_db, Account_DTO_list &account_dto_list, Bdb_errors &errors) {
   Bdb_cursor bdb_cursor(account_db, errors);
   if (!errors.has())
-    bdb_cursor.dto_list_get_all<Account_DTO_key,
+    bdb_cursor.dto_get_list<Account_DTO_key,
                                 Account_DTO,
                                 Account_DTO_list>(account_dto_list, errors);
 }
@@ -81,7 +81,7 @@ void Account_DAO::select_all_email(Bdb_dbp &account_db,
   Account_DTO_key_list account_dto_key_list;
   Bdb_cursor bdb_cursor(account_email_sdb, errors);
   if (!errors.has())
-    bdb_cursor.dto_list_get_key<Account_DTO_key,
+    bdb_cursor.dto_get_duplicate_list<Account_DTO_key,
                                 Account_DTO_key,
                                 Account_DTO_key_list>(account_dto_key,
                                                       account_dto_key_list,

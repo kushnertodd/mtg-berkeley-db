@@ -14,7 +14,7 @@
 class Deck_DAO {
  public:
   static int load(Bdb_dbp &deck_db,
-                  Bdb_dbp &deck_tripthong_bdb_db,
+                  Bdb_dbp &deck_triplet_bdb_db,
                   const std::string &text_file,
                   Bdb_errors &errors,
                   char delimiter = tab);

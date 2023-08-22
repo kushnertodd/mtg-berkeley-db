@@ -9,9 +9,9 @@
  */
 class Bdb_tokens {
  public:
-  static std::vector<std::string> tripthong_stoplist;
-  static bool in_tripthong_stoplist(const std::string &tripthong);
+  static std::vector<std::string> triplet_stoplist;
+  static bool in_triplet_stoplist(const std::string &triplet);
   static std::string line_print(int count, const std::string &str);
   static std::vector<std::string> tokenize(const std::string &s, char delim);
-  static std::vector<std::string> tokenize_tripthongs(const std::string &s, char delim, bool check_stoplist = false);
+  static std::vector<std::string> tokenize_triplets(const std::string &s, char delim, bool check_stoplist = false);
 };

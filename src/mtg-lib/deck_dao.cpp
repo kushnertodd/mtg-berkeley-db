@@ -11,13 +11,13 @@
  * @return count of records saved
  */
 int Deck_DAO::load(Bdb_dbp &deck_db,
-                   Bdb_dbp &deck_tripthong_bdb_db,
+                   Bdb_dbp &deck_triplet_bdb_db,
                    const std::string &text_file,
                    Bdb_errors &errors,
                    char delimiter) {
-  return Bdb_DAO::load_tripthongs<Deck_DTO_key,
+  return Bdb_DAO::load_triplets<Deck_DTO_key,
                                   Deck_DTO>(deck_db,
-                                            deck_tripthong_bdb_db,
+                                            deck_triplet_bdb_db,
                                             text_file,
                                             errors,
                                             delimiter);
@@ -61,7 +61,7 @@ void Deck_DAO::save(Bdb_dbp &deck_db, Deck_DTO &deck_dto, Bdb_errors &errors) {
 void Deck_DAO::select_all(Bdb_dbp &deck_db, Deck_DTO_list &deck_dto_list, Bdb_errors &errors) {
   Bdb_cursor bdb_cursor(deck_db, errors);
   if (!errors.has())
-    bdb_cursor.dto_list_get_all<Deck_DTO_key,
+    bdb_cursor.dto_get_list<Deck_DTO_key,
                                 Deck_DTO,
                                 Deck_DTO_list>(deck_dto_list, errors);
 }
@@ -82,7 +82,7 @@ void Deck_DAO::select_all_account_id(Bdb_dbp &deck_db,
   Deck_DTO_key_list deck_dto_key_list;
   Bdb_cursor bdb_cursor(deck_account_id_sdb, errors);
   if (!errors.has())
-    bdb_cursor.dto_list_get_key<Deck_DTO_key,
+    bdb_cursor.dto_get_duplicate_list<Deck_DTO_key,
                                 Deck_DTO_key,
                                 Deck_DTO_key_list>(deck_dto_key,
                                                    deck_dto_key_list,

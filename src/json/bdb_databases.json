@@ -16,8 +16,8 @@
     },
     {
       "class_name": "Primary_database_config",
-      "name": "account_username_tripthongs",
-      "filename": "account_username_tripthongs.db",
+      "name": "account_username_triplets",
+      "filename": "account_username_triplets.db",
       "has_duplicates": "true"
     },
     {
@@ -35,8 +35,8 @@
     },
     {
       "class_name": "Primary_database_config",
-      "name": "card_name_tripthongs",
-      "filename": "card_name_tripthongs.db",
+      "name": "card_name_triplets",
+      "filename": "card_name_triplets.db",
       "has_duplicates": "true"
     },
     {
@@ -73,8 +73,8 @@
     },
     {
       "class_name": "Primary_database_config",
-      "name": "deck_name_tripthongs",
-      "filename": "deck_name_tripthongs.db",
+      "name": "deck_name_triplets",
+      "filename": "deck_name_triplets.db",
       "has_duplicates": "true"
     }
   ]

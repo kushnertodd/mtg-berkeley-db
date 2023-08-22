@@ -184,19 +184,19 @@ bool Mtg_account_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
     Primary_database
         account_db(account_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
     if (!errors.has()) {
-      Primary_database_config account_tripthongs_primary_database_config;
-      mtg_inet_app_init.bdb_databases_config.select("account_tripthongs",
-                                                    account_tripthongs_primary_database_config,
+      Primary_database_config account_triplets_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("account_triplets",
+                                                    account_triplets_primary_database_config,
                                                     errors);
       if (!errors.has()) {
-        Primary_database account_tripthongs_db(account_tripthongs_primary_database_config,
+        Primary_database account_triplets_db(account_triplets_primary_database_config,
                                                mtg_bdb_key_extractor.get(),
                                                mtg_inet_app_init.db_home,
                                                errors);
         if (!errors.has()) {
           std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
           Timer timer;
-          int count = Account_DAO::load(account_db.bdb_db, account_tripthongs_db.bdb_db, text_file, errors, tab);
+          int count = Account_DAO::load(account_db.bdb_db, account_triplets_db.bdb_db, text_file, errors, tab);
           timer.end();
           if (!errors.has())
             mtg_request_response.add_response(Mtg_request_response::to_load_response(count, timer, errors));
@@ -244,7 +244,7 @@ bool Mtg_account_request_handler::match_username(Mtg_inet_app_init &mtg_inet_app
   if (mtg_request.request != "account_match_username")
     return false;
   if (mtg_request.arguments.size() < 3)
-    errors.add("Mtg_request::process_search_account_tripthongs_request",
+    errors.add("Mtg_request::process_search_account_triplets_request",
                "1",
                "parameters: text, min-score, score-count");
   std::string text;
@@ -264,44 +264,44 @@ bool Mtg_account_request_handler::match_username(Mtg_inet_app_init &mtg_inet_app
                                   mtg_bdb_key_extractor.get(),
                                   mtg_inet_app_init.db_home,
                                   errors);
-      Primary_database_config account_username_tripthongs_primary_database_config;
-      mtg_inet_app_init.bdb_databases_config.select("account_username_tripthongs",
-                                                    account_username_tripthongs_primary_database_config,
+      Primary_database_config account_username_triplets_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("account_username_triplets",
+                                                    account_username_triplets_primary_database_config,
                                                     errors);
       if (!errors.has()) {
-        Primary_database account_username_tripthongs_db(account_username_tripthongs_primary_database_config,
+        Primary_database account_username_triplets_db(account_username_triplets_primary_database_config,
                                                         mtg_bdb_key_extractor.get(),
                                                         mtg_inet_app_init.db_home,
                                                         errors);
         if (!errors.has()) {
           Timer timer;
-          Bdb_text_tripthongs bdb_text_tripthongs(text);
-          std::map<std::string, int> tripthong_counts;
-          std::map<std::string, int> tripthong_match_counts;
+          Bdb_text_triplets bdb_text_triplets(text);
+          std::map<std::string, int> triplet_counts;
+          std::map<std::string, int> triplet_match_counts;
           std::map<std::string, int> id_scores;
-          for (const auto &text_tripthong_occurrence: bdb_text_tripthongs.list) {
+          for (const auto &text_triplet_occurrence: bdb_text_triplets.list) {
             Bdb_text_id_occurrence_list bdb_text_id_occurrence_list;
-            Bdb_DAO::select_tripthongs_by_key_list(account_username_tripthongs_db.bdb_db,
-                                                   text_tripthong_occurrence.tripthong,
+            Bdb_DAO::select_triplets_by_key_list(account_username_triplets_db.bdb_db,
+                                                   text_triplet_occurrence.triplet,
                                                    bdb_text_id_occurrence_list,
                                                    errors);
             if (!errors.has()) {
               for (const auto &text_id_occurence: bdb_text_id_occurrence_list.list) {
                 std::string id = text_id_occurence.id;
-                tripthong_counts[id] = text_id_occurence.tripthongs_count;
-                tripthong_match_counts[id] += std::min(text_id_occurence.occurrence_count,
-                                                       text_tripthong_occurrence.occurrence_count);
+                triplet_counts[id] = text_id_occurence.triplets_count;
+                triplet_match_counts[id] += std::min(text_id_occurence.occurrence_count,
+                                                       text_triplet_occurrence.occurrence_count);
               }
             } else
               break;
           }
           if (errors.has()) return true;
           // sort scores
-          for (const auto &tripthong_count: tripthong_counts) {
-            std::string id = tripthong_count.first;
+          for (const auto &triplet_count: triplet_counts) {
+            std::string id = triplet_count.first;
             // match in integer percent
-            id_scores[id] = (100 * tripthong_match_counts[id] * tripthong_match_counts[id]) /
-                (bdb_text_tripthongs.tripthongs_count * tripthong_counts[id]);
+            id_scores[id] = (100 * triplet_match_counts[id] * triplet_match_counts[id]) /
+                (bdb_text_triplets.triplets_count * triplet_counts[id]);
           }
           std::map<int, std::string, std::greater<> > id_score_sort;
           for (const auto &id_score_entry: id_scores)
@@ -477,19 +477,19 @@ bool Mtg_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
     Primary_database
         card_db(card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
     if (!errors.has()) {
-      Primary_database_config card_tripthongs_primary_database_config;
-      mtg_inet_app_init.bdb_databases_config.select("card_tripthongs",
-                                                    card_tripthongs_primary_database_config,
+      Primary_database_config card_triplets_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("card_triplets",
+                                                    card_triplets_primary_database_config,
                                                     errors);
       if (!errors.has()) {
-        Primary_database card_tripthongs_db(card_tripthongs_primary_database_config,
+        Primary_database card_triplets_db(card_triplets_primary_database_config,
                                             mtg_bdb_key_extractor.get(),
                                             mtg_inet_app_init.db_home,
                                             errors);
         if (!errors.has()) {
           std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
           Timer timer;
-          int count = Card_DAO::load(card_db.bdb_db, card_tripthongs_db.bdb_db, text_file, errors, tab);
+          int count = Card_DAO::load(card_db.bdb_db, card_triplets_db.bdb_db, text_file, errors, tab);
           timer.end();
           if (!errors.has())
             mtg_request_response.add_response(Mtg_request_response::to_load_response(count, timer, errors));
@@ -537,7 +537,7 @@ bool Mtg_card_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
   if (mtg_request.request != "card_match_name")
     return false;
   if (mtg_request.arguments.size() < 3)
-    errors.add("Mtg_request::process_search_card_tripthongs_request",
+    errors.add("Mtg_request::process_search_card_triplets_request",
                "1",
                "parameters: text, min-score, score-count");
   std::string text;
@@ -557,44 +557,44 @@ bool Mtg_card_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
                                mtg_bdb_key_extractor.get(),
                                mtg_inet_app_init.db_home,
                                errors);
-      Primary_database_config card_name_tripthongs_primary_database_config;
-      mtg_inet_app_init.bdb_databases_config.select("card_name_tripthongs",
-                                                    card_name_tripthongs_primary_database_config,
+      Primary_database_config card_name_triplets_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("card_name_triplets",
+                                                    card_name_triplets_primary_database_config,
                                                     errors);
       if (!errors.has()) {
-        Primary_database card_name_tripthongs_db(card_name_tripthongs_primary_database_config,
+        Primary_database card_name_triplets_db(card_name_triplets_primary_database_config,
                                                  mtg_bdb_key_extractor.get(),
                                                  mtg_inet_app_init.db_home,
                                                  errors);
         if (!errors.has()) {
           Timer timer;
-          Bdb_text_tripthongs bdb_text_tripthongs(text);
-          std::map<std::string, int> tripthong_counts;
-          std::map<std::string, int> tripthong_match_counts;
+          Bdb_text_triplets bdb_text_triplets(text);
+          std::map<std::string, int> triplet_counts;
+          std::map<std::string, int> triplet_match_counts;
           std::map<std::string, int> id_scores;
-          for (const auto &text_tripthong_occurrence: bdb_text_tripthongs.list) {
+          for (const auto &text_triplet_occurrence: bdb_text_triplets.list) {
             Bdb_text_id_occurrence_list bdb_text_id_occurrence_list;
-            Bdb_DAO::select_tripthongs_by_key_list(card_name_tripthongs_db.bdb_db,
-                                                   text_tripthong_occurrence.tripthong,
+            Bdb_DAO::select_triplets_by_key_list(card_name_triplets_db.bdb_db,
+                                                   text_triplet_occurrence.triplet,
                                                    bdb_text_id_occurrence_list,
                                                    errors);
             if (!errors.has()) {
               for (const auto &text_id_occurence: bdb_text_id_occurrence_list.list) {
                 std::string id = text_id_occurence.id;
-                tripthong_counts[id] = text_id_occurence.tripthongs_count;
-                tripthong_match_counts[id] += std::min(text_id_occurence.occurrence_count,
-                                                       text_tripthong_occurrence.occurrence_count);
+                triplet_counts[id] = text_id_occurence.triplets_count;
+                triplet_match_counts[id] += std::min(text_id_occurence.occurrence_count,
+                                                       text_triplet_occurrence.occurrence_count);
               }
             } else
               break;
           }
           if (errors.has()) return true;
           // sort scores
-          for (const auto &tripthong_count: tripthong_counts) {
-            std::string id = tripthong_count.first;
+          for (const auto &triplet_count: triplet_counts) {
+            std::string id = triplet_count.first;
             // match in integer percent
-            id_scores[id] = (100 * tripthong_match_counts[id] * tripthong_match_counts[id]) /
-                (bdb_text_tripthongs.tripthongs_count * tripthong_counts[id]);
+            id_scores[id] = (100 * triplet_match_counts[id] * triplet_match_counts[id]) /
+                (bdb_text_triplets.triplets_count * triplet_counts[id]);
           }
           std::map<int, std::string, std::greater<> > id_score_sort;
           for (const auto &id_score_entry: id_scores)
@@ -814,19 +814,19 @@ bool Mtg_deck_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
     Primary_database
         deck_db(deck_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
     if (!errors.has()) {
-      Primary_database_config deck_tripthongs_primary_database_config;
-      mtg_inet_app_init.bdb_databases_config.select("deck_tripthongs",
-                                                    deck_tripthongs_primary_database_config,
+      Primary_database_config deck_triplets_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("deck_triplets",
+                                                    deck_triplets_primary_database_config,
                                                     errors);
       if (!errors.has()) {
-        Primary_database deck_tripthongs_db(deck_tripthongs_primary_database_config,
+        Primary_database deck_triplets_db(deck_triplets_primary_database_config,
                                             mtg_bdb_key_extractor.get(),
                                             mtg_inet_app_init.db_home,
                                             errors);
         if (!errors.has()) {
           std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
           Timer timer;
-          int count = Deck_DAO::load(deck_db.bdb_db, deck_tripthongs_db.bdb_db, text_file, errors, tab);
+          int count = Deck_DAO::load(deck_db.bdb_db, deck_triplets_db.bdb_db, text_file, errors, tab);
           timer.end();
           if (!errors.has())
             mtg_request_response.add_response(Mtg_request_response::to_load_response(count, timer, errors));
@@ -874,7 +874,7 @@ bool Mtg_deck_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
   if (mtg_request.request != "deck_match_name")
     return false;
   if (mtg_request.arguments.size() < 3)
-    errors.add("Mtg_request::process_search_deck_tripthongs_request",
+    errors.add("Mtg_request::process_search_deck_triplets_request",
                "1",
                "parameters: text, min-score, score-count");
   std::string text;
@@ -894,44 +894,44 @@ bool Mtg_deck_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
                                mtg_bdb_key_extractor.get(),
                                mtg_inet_app_init.db_home,
                                errors);
-      Primary_database_config deck_name_tripthongs_primary_database_config;
-      mtg_inet_app_init.bdb_databases_config.select("deck_name_tripthongs",
-                                                    deck_name_tripthongs_primary_database_config,
+      Primary_database_config deck_name_triplets_primary_database_config;
+      mtg_inet_app_init.bdb_databases_config.select("deck_name_triplets",
+                                                    deck_name_triplets_primary_database_config,
                                                     errors);
       if (!errors.has()) {
-        Primary_database deck_name_tripthongs_db(deck_name_tripthongs_primary_database_config,
+        Primary_database deck_name_triplets_db(deck_name_triplets_primary_database_config,
                                                  mtg_bdb_key_extractor.get(),
                                                  mtg_inet_app_init.db_home,
                                                  errors);
         if (!errors.has()) {
           Timer timer;
-          Bdb_text_tripthongs bdb_text_tripthongs(text);
-          std::map<std::string, int> tripthong_counts;
-          std::map<std::string, int> tripthong_match_counts;
+          Bdb_text_triplets bdb_text_triplets(text);
+          std::map<std::string, int> triplet_counts;
+          std::map<std::string, int> triplet_match_counts;
           std::map<std::string, int> id_scores;
-          for (const auto &text_tripthong_occurrence: bdb_text_tripthongs.list) {
+          for (const auto &text_triplet_occurrence: bdb_text_triplets.list) {
             Bdb_text_id_occurrence_list bdb_text_id_occurrence_list;
-            Bdb_DAO::select_tripthongs_by_key_list(deck_name_tripthongs_db.bdb_db,
-                                                   text_tripthong_occurrence.tripthong,
+            Bdb_DAO::select_triplets_by_key_list(deck_name_triplets_db.bdb_db,
+                                                   text_triplet_occurrence.triplet,
                                                    bdb_text_id_occurrence_list,
                                                    errors);
             if (!errors.has()) {
               for (const auto &text_id_occurence: bdb_text_id_occurrence_list.list) {
                 std::string id = text_id_occurence.id;
-                tripthong_counts[id] = text_id_occurence.tripthongs_count;
-                tripthong_match_counts[id] += std::min(text_id_occurence.occurrence_count,
-                                                       text_tripthong_occurrence.occurrence_count);
+                triplet_counts[id] = text_id_occurence.triplets_count;
+                triplet_match_counts[id] += std::min(text_id_occurence.occurrence_count,
+                                                       text_triplet_occurrence.occurrence_count);
               }
             } else
               break;
           }
           if (errors.has()) return true;
           // sort scores
-          for (const auto &tripthong_count: tripthong_counts) {
-            std::string id = tripthong_count.first;
+          for (const auto &triplet_count: triplet_counts) {
+            std::string id = triplet_count.first;
             // match in integer percent
-            id_scores[id] = (100 * tripthong_match_counts[id] * tripthong_match_counts[id]) /
-                (bdb_text_tripthongs.tripthongs_count * tripthong_counts[id]);
+            id_scores[id] = (100 * triplet_match_counts[id] * triplet_match_counts[id]) /
+                (bdb_text_triplets.triplets_count * triplet_counts[id]);
           }
           std::map<int, std::string, std::greater<> > id_score_sort;
           for (const auto &id_score_entry: id_scores)

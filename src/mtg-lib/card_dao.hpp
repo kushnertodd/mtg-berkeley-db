@@ -14,7 +14,7 @@
 class Card_DAO {
  public:
   static int load(Bdb_dbp &card_db,
-                  Bdb_dbp &card_tripthong_bdb_db,
+                  Bdb_dbp &card_triplet_bdb_db,
                   const std::string &text_file,
                   Bdb_errors &errors,
                   char delimiter = tab);

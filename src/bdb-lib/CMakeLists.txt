@@ -24,7 +24,7 @@ add_library(bdb-lib STATIC
         bdb_socket_common.hpp
         bdb_tokens.cpp
         bdb_tokens.hpp
-        bdb_tripthongs_dto.cpp
-        bdb_tripthongs_dto.hpp
+        bdb_triplets_dto.cpp
+        bdb_triplets_dto.hpp
         )
 target_include_directories(bdb-lib PUBLIC .)

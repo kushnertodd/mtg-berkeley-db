@@ -8,8 +8,8 @@
     },
     {
       "class_name": "Primary_database_config",
-      "name": "title_tripthongs",
-      "filename": "title_tripthongs.db",
+      "name": "title_triplets",
+      "filename": "title_triplets.db",
       "has_duplicates": "true"
     },
     {
@@ -19,8 +19,8 @@
     },
     {
       "class_name": "Primary_database_config",
-      "name": "name_tripthongs",
-      "filename": "name_tripthongs.db",
+      "name": "name_triplets",
+      "filename": "name_triplets.db",
       "has_duplicates": "true"
     },
     {

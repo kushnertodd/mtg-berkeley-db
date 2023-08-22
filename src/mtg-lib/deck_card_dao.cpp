@@ -85,7 +85,7 @@ void Deck_card_DAO::search_by_deck_sdb(Bdb_dbp &deck_card_deck_id_sdb,
   Deck_DTO_key deck_dto_key(deck_id);
   Bdb_cursor bdb_cursor(deck_card_deck_id_sdb, errors);
   if (!errors.has())
-    bdb_cursor.dto_list_get_key<Deck_DTO_key,
+    bdb_cursor.dto_get_duplicate_list<Deck_DTO_key,
                                 Deck_card_DTO_key,
                                 Deck_card_DTO_key_list>(deck_dto_key,
                                                         deck_card_dto_key_list,
@@ -128,7 +128,7 @@ void Deck_card_DAO::search_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
   Card_DTO_key card_dto_key(card_id);
   Bdb_cursor bdb_cursor(deck_card_card_id_sdb, errors);
   if (!errors.has())
-    bdb_cursor.dto_list_get_key<Card_DTO_key,
+    bdb_cursor.dto_get_duplicate_list<Card_DTO_key,
                                 Deck_card_DTO_key,
                                 Deck_card_DTO_key_list>(card_dto_key,
                                                         deck_card_dto_key_list,
@@ -146,7 +146,7 @@ void Deck_card_DAO::select_all(Bdb_dbp &deck_card_db,
                                Bdb_errors &errors) {
   Bdb_cursor bdb_cursor(deck_card_db, errors);
   if (!errors.has())
-    bdb_cursor.dto_list_get_all<Deck_card_DTO_key,
+    bdb_cursor.dto_get_list<Deck_card_DTO_key,
                                 Deck_card_DTO,
                                 Deck_card_DTO_list>(deck_card_dto_list, errors);
 }

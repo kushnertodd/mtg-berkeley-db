@@ -9,13 +9,13 @@ RUN chmod 755 /bdb_inet_lookup.sh
 COPY ./bdb_inet_lookup .
 COPY ./bdb_databases.json .
 COPY ./name.db .
-COPY ./name_tripthongs.db .
+COPY ./name_triplets.db .
 COPY ./principals.db .
 COPY ./principals_name_id.sdb .
 COPY ./principals_title_id.sdb .
 COPY ./ratings.db .
 COPY ./title.db .
-COPY ./title_tripthongs.db .
+COPY ./title_triplets.db .
 
 # Expose any necessary ports.
 EXPOSE 8000

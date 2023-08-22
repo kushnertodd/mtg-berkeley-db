@@ -14,7 +14,7 @@ HEADER=END
  nm0000527\00Walter Matthau\001920\002000\00\00\00\00
 DATA=END
 ===========================================
-../data/db/sample/name_tripthongs.db
+../data/db/sample/name_triplets.db
  ------------------------------------------
 VERSION=3
 format=print
@@ -125,7 +125,7 @@ HEADER=END
  tt0063374\00movie\00The Odd Couple\000\001968\00105\00Comedy\00\00\00\00
 DATA=END
 ===========================================
-../data/db/sample/title_tripthongs.db
+../data/db/sample/title_triplets.db
  ------------------------------------------
 VERSION=3
 format=print

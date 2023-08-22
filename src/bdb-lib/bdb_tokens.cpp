@@ -4,7 +4,7 @@
 #include "bdb_tokens.hpp"
 
 /*
-std::map<std::string, int> Bdb_tokens::tripthong_stoplist = {
+std::map<std::string, int> Bdb_tokens::triplet_stoplist = {
     {"the", 1},
     {"ing", 1},
     {"and", 1},
@@ -13,7 +13,7 @@ std::map<std::string, int> Bdb_tokens::tripthong_stoplist = {
     {"ion", 1},
 };
 */
-std::vector<std::string> Bdb_tokens::tripthong_stoplist = {
+std::vector<std::string> Bdb_tokens::triplet_stoplist = {
     // calculated for top 8000 title names from title.ratings.tsv/title.basic.tsv
     "the", // 14317
     "iso", // 10237
@@ -48,9 +48,9 @@ std::vector<std::string> Bdb_tokens::tripthong_stoplist = {
 //    "one", // 1014
 };
 
-bool Bdb_tokens::in_tripthong_stoplist(const std::string &tripthong) {
-  if (std::find(tripthong_stoplist.begin(),
-                tripthong_stoplist.end(), tripthong) != tripthong_stoplist.end())
+bool Bdb_tokens::in_triplet_stoplist(const std::string &triplet) {
+  if (std::find(triplet_stoplist.begin(),
+                triplet_stoplist.end(), triplet) != triplet_stoplist.end())
     return true;
   else
     return false;
@@ -90,14 +90,14 @@ std::string Bdb_tokens::line_print(int count, const std::string &str) {
   return os.str();
 }
 
-std::vector<std::string> Bdb_tokens::tokenize_tripthongs(const std::string &s, char delim, bool check_stoplist) {
+std::vector<std::string> Bdb_tokens::tokenize_triplets(const std::string &s, char delim, bool check_stoplist) {
   // preserve only alpha and blank characters
   std::string filtered;
   for (char c: s)
     if (std::isalnum(c) || std::isblank(c))
       filtered += c;
   auto tokens = Bdb_tokens::tokenize(filtered, delim);
-  std::vector<std::string> tripthongs;
+  std::vector<std::string> triplets;
   std::vector<std::string> result;
   for (const std::string &token: tokens) {
     std::string str_lowercase = token;
@@ -106,8 +106,8 @@ std::vector<std::string> Bdb_tokens::tokenize_tripthongs(const std::string &s, c
     std::size_t length = str_lowercase.size();
     if (length > 2) {
       for (int i = 0; i < length - 2; i++) {
-        std::string tripthong = str_lowercase.substr(i, 3);
-        if (!check_stoplist || !in_tripthong_stoplist(tripthong))
+        std::string triplet = str_lowercase.substr(i, 3);
+        if (!check_stoplist || !in_triplet_stoplist(triplet))
           result.push_back(str_lowercase.substr(i, 3));
       }
     } else
