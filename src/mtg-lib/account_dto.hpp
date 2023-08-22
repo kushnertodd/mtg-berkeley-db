@@ -3,6 +3,7 @@
 #include <ctime>
 #include <json-c/json.h>
 #include <list>
+#include <utility>
 #include "bdb_key_extractor.hpp"
 #include "bdb_errors.hpp"
 #include "bdb_serializable.hpp"
@@ -17,10 +18,10 @@ class Account_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string score{};
 
   Account_DTO() = default;
-  Account_DTO(const Account_DTO &account_) = default;
-  Account_DTO(Account_DTO &&account_) = default;
-  Account_DTO &operator=(const Account_DTO &account_) = default;
-  Account_DTO &operator=(Account_DTO &&account_) = default;
+//  Account_DTO(const Account_DTO &account_dtp) = default;
+//  Account_DTO(Account_DTO &&account_dto) = default;
+//  Account_DTO &operator=(const Account_DTO &account_dto) = default;
+//  Account_DTO &operator=(Account_DTO &&account_dto) = default;
   explicit Account_DTO(void *buffer);
   Account_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
 
@@ -34,19 +35,37 @@ class Account_DTO { // use Mtg_DTO as pattern but do not inherit
   void *serialize(void *buffer) const;
   json_object *to_json(Bdb_errors &errors) const;
   [[nodiscard]] std::string to_string() const;
+
+};
+
+class Account_email_DTO {
+ public:
+  std::string email;
+  std::string account_id;
+};
+
+class Account_email_DTO_key {
+ public:
+  std::string email;
+  explicit Account_email_DTO_key(std::string email_) :
+      email(std::move(email_)) {}
+  explicit Account_email_DTO_key(const Account_email_DTO &account_email_dto) :
+      email(account_email_dto.email) {}
 };
 
 class Account_DTO_key {
  public:
   std::string account_id{};
   Account_DTO_key() = default;
-  Account_DTO_key(const Account_DTO_key &account_key) = default;
-  Account_DTO_key(Account_DTO_key &&account_key) noexcept = default;
+//  Account_DTO_key(const Account_DTO_key &account_key) = default;
+//  Account_DTO_key(Account_DTO_key &&account_key) noexcept = default;
   explicit Account_DTO_key(const Account_DTO &account_dto);
   explicit Account_DTO_key(std::string account_id_);
   explicit Account_DTO_key(void *buffer);
-  Account_DTO_key &operator=(const Account_DTO_key &account_key) = default;
-  Account_DTO_key &operator=(Account_DTO_key &&account_key) noexcept = default;
+  explicit Account_DTO_key(const Account_email_DTO &account_meail_dto) :
+      account_id(account_meail_dto.account_id) {}
+//  Account_DTO_key &operator=(const Account_DTO_key &account_key) = default;
+//  Account_DTO_key &operator=(Account_DTO_key &&account_key) noexcept = default;
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
