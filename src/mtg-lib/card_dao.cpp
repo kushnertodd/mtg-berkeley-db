@@ -72,8 +72,8 @@ void Card_DAO::select_all(Bdb_dbp &card_db, Card_DTO_list &card_dto_list, Bdb_er
  * @param card_DTO_key_list selected card key list
  * @param errors if card key not found
  */
-void Card_DAO::select_cards_for_type_id(Bdb_dbp &card_db,
-                                        Bdb_dbp &card_type_id_sdb,
+void Card_DAO::select_cards_for_type_id(Bdb_dbp &card_type_id_sdb,
+                                        Bdb_dbp &card_db,
                                         const std::string &type_id,
                                         Card_DTO_list &card_dto_list,
                                         Bdb_errors &errors) {
@@ -85,6 +85,7 @@ void Card_DAO::select_cards_for_type_id(Bdb_dbp &card_db,
         (card_DTO_type_id_key,
          card_dto_key_list,
          errors);
+  if (!errors.has())
   Bdb_DAO::select_by_key_list<Card_DTO_key, Card_DTO_key_list, Card_DTO, Card_DTO_list>
       (card_db,
        card_dto_key_list,

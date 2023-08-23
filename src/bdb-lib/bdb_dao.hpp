@@ -258,8 +258,8 @@ class Bdb_DAO {
       SK &bdb_secondary_dto_key,
       PTL &bdb_primary_dto_list,
       Bdb_errors &errors) {
-    Bdb_cursor bdb_cursor(bdb_secondary_sdb, errors);
     PKL bdb_primary_dto_key_list;
+    Bdb_cursor bdb_cursor(bdb_secondary_sdb, errors);
     if (!errors.has())
       bdb_cursor.dto_get_duplicate_list<SK, PK, PKL>
           (bdb_secondary_dto_key, bdb_primary_dto_key_list, errors);
@@ -308,25 +308,32 @@ class Bdb_DAO {
       Bdb_errors &errors) {
     JKL bdb_join_dto_key_list;
     JTL bdb_join_dto_list;
-    select_by_secondary_db_key<JK, JT,  JKL,JTL,SK>
+    select_by_secondary_db_key<JK, JT, JKL, JTL, SK>
         (bdb_secondary_db,
          bdb_join_db,
          bdb_secondary_dto_key,
          bdb_join_dto_key_list,
          errors);
     if (!errors.has())
-      for (JT &bdb_join_dto: bdb_join_dto_list) {
-        PK bdb_primary_dto_key(bdb_join_dto);
-        PT bdb_primary_dto;
-        Bdb_DAO::lookup<PK, PT>(bdb_primary_db,
-                                bdb_primary_dto_key,
-                                bdb_primary_dto,
-                                errors);
-        if (!errors.has())
-          bdb_primary_dto_list.add(bdb_primary_dto);
-        else
-          break;
-      }
+      Bdb_DAO::select_by_join_dto_list<JT, JTL, PK, PT, PTL>
+          (bdb_primary_db,
+           bdb_join_dto_list,
+           bdb_primary_dto_list,
+           errors);
+    /*
+    for (JT &bdb_join_dto: bdb_join_dto_list) {
+      PK bdb_primary_dto_key(bdb_join_dto);
+      PT bdb_primary_dto;
+      Bdb_DAO::lookup<PK, PT>(bdb_primary_db,
+                              bdb_primary_dto_key,
+                              bdb_primary_dto,
+                              errors);
+      if (!errors.has())
+        bdb_primary_dto_list.add(bdb_primary_dto);
+      else
+        break;
+    }
+*/
   }
 
   /*!
