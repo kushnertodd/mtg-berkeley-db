@@ -262,7 +262,9 @@ class Bdb_DAO {
     Bdb_cursor bdb_cursor(bdb_secondary_sdb, errors);
     if (!errors.has())
       bdb_cursor.dto_get_duplicate_list<SK, PK, PKL>
-          (bdb_secondary_dto_key, bdb_primary_dto_key_list, errors);
+          (bdb_secondary_dto_key,
+           bdb_primary_dto_key_list,
+           errors);
     if (!errors.has())
       Bdb_DAO::select_by_key_list<PK, PKL, PT, PTL>
           (bdb_primary_db,
@@ -320,20 +322,6 @@ class Bdb_DAO {
            bdb_join_dto_list,
            bdb_primary_dto_list,
            errors);
-    /*
-    for (JT &bdb_join_dto: bdb_join_dto_list) {
-      PK bdb_primary_dto_key(bdb_join_dto);
-      PT bdb_primary_dto;
-      Bdb_DAO::lookup<PK, PT>(bdb_primary_db,
-                              bdb_primary_dto_key,
-                              bdb_primary_dto,
-                              errors);
-      if (!errors.has())
-        bdb_primary_dto_list.add(bdb_primary_dto);
-      else
-        break;
-    }
-*/
   }
 
   /*!

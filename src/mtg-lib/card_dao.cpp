@@ -86,11 +86,11 @@ void Card_DAO::select_cards_for_type_id(Bdb_dbp &card_type_id_sdb,
          card_dto_key_list,
          errors);
   if (!errors.has())
-  Bdb_DAO::select_by_key_list<Card_DTO_key, Card_DTO_key_list, Card_DTO, Card_DTO_list>
-      (card_db,
-       card_dto_key_list,
-       card_dto_list,
-       errors);
+    Bdb_DAO::select_by_key_list<Card_DTO_key, Card_DTO_key_list, Card_DTO, Card_DTO_list>
+        (card_db,
+         card_dto_key_list,
+         card_dto_list,
+         errors);
 }
 
 void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
@@ -100,42 +100,41 @@ void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
                                      Card_DTO_list &card_dto_list,
                                      Bdb_errors &errors) {
   Deck_DTO_key deck_dto_key(deck_id);
-  Deck_card_DTO_key_list deck_card_dto_key_list;
-  Bdb_cursor bdb_cursor(deck_card_deck_id_sdb, errors);
+  //Deck_card_DTO_key_list deck_card_dto_key_list;
+  //Bdb_cursor bdb_cursor(deck_card_deck_id_sdb, errors);
+  // TODO: refactor Bdb::select_by_secondary_db_key() based on this and use it
+  Deck_card_DTO_list deck_card_dto_list;
   if (!errors.has())
+    Bdb_DAO::select_by_secondary_db_key
+        <Deck_card_DTO_key,
+         Deck_card_DTO,
+         Deck_card_DTO_key_list,
+         Deck_card_DTO_list,
+         Deck_DTO_key>
+        (
+            deck_card_deck_id_sdb,
+            deck_card_db,
+            deck_dto_key,
+            deck_card_dto_list,
+            errors);
+/*
     bdb_cursor.dto_get_duplicate_list<Deck_DTO_key, Deck_card_DTO_key, Deck_card_DTO_key_list>
         (deck_dto_key,
          deck_card_dto_key_list,
          errors);
-  Deck_card_DTO_list deck_card_dto_list;
   if (!errors.has())
     Bdb_DAO::select_by_key_list<Deck_card_DTO_key, Deck_card_DTO_key_list, Deck_card_DTO, Deck_card_DTO_list>
         (deck_card_db,
          deck_card_dto_key_list,
          deck_card_dto_list,
          errors);
+*/
   if (!errors.has())
     Bdb_DAO::select_by_join_dto_list<Deck_card_DTO, Deck_card_DTO_list, Card_DTO_key, Card_DTO, Card_DTO_list>
         (card_db,
          deck_card_dto_list,
          card_dto_list,
          errors);
-  /*
-    for (Deck_card_DTO &deck_card_dto: deck_card_dto_list.list) {
-      Card_DTO_key card_DTO_key(deck_card_dto);
-      Card_DTO card_DTO;
-      if (!errors.has())
-        Bdb_DAO::lookup<Card_DTO_key, Card_DTO>
-            (card_db,
-             card_DTO_key,
-             card_DTO,
-             errors);
-      if (!errors.has())
-        card_dto_list.add(card_DTO);
-      else
-        break;
-    }
-*/
 }
 
 void Card_DAO::update(Bdb_dbp &card_db,
