@@ -56,7 +56,8 @@ class Card_DTO_type_id_key {
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void *serialize(void *buffer) const;
-  [[nodiscard]] std::string to_string() const;};
+  [[nodiscard]] std::string to_string() const;
+};
 
 class Card_DTO_list {
  public:

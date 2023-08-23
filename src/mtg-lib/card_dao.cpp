@@ -111,12 +111,11 @@ void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
          Deck_card_DTO_key_list,
          Deck_card_DTO_list,
          Deck_DTO_key>
-        (
-            deck_card_deck_id_sdb,
-            deck_card_db,
-            deck_dto_key,
-            deck_card_dto_list,
-            errors);
+        (deck_card_deck_id_sdb,
+         deck_card_db,
+         deck_dto_key,
+         deck_card_dto_list,
+         errors);
 /*
     bdb_cursor.dto_get_duplicate_list<Deck_DTO_key, Deck_card_DTO_key, Deck_card_DTO_key_list>
         (deck_dto_key,

@@ -16,11 +16,11 @@ int Deck_DAO::load(Bdb_dbp &deck_db,
                    Bdb_errors &errors,
                    char delimiter) {
   return Bdb_DAO::load_triplets<Deck_DTO_key,
-                                  Deck_DTO>(deck_db,
-                                            deck_triplet_bdb_db,
-                                            text_file,
-                                            errors,
-                                            delimiter);
+                                Deck_DTO>(deck_db,
+                                          deck_triplet_bdb_db,
+                                          text_file,
+                                          errors,
+                                          delimiter);
 
 }
 
@@ -62,8 +62,8 @@ void Deck_DAO::select_all(Bdb_dbp &deck_db, Deck_DTO_list &deck_dto_list, Bdb_er
   Bdb_cursor bdb_cursor(deck_db, errors);
   if (!errors.has())
     bdb_cursor.dto_get_list<Deck_DTO_key,
-                                Deck_DTO,
-                                Deck_DTO_list>(deck_dto_list, errors);
+                            Deck_DTO,
+                            Deck_DTO_list>(deck_dto_list, errors);
 }
 
 /*!
@@ -83,10 +83,10 @@ void Deck_DAO::select_all_account_id(Bdb_dbp &deck_db,
   Bdb_cursor bdb_cursor(deck_account_id_sdb, errors);
   if (!errors.has())
     bdb_cursor.dto_get_duplicate_list<Deck_DTO_key,
-                                Deck_DTO_key,
-                                Deck_DTO_key_list>(deck_dto_key,
-                                                   deck_dto_key_list,
-                                                   errors);
+                                      Deck_DTO_key,
+                                      Deck_DTO_key_list>(deck_dto_key,
+                                                         deck_dto_key_list,
+                                                         errors);
   Bdb_DAO::select_by_key_list<Deck_DTO_key,
                               Deck_DTO_key_list,
                               Deck_DTO,
