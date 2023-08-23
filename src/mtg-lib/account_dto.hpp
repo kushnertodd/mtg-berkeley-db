@@ -34,12 +34,6 @@ class Account_DTO { // use Mtg_DTO as pattern but do not inherit
 
 };
 
-//class Account_email_DTO {
-// public:
-//  std::string email;
-//  std::string account_id;
-//};
-
 class Account_DTO_key {
  public:
   std::string account_id{};
@@ -47,8 +41,6 @@ class Account_DTO_key {
   explicit Account_DTO_key(const Account_DTO &account_dto);
   explicit Account_DTO_key(std::string account_id_);
   explicit Account_DTO_key(void *buffer);
-//  explicit Account_DTO_key(const Account_email_DTO &account_meail_dto) :
-//      account_id(account_meail_dto.account_id) {}
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
@@ -62,8 +54,6 @@ class Account_email_DTO_key {
   Account_email_DTO_key() = default;
   explicit Account_email_DTO_key(std::string email_) :
       email(std::move(email_)) {}
-//  explicit Account_email_DTO_key(const Account_email_DTO &account_email_dto) :
-//      email(account_email_dto.email) {}
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void *serialize(void *buffer) const;
@@ -76,8 +66,6 @@ class Account_username_DTO_key {
   Account_username_DTO_key() = default;
   explicit Account_username_DTO_key(std::string username_) :
       username(std::move(username_)) {}
-//  explicit Account_username_DTO_key(const Account_username_DTO &account_username_dto) :
-//      username(account_username_dto.username) {}
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void *serialize(void *buffer) const;
