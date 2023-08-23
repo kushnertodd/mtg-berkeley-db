@@ -213,6 +213,25 @@ class Bdb_DAO {
     }
   }
 
+  template<typename J, typename JL, typename K, typename T, typename TL>
+  static void select_by_join_dto_list(Bdb_dbp &bdb_db,
+                                      JL &bdb_join_dto_list,
+                                      TL &bdb_dto_list,
+                                      Bdb_errors &errors) {
+    for (J &bdb_join_dto: bdb_join_dto_list.list) {
+      K bdb_dto_key(bdb_join_dto);
+      T bdb_dto;
+      Bdb_DAO::lookup<K, T>(bdb_db,
+                            bdb_dto_key,
+                            bdb_dto,
+                            errors);
+      if (!errors.has())
+        bdb_dto_list.add(bdb_dto);
+      else
+        break;
+    }
+  }
+
   /*!
  * @brief select data DTO list fpr secondary database key
  * @tparam PT primary db dto type
@@ -305,7 +324,8 @@ class Bdb_DAO {
                                 errors);
         if (!errors.has())
           bdb_primary_dto_list.add(bdb_primary_dto);
-        else break;
+        else
+          break;
       }
   }
 
