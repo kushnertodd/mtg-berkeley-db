@@ -32,11 +32,17 @@ class Account_DAO {
                          Account_DTO_list &account_dto_list,
                          Bdb_errors &errors);
 
-  static void select_all_email(Bdb_dbp &account_db,
-                               Bdb_dbp &account_email_sdb,
-                               const std::string &email,
-                                 Account_DTO_list &account_dto_list,
-                                 Bdb_errors &errors);
+  static void select_accounts_for_email(Bdb_dbp &account_email_sdb,
+                                        Bdb_dbp &account_db,
+                                        const std::string &email,
+                                        Account_DTO_list &account_dto_list,
+                                        Bdb_errors &errors);
+
+  static void select_accounts_for_username(Bdb_dbp &account_username_sdb,
+                                           Bdb_dbp &account_db,
+                                           const std::string &email,
+                                           Account_DTO_list &account_dto_list,
+                                           Bdb_errors &errors);
 
   static void update(Bdb_dbp &account_db,
                      const std::string &account_id,

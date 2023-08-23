@@ -164,6 +164,50 @@ std::string Account_DTO_key::to_string() const {
   return "account_id: " + account_id;
 }
 
+size_t Account_email_DTO_key::buffer_size() const {
+  size_t len = 0;
+  len += Bdb_serialization::buffer_len_string(email);
+  return len;
+}
+
+void *Account_email_DTO_key::deserialize(void *buffer) {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::deserialize_string(email, p);
+  return p;
+}
+
+void *Account_email_DTO_key::serialize(void *buffer) const {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::serialize_string(email, p);
+  return p;
+}
+
+std::string Account_email_DTO_key::to_string() const {
+  return "email: " + email;
+}
+
+size_t Account_username_DTO_key::buffer_size() const {
+  size_t len = 0;
+  len += Bdb_serialization::buffer_len_string(username);
+  return len;
+}
+
+void *Account_username_DTO_key::deserialize(void *buffer) {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::deserialize_string(username, p);
+  return p;
+}
+
+void *Account_username_DTO_key::serialize(void *buffer) const {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::serialize_string(username, p);
+  return p;
+}
+
+std::string Account_username_DTO_key::to_string() const {
+  return "username: " + username;
+}
+
 json_object *Account_DTO_list::to_json(Bdb_errors &errors) const {
   json_object *root = json_object_new_object();
   if (!root) {

@@ -190,9 +190,9 @@ bool Mtg_account_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
                                                     errors);
       if (!errors.has()) {
         Primary_database account_triplets_db(account_triplets_primary_database_config,
-                                               mtg_bdb_key_extractor.get(),
-                                               mtg_inet_app_init.db_home,
-                                               errors);
+                                             mtg_bdb_key_extractor.get(),
+                                             mtg_inet_app_init.db_home,
+                                             errors);
         if (!errors.has()) {
           std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
           Timer timer;
@@ -270,9 +270,9 @@ bool Mtg_account_request_handler::match_username(Mtg_inet_app_init &mtg_inet_app
                                                     errors);
       if (!errors.has()) {
         Primary_database account_username_triplets_db(account_username_triplets_primary_database_config,
-                                                        mtg_bdb_key_extractor.get(),
-                                                        mtg_inet_app_init.db_home,
-                                                        errors);
+                                                      mtg_bdb_key_extractor.get(),
+                                                      mtg_inet_app_init.db_home,
+                                                      errors);
         if (!errors.has()) {
           Timer timer;
           Bdb_text_triplets bdb_text_triplets(text);
@@ -282,15 +282,15 @@ bool Mtg_account_request_handler::match_username(Mtg_inet_app_init &mtg_inet_app
           for (const auto &text_triplet_occurrence: bdb_text_triplets.list) {
             Bdb_text_id_occurrence_list bdb_text_id_occurrence_list;
             Bdb_DAO::select_triplets_by_key_list(account_username_triplets_db.bdb_db,
-                                                   text_triplet_occurrence.triplet,
-                                                   bdb_text_id_occurrence_list,
-                                                   errors);
+                                                 text_triplet_occurrence.triplet,
+                                                 bdb_text_id_occurrence_list,
+                                                 errors);
             if (!errors.has()) {
               for (const auto &text_id_occurence: bdb_text_id_occurrence_list.list) {
                 std::string id = text_id_occurence.id;
                 triplet_counts[id] = text_id_occurence.triplets_count;
                 triplet_match_counts[id] += std::min(text_id_occurence.occurrence_count,
-                                                       text_triplet_occurrence.occurrence_count);
+                                                     text_triplet_occurrence.occurrence_count);
               }
             } else
               break;
@@ -341,7 +341,7 @@ bool Mtg_account_request_handler::select_all_email(Mtg_inet_app_init &mtg_inet_a
   if (mtg_request.request != "account_select_all_email")
     return false;
   if (mtg_request.arguments.empty())
-    errors.add("Mtg_request::select_all_email",
+    errors.add("Mtg_request::select_accounts_for_email",
                "1",
                "parameters: email");
   std::string email;
@@ -366,11 +366,11 @@ bool Mtg_account_request_handler::select_all_email(Mtg_inet_app_init &mtg_inet_a
         Account_DTO_list account_dto_list;
         if (!errors.has()) {
           email = mtg_request.arguments.at(0);
-          Account_DAO::select_all_email(account_db.bdb_db,
-                                        account_email_sdb.bdb_db,
-                                        email,
-                                        account_dto_list,
-                                        errors);
+          Account_DAO::select_accounts_for_email(account_email_sdb.bdb_db,
+                                                 account_db.bdb_db,
+                                                 email,
+                                                 account_dto_list,
+                                                 errors);
         }
         if (!errors.has()) {
           json_object *account_dto_list_json = account_dto_list.to_json(errors);
@@ -483,9 +483,9 @@ bool Mtg_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
                                                     errors);
       if (!errors.has()) {
         Primary_database card_triplets_db(card_triplets_primary_database_config,
-                                            mtg_bdb_key_extractor.get(),
-                                            mtg_inet_app_init.db_home,
-                                            errors);
+                                          mtg_bdb_key_extractor.get(),
+                                          mtg_inet_app_init.db_home,
+                                          errors);
         if (!errors.has()) {
           std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
           Timer timer;
@@ -563,9 +563,9 @@ bool Mtg_card_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
                                                     errors);
       if (!errors.has()) {
         Primary_database card_name_triplets_db(card_name_triplets_primary_database_config,
-                                                 mtg_bdb_key_extractor.get(),
-                                                 mtg_inet_app_init.db_home,
-                                                 errors);
+                                               mtg_bdb_key_extractor.get(),
+                                               mtg_inet_app_init.db_home,
+                                               errors);
         if (!errors.has()) {
           Timer timer;
           Bdb_text_triplets bdb_text_triplets(text);
@@ -575,15 +575,15 @@ bool Mtg_card_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
           for (const auto &text_triplet_occurrence: bdb_text_triplets.list) {
             Bdb_text_id_occurrence_list bdb_text_id_occurrence_list;
             Bdb_DAO::select_triplets_by_key_list(card_name_triplets_db.bdb_db,
-                                                   text_triplet_occurrence.triplet,
-                                                   bdb_text_id_occurrence_list,
-                                                   errors);
+                                                 text_triplet_occurrence.triplet,
+                                                 bdb_text_id_occurrence_list,
+                                                 errors);
             if (!errors.has()) {
               for (const auto &text_id_occurence: bdb_text_id_occurrence_list.list) {
                 std::string id = text_id_occurence.id;
                 triplet_counts[id] = text_id_occurence.triplets_count;
                 triplet_match_counts[id] += std::min(text_id_occurence.occurrence_count,
-                                                       text_triplet_occurrence.occurrence_count);
+                                                     text_triplet_occurrence.occurrence_count);
               }
             } else
               break;
@@ -732,8 +732,8 @@ bool Mtg_card_request_handler::select_all_type_id(Mtg_inet_app_init &mtg_inet_ap
         Card_DTO_list card_dto_list;
         if (!errors.has()) {
           type_id = mtg_request.arguments.at(0);
-          Card_DAO::select_cards_for_type_id(card_db.bdb_db,
-                                             card_type_id_sdb.bdb_db,
+          Card_DAO::select_cards_for_type_id(card_type_id_sdb.bdb_db,
+                                             card_db.bdb_db,
                                              type_id,
                                              card_dto_list,
                                              errors);
@@ -820,9 +820,9 @@ bool Mtg_deck_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
                                                     errors);
       if (!errors.has()) {
         Primary_database deck_triplets_db(deck_triplets_primary_database_config,
-                                            mtg_bdb_key_extractor.get(),
-                                            mtg_inet_app_init.db_home,
-                                            errors);
+                                          mtg_bdb_key_extractor.get(),
+                                          mtg_inet_app_init.db_home,
+                                          errors);
         if (!errors.has()) {
           std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
           Timer timer;
@@ -900,9 +900,9 @@ bool Mtg_deck_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
                                                     errors);
       if (!errors.has()) {
         Primary_database deck_name_triplets_db(deck_name_triplets_primary_database_config,
-                                                 mtg_bdb_key_extractor.get(),
-                                                 mtg_inet_app_init.db_home,
-                                                 errors);
+                                               mtg_bdb_key_extractor.get(),
+                                               mtg_inet_app_init.db_home,
+                                               errors);
         if (!errors.has()) {
           Timer timer;
           Bdb_text_triplets bdb_text_triplets(text);
@@ -912,15 +912,15 @@ bool Mtg_deck_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
           for (const auto &text_triplet_occurrence: bdb_text_triplets.list) {
             Bdb_text_id_occurrence_list bdb_text_id_occurrence_list;
             Bdb_DAO::select_triplets_by_key_list(deck_name_triplets_db.bdb_db,
-                                                   text_triplet_occurrence.triplet,
-                                                   bdb_text_id_occurrence_list,
-                                                   errors);
+                                                 text_triplet_occurrence.triplet,
+                                                 bdb_text_id_occurrence_list,
+                                                 errors);
             if (!errors.has()) {
               for (const auto &text_id_occurence: bdb_text_id_occurrence_list.list) {
                 std::string id = text_id_occurence.id;
                 triplet_counts[id] = text_id_occurence.triplets_count;
                 triplet_match_counts[id] += std::min(text_id_occurence.occurrence_count,
-                                                       text_triplet_occurrence.occurrence_count);
+                                                     text_triplet_occurrence.occurrence_count);
               }
             } else
               break;
@@ -971,7 +971,7 @@ bool Mtg_deck_request_handler::select_all_account_id(Mtg_inet_app_init &mtg_inet
   if (mtg_request.request != "deck_select_all_deck_id")
     return false;
   if (mtg_request.arguments.empty())
-    errors.add("Mtg_request::select_all_account_id",
+    errors.add("Mtg_request::select_decks_for_account_id",
                "1",
                "parameters: account_id");
   std::string account_id;
@@ -996,11 +996,11 @@ bool Mtg_deck_request_handler::select_all_account_id(Mtg_inet_app_init &mtg_inet
         Deck_DTO_list deck_dto_list;
         if (!errors.has()) {
           account_id = mtg_request.arguments.at(0);
-          Deck_DAO::select_all_account_id(deck_db.bdb_db,
-                                          deck_account_id_sdb.bdb_db,
-                                          account_id,
-                                          deck_dto_list,
-                                          errors);
+          Deck_DAO::select_decks_for_account_id(deck_account_id_sdb.bdb_db,
+                                                deck_db.bdb_db,
+                                                account_id,
+                                                deck_dto_list,
+                                                errors);
         }
         if (!errors.has()) {
           json_object *deck_dto_list_json = deck_dto_list.to_json(errors);

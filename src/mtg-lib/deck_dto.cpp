@@ -141,6 +141,50 @@ std::string Deck_DTO_key::to_string() const {
   return "deck_id: " + deck_id;
 }
 
+size_t Deck_DTO_account_id_key::buffer_size() const {
+  size_t len = 0;
+  len += Bdb_serialization::buffer_len_string(account_id);
+  return len;
+}
+
+void *Deck_DTO_account_id_key::deserialize(void *buffer) {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::deserialize_string(account_id, p);
+  return p;
+}
+
+void *Deck_DTO_account_id_key::serialize(void *buffer) const {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::serialize_string(account_id, p);
+  return p;
+}
+
+std::string Deck_DTO_account_id_key::to_string() const {
+  return "account_id: " + account_id;
+}
+
+size_t Deck_DTO_name_key::buffer_size() const {
+  size_t len = 0;
+  len += Bdb_serialization::buffer_len_string(name);
+  return len;
+}
+
+void *Deck_DTO_name_key::deserialize(void *buffer) {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::deserialize_string(name, p);
+  return p;
+}
+
+void *Deck_DTO_name_key::serialize(void *buffer) const {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::serialize_string(name, p);
+  return p;
+}
+
+std::string Deck_DTO_name_key::to_string() const {
+  return "name: " + name;
+}
+
 json_object *Deck_DTO_list::to_json(Bdb_errors &errors) const {
   json_object *root = json_object_new_object();
   if (!root) {

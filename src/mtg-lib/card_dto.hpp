@@ -46,6 +46,19 @@ class Card_DTO_key {
   [[nodiscard]] std::string to_string() const;
 };
 
+class Card_DTO_name_key {
+ public:
+  std::string name;
+  Card_DTO_name_key() = default;
+  explicit Card_DTO_name_key(std::string name_)
+      : name(std::move(name_)) {}
+
+  [[nodiscard]] size_t buffer_size() const;
+  void *deserialize(void *buffer);
+  void *serialize(void *buffer) const;
+  [[nodiscard]] std::string to_string() const;
+};
+
 class Card_DTO_type_id_key {
  public:
   std::string type_id;

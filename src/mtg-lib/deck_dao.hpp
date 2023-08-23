@@ -32,9 +32,15 @@ class Deck_DAO {
                          Deck_DTO_list &deck_dto_list,
                          Bdb_errors &errors);
 
-  static void select_all_account_id(Bdb_dbp &deck_db,
-                                    Bdb_dbp &deckemail_sdb,
-                                    const std::string &account_id,
+  static void select_decks_for_account_id(Bdb_dbp &deck_account_id_sdb,
+                                          Bdb_dbp &deck_db,
+                                          const std::string &account_id,
+                                          Deck_DTO_list &deck_dto_list,
+                                          Bdb_errors &errors);
+
+  static void select_decks_for_name(Bdb_dbp &deck_name_sdb,
+                                    Bdb_dbp &deck_db,
+                                    const std::string &name,
                                     Deck_DTO_list &deck_dto_list,
                                     Bdb_errors &errors);
 

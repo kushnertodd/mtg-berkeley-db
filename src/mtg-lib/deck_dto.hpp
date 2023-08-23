@@ -45,6 +45,32 @@ class Deck_DTO_key {
   [[nodiscard]] std::string to_string() const;
 };
 
+class Deck_DTO_account_id_key {
+ public:
+  std::string account_id;
+  Deck_DTO_account_id_key() = default;
+  explicit Deck_DTO_account_id_key(std::string account_id_)
+      : account_id(std::move(account_id_)) {}
+
+  [[nodiscard]] size_t buffer_size() const;
+  void *deserialize(void *buffer);
+  void *serialize(void *buffer) const;
+  [[nodiscard]] std::string to_string() const;
+};
+
+class Deck_DTO_name_key {
+ public:
+  std::string name;
+  Deck_DTO_name_key() = default;
+  explicit Deck_DTO_name_key(std::string name_)
+      : name(std::move(name_)) {}
+
+  [[nodiscard]] size_t buffer_size() const;
+  void *deserialize(void *buffer);
+  void *serialize(void *buffer) const;
+  [[nodiscard]] std::string to_string() const;
+};
+
 class Deck_DTO_list {
  public:
   static std::string class_deck() { return "Deck_DTO_list"; }

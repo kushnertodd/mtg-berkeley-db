@@ -46,6 +46,12 @@ class Card_DAO {
                                        Card_DTO_list &card_dto_list,
                                        Bdb_errors &errors);
 
+  static void select_cards_for_name(Bdb_dbp &card_db,
+                                    Bdb_dbp &card_type_id_sdb,
+                                    const std::string &name,
+                                    Card_DTO_list &card_dto_list,
+                                    Bdb_errors &errors);
+
   static void update(Bdb_dbp &card_db,
                      const std::string &card_id,
                      const std::string &name,

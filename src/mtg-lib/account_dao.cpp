@@ -16,11 +16,11 @@ int Account_DAO::load(Bdb_dbp &account_db,
                       Bdb_errors &errors,
                       char delimiter) {
   return Bdb_DAO::load_triplets<Account_DTO_key,
-                                  Account_DTO>(account_db,
-                                               account_triplet_bdb_db,
-                                               text_file,
-                                               errors,
-                                               delimiter);
+                                Account_DTO>(account_db,
+                                             account_triplet_bdb_db,
+                                             text_file,
+                                             errors,
+                                             delimiter);
 }
 
 /*!
@@ -61,8 +61,8 @@ void Account_DAO::select_all(Bdb_dbp &account_db, Account_DTO_list &account_dto_
   Bdb_cursor bdb_cursor(account_db, errors);
   if (!errors.has())
     bdb_cursor.dto_get_list<Account_DTO_key,
-                                Account_DTO,
-                                Account_DTO_list>(account_dto_list, errors);
+                            Account_DTO,
+                            Account_DTO_list>(account_dto_list, errors);
 }
 
 /*!
@@ -72,20 +72,50 @@ void Account_DAO::select_all(Bdb_dbp &account_db, Account_DTO_list &account_dto_
  * @param account_dto_key_list selected account key list
  * @param errors if account key not found
  */
-void Account_DAO::select_all_email(Bdb_dbp &account_db,
-                                     Bdb_dbp &account_email_sdb,
-                                     const std::string &email,
-                                     Account_DTO_list &account_dto_list,
-                                     Bdb_errors &errors) {
-  Account_DTO_key account_dto_key(email); // TODO: kludge, replacing account_id
+void Account_DAO::select_accounts_for_email(Bdb_dbp &account_email_sdb,
+                                            Bdb_dbp &account_db,
+                                            const std::string &email,
+                                            Account_DTO_list &account_dto_list,
+                                            Bdb_errors &errors) {
+  Account_email_DTO_key account_email_dto_key(email); // TODO: kludge, replacing account_id
   Account_DTO_key_list account_dto_key_list;
   Bdb_cursor bdb_cursor(account_email_sdb, errors);
   if (!errors.has())
-    bdb_cursor.dto_get_duplicate_list<Account_DTO_key,
-                                Account_DTO_key,
-                                Account_DTO_key_list>(account_dto_key,
-                                                      account_dto_key_list,
-                                                      errors);
+    bdb_cursor.dto_get_duplicate_list<Account_email_DTO_key,
+                                      Account_DTO_key,
+                                      Account_DTO_key_list>(account_email_dto_key,
+                                                            account_dto_key_list,
+                                                            errors);
+  Bdb_DAO::select_by_key_list<Account_DTO_key,
+                              Account_DTO_key_list,
+                              Account_DTO,
+                              Account_DTO_list>(account_db,
+                                                account_dto_key_list,
+                                                account_dto_list,
+                                                errors);
+}
+
+/*!
+ * @brief select account key list using account account_id to search account account_id->account key secondary database
+ * @param account_account_id_sdb account account_id->account key secondary database
+ * @param account_id secondary database search key
+ * @param account_dto_key_list selected account key list
+ * @param errors if account key not found
+ */
+void Account_DAO::select_accounts_for_username(Bdb_dbp &account_username_sdb,
+                                               Bdb_dbp &account_db,
+                                               const std::string &username,
+                                               Account_DTO_list &account_dto_list,
+                                               Bdb_errors &errors) {
+  Account_username_DTO_key account_username_dto_key(username);
+  Account_DTO_key_list account_dto_key_list;
+  Bdb_cursor bdb_cursor(account_username_sdb, errors);
+  if (!errors.has())
+    bdb_cursor.dto_get_duplicate_list<Account_username_DTO_key,
+                                      Account_DTO_key,
+                                      Account_DTO_key_list>(account_username_dto_key,
+                                                            account_dto_key_list,
+                                                            errors);
   Bdb_DAO::select_by_key_list<Account_DTO_key,
                               Account_DTO_key_list,
                               Account_DTO,

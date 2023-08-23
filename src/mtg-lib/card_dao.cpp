@@ -93,6 +93,34 @@ void Card_DAO::select_cards_for_type_id(Bdb_dbp &card_type_id_sdb,
          errors);
 }
 
+/*!
+ * @brief select card key list using card id to search card id->card key secondary database
+ * @param card_card_id_sdb card id->card key secondary database
+ * @param card_id secondary database search key
+ * @param card_DTO_key_list selected card key list
+ * @param errors if card key not found
+ */
+void Card_DAO::select_cards_for_name(Bdb_dbp &card_name_sdb,
+                                     Bdb_dbp &card_db,
+                                     const std::string &name,
+                                     Card_DTO_list &card_dto_list,
+                                     Bdb_errors &errors) {
+  Card_DTO_name_key card_DTO_name_key(name);
+  Card_DTO_key_list card_dto_key_list;
+  Bdb_cursor bdb_cursor(card_name_sdb, errors);
+  if (!errors.has())
+    bdb_cursor.dto_get_duplicate_list<Card_DTO_name_key, Card_DTO_key, Card_DTO_key_list>
+        (card_DTO_name_key,
+         card_dto_key_list,
+         errors);
+  if (!errors.has())
+    Bdb_DAO::select_by_key_list<Card_DTO_key, Card_DTO_key_list, Card_DTO, Card_DTO_list>
+        (card_db,
+         card_dto_key_list,
+         card_dto_list,
+         errors);
+}
+
 void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
                                      Bdb_dbp &deck_card_db,
                                      Bdb_dbp &card_db,
