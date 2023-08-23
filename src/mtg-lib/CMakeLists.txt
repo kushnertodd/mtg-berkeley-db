@@ -24,5 +24,7 @@ add_library(mtg-lib STATIC
         mtg_inet_app_init.hpp
         mtg_request.cpp
         mtg_request.hpp
+        mtg_request_handlers.cpp
+        mtg_request_handlers.hpp
         )
 target_include_directories(mtg-lib PUBLIC .)

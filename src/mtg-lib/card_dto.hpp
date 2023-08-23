@@ -23,6 +23,8 @@ class Card_DTO { // use Mtg_DTO as pattern but do not inherit
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void from_json(json_object *jobj, Bdb_errors &errors);
+  static int get_card_name(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
+  static int get_card_type_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
   [[nodiscard]] inline std::string get_id() const { return card_id; }
   [[nodiscard]] inline std::string get_text() const { return name; }
   void parse(int count, const std::string &line, Bdb_errors &errors, char delimiter);
@@ -50,8 +52,8 @@ class Card_DTO_name_key {
  public:
   std::string name;
   Card_DTO_name_key() = default;
-  explicit Card_DTO_name_key(std::string name_)
-      : name(std::move(name_)) {}
+  explicit Card_DTO_name_key(std::string name_) :
+      name(std::move(name_)) {}
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
@@ -63,8 +65,8 @@ class Card_DTO_type_id_key {
  public:
   std::string type_id;
   Card_DTO_type_id_key() = default;
-  explicit Card_DTO_type_id_key(std::string type_id_)
-      : type_id(std::move(type_id_)) {}
+  explicit Card_DTO_type_id_key(std::string type_id_) :
+      type_id(std::move(type_id_)) {}
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);

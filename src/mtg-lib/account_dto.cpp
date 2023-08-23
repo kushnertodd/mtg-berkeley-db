@@ -67,6 +67,21 @@ int Account_DTO::get_account_email(Db *dbp, const Dbt *pkey, const Dbt *pdata, D
   return 0;
 }
 
+int Account_DTO::get_account_username(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
+  Bdb_errors errors;
+  Account_DTO account_dto(pdata->get_data());
+  // key memory is malloc()'d, berkeley db will free
+  std::memset((void *) skey, 0, sizeof(Dbt));
+  skey->set_flags(DB_DBT_APPMALLOC);
+  std::string username = account_dto.username;
+  size_t keylen = username.size() + 1;
+  char *card_id_buf = (char *) malloc(keylen);
+  std::strcpy(card_id_buf, username.c_str());
+  skey->set_data(card_id_buf);
+  skey->set_size(keylen);
+  return 0;
+}
+
 void Account_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
   std::vector<std::string> token_list = Bdb_tokens::tokenize(line, delimiter);
   int i = 0;

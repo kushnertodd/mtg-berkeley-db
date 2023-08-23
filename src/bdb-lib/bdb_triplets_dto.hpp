@@ -53,7 +53,8 @@ class Bdb_triplets_DTO { // use Imdb_DTO as pattern but do not inherit
   std::list<Bdb_text_id_occurence> list;
 
   Bdb_triplets_DTO() = default;
-  explicit Bdb_triplets_DTO(std::string triplet_) : triplet(std::move(triplet_)) {}
+  explicit Bdb_triplets_DTO(std::string triplet_) :
+      triplet(std::move(triplet_)) {}
   explicit Bdb_triplets_DTO(void *buffer);
 
   [[nodiscard]] size_t buffer_size() const;

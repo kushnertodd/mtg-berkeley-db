@@ -5,6 +5,7 @@
 #include "bdb_inet_socket_server.hpp"
 #include "mtg_inet_app_init.hpp"
 #include "mtg_request.hpp"
+#include "mtg_request_handlers.hpp"
 
 int main(int argc, const char **argv) {
   Bdb_errors errors;

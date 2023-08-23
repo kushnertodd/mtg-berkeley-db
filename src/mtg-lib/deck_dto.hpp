@@ -24,6 +24,8 @@ class Deck_DTO { // use Mtg_DTO as pattern but do not inherit
   void from_json(json_object *jobj, Bdb_errors &errors);
   [[nodiscard]] inline std::string get_id() const { return deck_id; }
   [[nodiscard]] inline std::string get_text() const { return name; }
+  static int get_deck_account_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
+  static int get_deck_name(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
   void parse(int count, const std::string &line, Bdb_errors &errors, char delimiter);
   void *serialize(void *buffer) const;
   json_object *to_json(Bdb_errors &errors) const;
@@ -49,8 +51,8 @@ class Deck_DTO_account_id_key {
  public:
   std::string account_id;
   Deck_DTO_account_id_key() = default;
-  explicit Deck_DTO_account_id_key(std::string account_id_)
-      : account_id(std::move(account_id_)) {}
+  explicit Deck_DTO_account_id_key(std::string account_id_) :
+      account_id(std::move(account_id_)) {}
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
@@ -62,8 +64,8 @@ class Deck_DTO_name_key {
  public:
   std::string name;
   Deck_DTO_name_key() = default;
-  explicit Deck_DTO_name_key(std::string name_)
-      : name(std::move(name_)) {}
+  explicit Deck_DTO_name_key(std::string name_) :
+      name(std::move(name_)) {}
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);

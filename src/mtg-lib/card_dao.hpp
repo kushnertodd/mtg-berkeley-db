@@ -9,7 +9,6 @@
 #include "bdb_errors.hpp"
 #include "bdb_common.hpp"
 #include "bdb_tokens.hpp"
-#include "deck_dto.hpp"
 #include "card_dto.hpp"
 
 class Card_DAO {
@@ -40,14 +39,14 @@ class Card_DAO {
                                     Card_DTO_list &card_dto_list,
                                     Bdb_errors &errors);
 
-  static void select_cards_for_type_id(Bdb_dbp &card_db,
-                                       Bdb_dbp &card_type_id_sdb,
+  static void select_cards_for_type_id(Bdb_dbp &card_type_id_sdb,
+                                       Bdb_dbp &card_db,
                                        const std::string &type_id,
                                        Card_DTO_list &card_dto_list,
                                        Bdb_errors &errors);
 
-  static void select_cards_for_name(Bdb_dbp &card_db,
-                                    Bdb_dbp &card_type_id_sdb,
+  static void select_cards_for_name(Bdb_dbp &card_type_id_sdb,
+                                    Bdb_dbp &card_db,
                                     const std::string &name,
                                     Card_DTO_list &card_dto_list,
                                     Bdb_errors &errors);

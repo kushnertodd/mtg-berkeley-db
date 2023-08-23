@@ -1,6 +1,7 @@
 #include "bdb_dao.hpp"
 #include "card_dto.hpp"
 #include "card_dao.hpp"
+#include "deck_dto.hpp"
 
 /*!
  * @brief load card database from delimited record file
@@ -144,20 +145,12 @@ void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
          deck_dto_key,
          deck_card_dto_list,
          errors);
-/*
-    bdb_cursor.dto_get_duplicate_list<Deck_DTO_key, Deck_card_DTO_key, Deck_card_DTO_key_list>
-        (deck_dto_key,
-         deck_card_dto_key_list,
-         errors);
   if (!errors.has())
-    Bdb_DAO::select_by_key_list<Deck_card_DTO_key, Deck_card_DTO_key_list, Deck_card_DTO, Deck_card_DTO_list>
-        (deck_card_db,
-         deck_card_dto_key_list,
-         deck_card_dto_list,
-         errors);
-*/
-  if (!errors.has())
-    Bdb_DAO::select_by_join_dto_list<Deck_card_DTO, Deck_card_DTO_list, Card_DTO_key, Card_DTO, Card_DTO_list>
+    Bdb_DAO::select_by_join_dto_list<Deck_card_DTO,
+                                     Deck_card_DTO_list,
+                                     Card_DTO_key,
+                                     Card_DTO,
+                                     Card_DTO_list>
         (card_db,
          deck_card_dto_list,
          card_dto_list,

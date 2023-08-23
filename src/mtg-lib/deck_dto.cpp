@@ -1,3 +1,4 @@
+#include <cstring>
 #include <sstream>
 #include <utility>
 #include "bdb_json_utils.hpp"
@@ -44,6 +45,36 @@ void Deck_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   if (!errors.has())
     // parse: ' { primaryDeck": ... `
     name = Bdb_json_utils::get_json_string("Deck_DTO::from_json", "3", jobj, "name", errors);
+}
+
+int Deck_DTO::get_deck_name(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
+  Bdb_errors errors;
+  Deck_DTO deck_dto(pdata->get_data());
+  // key memory is malloc()'d, berkeley db will free
+  std::memset((void *) skey, 0, sizeof(Dbt));
+  skey->set_flags(DB_DBT_APPMALLOC);
+  std::string name = deck_dto.name;
+  size_t keylen = name.size() + 1;
+  char *deck_id_buf = (char *) malloc(keylen);
+  std::strcpy(deck_id_buf, name.c_str());
+  skey->set_data(deck_id_buf);
+  skey->set_size(keylen);
+  return 0;
+}
+
+int Deck_DTO::get_deck_account_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
+  Bdb_errors errors;
+  Deck_DTO deck_dto(pdata->get_data());
+  // key memory is malloc()'d, berkeley db will free
+  std::memset((void *) skey, 0, sizeof(Dbt));
+  skey->set_flags(DB_DBT_APPMALLOC);
+  std::string account_id = deck_dto.account_id;
+  size_t keylen = account_id.size() + 1;
+  char *deck_id_buf = (char *) malloc(keylen);
+  std::strcpy(deck_id_buf, account_id.c_str());
+  skey->set_data(deck_id_buf);
+  skey->set_size(keylen);
+  return 0;
 }
 
 void Deck_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {

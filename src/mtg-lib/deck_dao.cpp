@@ -1,4 +1,5 @@
 #include "bdb_dao.hpp"
+#include "card_dto.hpp"
 #include "deck_dto.hpp"
 #include "deck_dao.hpp"
 
@@ -21,7 +22,6 @@ int Deck_DAO::load(Bdb_dbp &deck_db,
                                           text_file,
                                           errors,
                                           delimiter);
-
 }
 
 /*!
@@ -120,6 +120,41 @@ void Deck_DAO::select_decks_for_name(Bdb_dbp &deck_name_sdb,
        errors);
 }
 
+void Deck_DAO::select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
+                                     Bdb_dbp &deck_card_db,
+                                     Bdb_dbp &deck_db,
+                                     const std::string &card_id,
+                                     Deck_DTO_list &deck_dto_list,
+                                     Bdb_errors &errors) {
+  Card_DTO_key card_dto_key(card_id);
+  //Deck_card_DTO_key_list deck_card_dto_key_list;
+  //Bdb_cursor bdb_cursor(deck_card_deck_id_sdb, errors);
+  // TODO: refactor Bdb::select_by_secondary_db_key() based on this and use it
+  Deck_card_DTO_list deck_card_dto_list;
+  if (!errors.has())
+    Bdb_DAO::select_by_secondary_db_key
+        <Deck_card_DTO_key,
+         Deck_card_DTO,
+         Deck_card_DTO_key_list,
+         Deck_card_DTO_list,
+         Card_DTO_key>
+        (deck_card_card_id_sdb,
+         deck_card_db,
+         card_dto_key,
+         deck_card_dto_list,
+         errors);
+  if (!errors.has())
+    Bdb_DAO::select_by_join_dto_list<Deck_card_DTO,
+                                     Deck_card_DTO_list,
+                                     Deck_DTO_key,
+                                     Deck_DTO,
+                                     Deck_DTO_list>
+        (deck_db,
+         deck_card_dto_list,
+         deck_dto_list,
+         errors);
+}
+
 void Deck_DAO::update(Bdb_dbp &deck_db,
                       const std::string &deck_id,
                       const std::string &account_id,
@@ -127,10 +162,10 @@ void Deck_DAO::update(Bdb_dbp &deck_db,
                       Deck_DTO &deck_dto,
                       Bdb_errors &errors) {
   Deck_DTO_key deck_dto_key(deck_id);
-  Bdb_DAO::lookup<Deck_DTO_key,
-                  Deck_DTO>(deck_db, deck_dto_key, deck_dto, errors);
+  Bdb_DAO::lookup<Deck_DTO_key, Deck_DTO>
+      (deck_db, deck_dto_key, deck_dto, errors);
   deck_dto.account_id = account_id;
   deck_dto.name = name;
-  Bdb_DAO::save<Deck_DTO_key,
-                Deck_DTO>(deck_db, deck_dto_key, deck_dto, errors);
+  Bdb_DAO::save<Deck_DTO_key, Deck_DTO>
+      (deck_db, deck_dto_key, deck_dto, errors);
 }

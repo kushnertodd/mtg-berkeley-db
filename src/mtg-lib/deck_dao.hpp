@@ -8,8 +8,8 @@
 #include "bdb_db.hpp"
 #include "bdb_errors.hpp"
 #include "bdb_common.hpp"
-#include "deck_dto.hpp"
 #include "bdb_tokens.hpp"
+#include "deck_dto.hpp"
 
 class Deck_DAO {
  public:
@@ -31,6 +31,13 @@ class Deck_DAO {
   static void select_all(Bdb_dbp &deck_db,
                          Deck_DTO_list &deck_dto_list,
                          Bdb_errors &errors);
+
+  static void select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
+                                    Bdb_dbp &deck_card_db,
+                                    Bdb_dbp &deck_db,
+                                    const std::string &card_id,
+                                    Deck_DTO_list &deck_dto_list,
+                                    Bdb_errors &errors);
 
   static void select_decks_for_account_id(Bdb_dbp &deck_account_id_sdb,
                                           Bdb_dbp &deck_db,

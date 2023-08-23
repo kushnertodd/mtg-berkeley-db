@@ -1,3 +1,4 @@
+#include <cstring>
 #include <sstream>
 #include <utility>
 #include "bdb_json_utils.hpp"
@@ -45,6 +46,36 @@ void Card_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   if (!errors.has())
     // parse: ' { "type_id": ... `
     type_id = Bdb_json_utils::get_json_string("Card_DTO::type_id", "5", jobj, "type_id", errors);
+}
+
+int Card_DTO::get_card_name(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
+  Bdb_errors errors;
+  Card_DTO card_dto(pdata->get_data());
+  // key memory is malloc()'d, berkeley db will free
+  std::memset((void *) skey, 0, sizeof(Dbt));
+  skey->set_flags(DB_DBT_APPMALLOC);
+  std::string name = card_dto.name;
+  size_t keylen = name.size() + 1;
+  char *card_id_buf = (char *) malloc(keylen);
+  std::strcpy(card_id_buf, name.c_str());
+  skey->set_data(card_id_buf);
+  skey->set_size(keylen);
+  return 0;
+}
+
+int Card_DTO::get_card_type_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
+  Bdb_errors errors;
+  Card_DTO card_dto(pdata->get_data());
+  // key memory is malloc()'d, berkeley db will free
+  std::memset((void *) skey, 0, sizeof(Dbt));
+  skey->set_flags(DB_DBT_APPMALLOC);
+  std::string type_id = card_dto.type_id;
+  size_t keylen = type_id.size() + 1;
+  char *card_id_buf = (char *) malloc(keylen);
+  std::strcpy(card_id_buf, type_id.c_str());
+  skey->set_data(card_id_buf);
+  skey->set_size(keylen);
+  return 0;
 }
 
 void Card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {

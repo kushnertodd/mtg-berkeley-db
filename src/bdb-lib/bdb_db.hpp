@@ -43,8 +43,8 @@ class Bdb_db {
 
     friend class Bdb_db;
 
-    explicit Bdb_db_config(std::string filename, DbEnv *db_env, int flags)
-        : db_(db_env, flags),
+    explicit Bdb_db_config(std::string filename, DbEnv *db_env, int flags) :
+        db_(db_env, flags),
           m_filename(std::move(filename)) {}
     void close() noexcept;
   };
