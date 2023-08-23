@@ -166,3 +166,25 @@ json_object *Card_DTO_list::to_json(Bdb_errors &errors) const {
     return nullptr;
   }
 }
+
+size_t Card_DTO_type_id_key::buffer_size() const {
+  size_t len = 0;
+  len += Bdb_serialization::buffer_len_string(type_id);
+  return len;
+}
+
+void *Card_DTO_type_id_key::deserialize(void *buffer) {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::deserialize_string(type_id, p);
+  return p;
+}
+
+void *Card_DTO_type_id_key::serialize(void *buffer) const {
+  auto *p = (unsigned char *) buffer;
+  p = (unsigned char *) Bdb_serialization::serialize_string(type_id, p);
+  return p;
+}
+
+std::string Card_DTO_type_id_key::to_string() const {
+  return "type_id: " + type_id;
+}

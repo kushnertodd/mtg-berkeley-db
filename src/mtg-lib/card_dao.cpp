@@ -16,11 +16,11 @@ int Card_DAO::load(Bdb_dbp &card_db,
                    Bdb_errors &errors,
                    char delimiter) {
   return Bdb_DAO::load_triplets<Card_DTO_key,
-                                  Card_DTO>(card_db,
-                                            card_triplet_bdb_db,
-                                            text_file,
-                                            errors,
-                                            delimiter);
+                                Card_DTO>(card_db,
+                                          card_triplet_bdb_db,
+                                          text_file,
+                                          errors,
+                                          delimiter);
 }
 
 /*!
@@ -61,8 +61,8 @@ void Card_DAO::select_all(Bdb_dbp &card_db, Card_DTO_list &card_dto_list, Bdb_er
   Bdb_cursor bdb_cursor(card_db, errors);
   if (!errors.has())
     bdb_cursor.dto_get_list<Card_DTO_key,
-                                Card_DTO,
-                                Card_DTO_list>(card_dto_list, errors);
+                            Card_DTO,
+                            Card_DTO_list>(card_dto_list, errors);
 }
 
 /*!
@@ -72,27 +72,61 @@ void Card_DAO::select_all(Bdb_dbp &card_db, Card_DTO_list &card_dto_list, Bdb_er
  * @param card_DTO_key_list selected card key list
  * @param errors if card key not found
  */
-void Card_DAO::select_all_type_id(Bdb_dbp &card_db,
-                                  Bdb_dbp &card_type_id_sdb,
-                                  const std::string &type_id,
-                                  Card_DTO_list &card_dto_list,
-                                  Bdb_errors &errors) {
-  Card_DTO_key card_dto_key(type_id); // TODO: kludge, replacing card_id
+void Card_DAO::select_cards_for_type_id(Bdb_dbp &card_db,
+                                        Bdb_dbp &card_type_id_sdb,
+                                        const std::string &type_id,
+                                        Card_DTO_list &card_dto_list,
+                                        Bdb_errors &errors) {
+  Card_DTO_type_id_key card_DTO_type_id_key(type_id);
   Card_DTO_key_list card_dto_key_list;
   Bdb_cursor bdb_cursor(card_type_id_sdb, errors);
   if (!errors.has())
-    bdb_cursor.dto_get_duplicate_list<Card_DTO_key,
-                                Card_DTO_key,
-                                Card_DTO_key_list>(card_dto_key,
-                                                   card_dto_key_list,
-                                                   errors);
-  Bdb_DAO::select_by_key_list<Card_DTO_key,
-                              Card_DTO_key_list,
-                              Card_DTO,
-                              Card_DTO_list>(card_db,
-                                             card_dto_key_list,
-                                             card_dto_list,
-                                             errors);
+    bdb_cursor.dto_get_duplicate_list<Card_DTO_type_id_key, Card_DTO_key, Card_DTO_key_list>
+        (card_DTO_type_id_key,
+         card_dto_key_list,
+         errors);
+  Bdb_DAO::select_by_key_list<Card_DTO_key, Card_DTO_key_list, Card_DTO, Card_DTO_list>
+      (card_db,
+       card_dto_key_list,
+       card_dto_list,
+       errors);
+}
+
+void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
+                                     Bdb_dbp &deck_card_db,
+                                     Bdb_dbp &card_db,
+                                     const std::string &deck_id,
+                                     Card_DTO_list &card_dto_list,
+                                     Bdb_errors &errors) {
+  Deck_DTO_key deck_dto_key(deck_id);
+  Deck_card_DTO_key_list deck_card_DTO_key_list;
+  Bdb_cursor bdb_cursor(deck_card_deck_id_sdb, errors);
+  if (!errors.has())
+    bdb_cursor.dto_get_duplicate_list<Deck_DTO_key, Deck_card_DTO_key, Deck_card_DTO_key_list>
+        (deck_dto_key,
+         deck_card_DTO_key_list,
+         errors);
+  if (!errors.has())
+    for (Deck_card_DTO_key &deck_card_DTO_key: deck_card_DTO_key_list.list) {
+      Deck_card_DTO deck_card_DTO;
+      Bdb_DAO::lookup<Deck_card_DTO_key, Deck_card_DTO>
+          (deck_card_db,
+           deck_card_DTO_key,
+           deck_card_DTO,
+           errors);
+      Card_DTO_key card_DTO_key(deck_card_DTO);
+      Card_DTO card_DTO;
+      if (!errors.has())
+        Bdb_DAO::lookup<Card_DTO_key, Card_DTO>
+            (card_db,
+             card_DTO_key,
+             card_DTO,
+             errors);
+      if (!errors.has())
+        card_dto_list.add(card_DTO);
+      if (errors.has())
+        break;
+    }
 }
 
 void Card_DAO::update(Bdb_dbp &card_db,
@@ -102,10 +136,10 @@ void Card_DAO::update(Bdb_dbp &card_db,
                       Card_DTO &card_dto,
                       Bdb_errors &errors) {
   Card_DTO_key card_dto_key(card_id);
-  Bdb_DAO::lookup<Card_DTO_key,
-                  Card_DTO>(card_db, card_dto_key, card_dto, errors);
+  Bdb_DAO::lookup<Card_DTO_key, Card_DTO>
+      (card_db, card_dto_key, card_dto, errors);
   card_dto.name = name;
   card_dto.type_id = type_id;
-  Bdb_DAO::save<Card_DTO_key,
-                Card_DTO>(card_db, card_dto_key, card_dto, errors);
+  Bdb_DAO::save<Card_DTO_key, Card_DTO>
+      (card_db, card_dto_key, card_dto, errors);
 }

@@ -2,6 +2,7 @@
 
 #include <json-c/json.h>
 #include <list>
+#include <utility>
 #include "bdb_key_extractor.hpp"
 #include "bdb_errors.hpp"
 #include "bdb_serializable.hpp"
@@ -44,6 +45,18 @@ class Card_DTO_key {
   void *serialize(void *buffer) const;
   [[nodiscard]] std::string to_string() const;
 };
+
+class Card_DTO_type_id_key {
+ public:
+  std::string type_id;
+  Card_DTO_type_id_key() = default;
+  explicit Card_DTO_type_id_key(std::string type_id_)
+      : type_id(std::move(type_id_)) {}
+
+  [[nodiscard]] size_t buffer_size() const;
+  void *deserialize(void *buffer);
+  void *serialize(void *buffer) const;
+  [[nodiscard]] std::string to_string() const;};
 
 class Card_DTO_list {
  public:

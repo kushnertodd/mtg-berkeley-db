@@ -707,7 +707,7 @@ bool Mtg_card_request_handler::select_all_type_id(Mtg_inet_app_init &mtg_inet_ap
   if (mtg_request.request != "card_select_all_type_id")
     return false;
   if (mtg_request.arguments.empty())
-    errors.add("Mtg_request::select_all_type_id",
+    errors.add("Mtg_request::select_cards_for_type_id",
                "1",
                "parameters: type_id");
   std::string type_id;
@@ -732,11 +732,11 @@ bool Mtg_card_request_handler::select_all_type_id(Mtg_inet_app_init &mtg_inet_ap
         Card_DTO_list card_dto_list;
         if (!errors.has()) {
           type_id = mtg_request.arguments.at(0);
-          Card_DAO::select_all_type_id(card_db.bdb_db,
-                                       card_type_id_sdb.bdb_db,
-                                       type_id,
-                                       card_dto_list,
-                                       errors);
+          Card_DAO::select_cards_for_type_id(card_db.bdb_db,
+                                             card_type_id_sdb.bdb_db,
+                                             type_id,
+                                             card_dto_list,
+                                             errors);
         }
         if (!errors.has()) {
           json_object *card_dto_list_json = card_dto_list.to_json(errors);
