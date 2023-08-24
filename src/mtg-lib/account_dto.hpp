@@ -18,6 +18,10 @@ class Account_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string score{};
 
   Account_DTO() = default;
+  Account_DTO(std::string account_id_,
+              std::string username_,
+              std::string email_,
+              std::string created_);
   explicit Account_DTO(void *buffer);
   Account_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
 

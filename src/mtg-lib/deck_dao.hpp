@@ -14,7 +14,7 @@
 class Deck_DAO {
  public:
   static int load(Bdb_dbp &deck_db,
-                  Bdb_dbp &deck_triplet_bdb_db,
+                  Bdb_dbp &deck_bdb_triplet_db,
                   const std::string &text_file,
                   Bdb_errors &errors,
                   char delimiter = tab);
@@ -52,9 +52,6 @@ class Deck_DAO {
                                     Bdb_errors &errors);
 
   static void update(Bdb_dbp &deck_db,
-                     const std::string &deck_id,
-                     const std::string &account_id,
-                     const std::string &name,
                      Deck_DTO &deck_dto,
                      Bdb_errors &errors);
 };

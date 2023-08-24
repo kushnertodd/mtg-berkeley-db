@@ -14,7 +14,7 @@
 class Card_DAO {
  public:
   static int load(Bdb_dbp &card_db,
-                  Bdb_dbp &card_triplet_bdb_db,
+                  Bdb_dbp &card_bdb_triplet_db,
                   const std::string &text_file,
                   Bdb_errors &errors,
                   char delimiter = tab);
@@ -52,9 +52,6 @@ class Card_DAO {
                                     Bdb_errors &errors);
 
   static void update(Bdb_dbp &card_db,
-                     const std::string &card_id,
-                     const std::string &name,
-                     const std::string &type_id,
                      Card_DTO &card_dto,
                      Bdb_errors &errors);
 };

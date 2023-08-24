@@ -17,6 +17,9 @@ class Card_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string score{};
 
   Card_DTO() = default;
+  Card_DTO(std::string card_id_,
+           std::string name_,
+           std::string type_id_);
   explicit Card_DTO(void *buffer);
   Card_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
 

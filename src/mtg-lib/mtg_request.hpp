@@ -7,7 +7,6 @@
 #include "bdb_db.hpp"
 #include "bdb_errors.hpp"
 #include "mtg_inet_app_init.hpp"
-#include "timer.hpp"
 
 /*
  * class Mtg_request
@@ -57,7 +56,7 @@ class Mtg_request_response {
   void add_response(json_object *response_json) const;
   void add_response_array(json_object *response_json) const;
   void cleanup() const;
-  static json_object *to_load_response(int count, Timer &timer, Bdb_errors &errors);
+  static json_object *to_load_response(int count, Bdb_errors &errors);
   [[nodiscard]] std::string to_string() const;
 };
 

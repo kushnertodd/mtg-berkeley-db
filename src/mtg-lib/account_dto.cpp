@@ -6,6 +6,15 @@
 #include "bdb_tokens.hpp"
 #include "account_dto.hpp"
 
+Account_DTO::Account_DTO(std::string account_id_,
+                         std::string username_,
+                         std::string email_,
+                         std::string created_) :
+    account_id(std::move(account_id_)),
+    username(std::move(username_)),
+    email(std::move(email_)),
+    created(std::move(created_)) {}
+
 Account_DTO::Account_DTO(void *buffer) {
   deserialize(buffer);
 }

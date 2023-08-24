@@ -58,14 +58,14 @@ void Deck_card_DAO::save(Bdb_dbp &deck_card_db, Deck_card_DTO &deck_card_dto, Bd
  * @param card_dto_list selected cards list
  * @param errors if deck key not found
  */
-void Deck_card_DAO::search_by_deck(Bdb_dbp &deck_card_deck_id_sdb,
+void Deck_card_DAO::select_by_deck(Bdb_dbp &deck_card_deck_id_sdb,
                                    Bdb_dbp &deck_card_db,
                                    Bdb_dbp &card_db,
                                    const std::string &deck_id,
                                    Card_DTO_list &card_dto_list,
                                    Bdb_errors &errors) {
   Deck_card_DTO_key_list deck_card_dto_key_list;
-  search_by_deck_sdb(deck_card_deck_id_sdb, deck_id, deck_card_dto_key_list, errors);
+  select_by_deck_sdb(deck_card_deck_id_sdb, deck_id, deck_card_dto_key_list, errors);
   Deck_card_DTO_list deck_card_dto_list;
   select_by_key_list(deck_card_db, deck_card_dto_key_list, deck_card_dto_list, errors);
   select_card_list(card_db, deck_card_dto_list, card_dto_list, errors);
@@ -78,7 +78,7 @@ void Deck_card_DAO::search_by_deck(Bdb_dbp &deck_card_deck_id_sdb,
  * @param deck_card_dto_key_list selected deck_card key list
  * @param errors if deck key not found
  */
-void Deck_card_DAO::search_by_deck_sdb(Bdb_dbp &deck_card_deck_id_sdb,
+void Deck_card_DAO::select_by_deck_sdb(Bdb_dbp &deck_card_deck_id_sdb,
                                        const std::string &deck_id,
                                        Deck_card_DTO_key_list &deck_card_dto_key_list,
                                        Bdb_errors &errors) {
@@ -101,14 +101,14 @@ void Deck_card_DAO::search_by_deck_sdb(Bdb_dbp &deck_card_deck_id_sdb,
  * @param deck_dto_list selected decks list
  * @param errors if card key not found
  */
-void Deck_card_DAO::search_by_card(Bdb_dbp &deck_card_card_id_sdb,
+void Deck_card_DAO::select_by_card(Bdb_dbp &deck_card_card_id_sdb,
                                    Bdb_dbp &deck_card_db,
                                    Bdb_dbp &deck_db,
                                    const std::string &card_id,
                                    Deck_DTO_list &deck_dto_list,
                                    Bdb_errors &errors) {
   Deck_card_DTO_key_list deck_card_dto_key_list;
-  search_by_card_sdb(deck_card_card_id_sdb, card_id, deck_card_dto_key_list, errors);
+  select_by_card_sdb(deck_card_card_id_sdb, card_id, deck_card_dto_key_list, errors);
   Deck_card_DTO_list deck_card_dto_list;
   select_by_key_list(deck_card_db, deck_card_dto_key_list, deck_card_dto_list, errors);
   select_deck_list(deck_db, deck_card_dto_list, deck_dto_list, errors);
@@ -121,7 +121,7 @@ void Deck_card_DAO::search_by_card(Bdb_dbp &deck_card_card_id_sdb,
  * @param deck_card_dto_key_list selected deck_card key list
  * @param errors if deck key not found
  */
-void Deck_card_DAO::search_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
+void Deck_card_DAO::select_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
                                        const std::string &card_id,
                                        Deck_card_DTO_key_list &deck_card_dto_key_list,
                                        Bdb_errors &errors) {

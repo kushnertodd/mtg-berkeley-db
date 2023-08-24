@@ -11,13 +11,13 @@
  * @return count of records saved
  */
 int Account_DAO::load(Bdb_dbp &account_db,
-                      Bdb_dbp &account_triplet_bdb_db,
+                      Bdb_dbp &account_bdb_triplet_db,
                       const std::string &text_file,
                       Bdb_errors &errors,
                       char delimiter) {
   return Bdb_DAO::load_triplets<Account_DTO_key,
                                 Account_DTO>(account_db,
-                                             account_triplet_bdb_db,
+                                             account_bdb_triplet_db,
                                              text_file,
                                              errors,
                                              delimiter);
@@ -77,7 +77,7 @@ void Account_DAO::select_accounts_for_email(Bdb_dbp &account_email_sdb,
                                             const std::string &email,
                                             Account_DTO_list &account_dto_list,
                                             Bdb_errors &errors) {
-  Account_email_DTO_key account_email_dto_key(email); // TODO: kludge, replacing account_id
+  Account_email_DTO_key account_email_dto_key(email);
   Account_DTO_key_list account_dto_key_list;
   Bdb_cursor bdb_cursor(account_email_sdb, errors);
   if (!errors.has())
@@ -128,18 +128,9 @@ void Account_DAO::select_accounts_for_username(Bdb_dbp &account_username_sdb,
 }
 
 void Account_DAO::update(Bdb_dbp &account_db,
-                         const std::string &account_id,
-                         const std::string &username,
-                         const std::string &email,
-                         const std::string &created,
                          Account_DTO &account_dto,
                          Bdb_errors &errors) {
-  Account_DTO_key account_dto_key(account_id);
-  Bdb_DAO::lookup<Account_DTO_key, Account_DTO>
-      (account_db, account_dto_key, account_dto, errors);
-  account_dto.username = username;
-  account_dto.email = email;
-  account_dto.created = created;
+  Account_DTO_key account_dto_key(account_dto);
   Bdb_DAO::save<Account_DTO_key, Account_DTO>
       (account_db, account_dto_key, account_dto, errors);
 }

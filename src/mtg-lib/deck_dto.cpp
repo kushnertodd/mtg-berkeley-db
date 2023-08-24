@@ -6,6 +6,13 @@
 #include "bdb_tokens.hpp"
 #include "deck_dto.hpp"
 
+Deck_DTO::Deck_DTO(std::string deck_id_,
+                   std::string account_id_,
+                   std::string name_) :
+    deck_id(std::move(deck_id_)),
+    account_id(std::move(account_id_)),
+    name(std::move(name_)) {}
+
 Deck_DTO::Deck_DTO(void *buffer) {
   deserialize(buffer);
 }

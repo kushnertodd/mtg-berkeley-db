@@ -1,22 +1,7 @@
 #include <json-c/json.h>
 #include <sstream>
-#include "bdb_databases.hpp"
-#include "bdb_databases_config.hpp"
 #include "bdb_common.hpp"
-#include "bdb_dao.hpp"
 #include "bdb_json_utils.hpp"
-#include "account_dao.hpp"
-#include "account_dto.hpp"
-#include "card_dao.hpp"
-#include "card_dto.hpp"
-#include "deck_card_dao.hpp"
-#include "deck_dao.hpp"
-#include "deck_dto.hpp"
-#include "mtg_bdb_keys.hpp"
-#include "mtg_dto.hpp"
-#include "mtg_inet_app_init.hpp"
-#include "misc_utils.hpp"
-#include "timer.hpp"
 #include "mtg_request.hpp"
 
 Mtg_request::Mtg_request(const std::string &request, Bdb_errors &errors) {
@@ -124,7 +109,7 @@ void Mtg_request_response::cleanup() const {
   json_object_put(jobj);
 }
 
-json_object *Mtg_request_response::to_load_response(int count, Timer &timer, Bdb_errors &errors) {
+json_object *Mtg_request_response::to_load_response(int count, Bdb_errors &errors) {
   json_object *load_response_json = json_object_new_object();
   if (!load_response_json) {
     errors.add("Mtg_request::to_json", "1", "json-c allocate error");

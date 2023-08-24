@@ -30,26 +30,26 @@ class Deck_card_DAO {
                    Deck_card_DTO &deck_card_dto,
                    Bdb_errors &errors);
 
-  static void search_by_deck(Bdb_dbp &deck_card_deck_id_sdb,
+  static void select_by_deck(Bdb_dbp &deck_card_deck_id_sdb,
                              Bdb_dbp &deck_card_db,
                              Bdb_dbp &card_db,
                              const std::string &deck_id,
                              Card_DTO_list &card_dto_list,
                              Bdb_errors &errors);
 
-  static void search_by_deck_sdb(Bdb_dbp &deck_card_deck_id_sdb,
+  static void select_by_deck_sdb(Bdb_dbp &deck_card_deck_id_sdb,
                                  const std::string &deck_id,
                                  Deck_card_DTO_key_list &deck_card_dto_key_list,
                                  Bdb_errors &errors);
 
-  static void search_by_card(Bdb_dbp &deck_card_card_id_sdb,
+  static void select_by_card(Bdb_dbp &deck_card_card_id_sdb,
                              Bdb_dbp &deck_card_db,
                              Bdb_dbp &deck_db,
                              const std::string &card_id,
                              Deck_DTO_list &deck_dto_list,
                              Bdb_errors &errors);
 
-  static void search_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
+  static void select_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
                                  const std::string &card_id,
                                  Deck_card_DTO_key_list &deck_card_dto_key_list,
                                  Bdb_errors &errors);

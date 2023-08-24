@@ -14,7 +14,7 @@
 class Account_DAO {
  public:
   static int load(Bdb_dbp &account_db,
-                  Bdb_dbp &account_triplet_bdb_db,
+                  Bdb_dbp &account_bdb_triplet_db,
                   const std::string &text_file,
                   Bdb_errors &errors,
                   char delimiter = tab);
@@ -45,10 +45,6 @@ class Account_DAO {
                                            Bdb_errors &errors);
 
   static void update(Bdb_dbp &account_db,
-                     const std::string &account_id,
-                     const std::string &username,
-                     const std::string &email,
-                     const std::string &created,
                      Account_DTO &account_dto,
                      Bdb_errors &errors);
 };

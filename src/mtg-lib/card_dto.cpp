@@ -7,6 +7,13 @@
 #include "card_dto.hpp"
 #include "deck_card_dto.hpp"
 
+Card_DTO::Card_DTO(std::string card_id_,
+                   std::string name_,
+                   std::string type_id_) :
+    card_id(std::move(card_id_)),
+    name(std::move(name_)),
+    type_id(std::move(type_id_)) {}
+
 Card_DTO::Card_DTO(void *buffer) {
   deserialize(buffer);
 }

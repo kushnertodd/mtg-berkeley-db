@@ -55,7 +55,7 @@ class Bdb_DAO {
 /*!
    * @brief load and save data DTOs with triplets from delimited text file records
    * @param bdb_db data DTO db
-   * @param triplet_bdb_db bdb_db database handle
+   * @param bdb_triplet_db bdb_db database handle
    * @param text_file delimited file, fields match data DTO T
    * @param errors invalid text file, bdb save failure
    * @param delimiter file record separator
@@ -64,7 +64,7 @@ class Bdb_DAO {
    */
   template<typename K, typename T>
   static int load_triplets(Bdb_dbp &bdb_db,
-                           Bdb_dbp &triplet_bdb_db,
+                           Bdb_dbp &bdb_triplet_db,
                            const std::string &text_file,
                            Bdb_errors &errors,
                            char delimiter = tab) {
@@ -99,7 +99,7 @@ class Bdb_DAO {
           std::string triplet{bdb_triplets_dto_map_entry.first};
           Bdb_triplets_DTO_key bdb_triplets_DTO_key(triplet);
           for (const auto &bdb_text_id_occurrence: bdb_triplets_dto_map_entry.second) {
-            save(triplet_bdb_db, bdb_triplets_DTO_key, bdb_text_id_occurrence, errors);
+            save(bdb_triplet_db, bdb_triplets_DTO_key, bdb_text_id_occurrence, errors);
             if (errors.has())
               break;
           }
@@ -332,11 +332,11 @@ class Bdb_DAO {
  * @param errors if name key not found
  */
   static void select_triplets_by_key_list(
-      Bdb_dbp &triplet_bdb_db,
+      Bdb_dbp &bdb_triplet_db,
       const std::string &triplet,
       Bdb_text_id_occurrence_list &bdb_text_id_occurrence_list,
       Bdb_errors &errors) {
-    Bdb_cursor bdb_cursor(triplet_bdb_db, errors);
+    Bdb_cursor bdb_cursor(bdb_triplet_db, errors);
     Bdb_triplets_DTO_key bdb_triplets_DTO_key(triplet);
     bdb_cursor.dto_get_duplicate_list<Bdb_triplets_DTO_key,
                                       Bdb_text_id_occurence,

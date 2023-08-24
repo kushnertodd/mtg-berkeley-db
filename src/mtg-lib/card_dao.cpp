@@ -12,13 +12,13 @@
  * @return count of records saved
  */
 int Card_DAO::load(Bdb_dbp &card_db,
-                   Bdb_dbp &card_triplet_bdb_db,
+                   Bdb_dbp &card_bdb_triplet_db,
                    const std::string &text_file,
                    Bdb_errors &errors,
                    char delimiter) {
   return Bdb_DAO::load_triplets<Card_DTO_key,
                                 Card_DTO>(card_db,
-                                          card_triplet_bdb_db,
+                                          card_bdb_triplet_db,
                                           text_file,
                                           errors,
                                           delimiter);
@@ -129,9 +129,6 @@ void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
                                      Card_DTO_list &card_dto_list,
                                      Bdb_errors &errors) {
   Deck_DTO_key deck_dto_key(deck_id);
-  //Deck_card_DTO_key_list deck_card_dto_key_list;
-  //Bdb_cursor bdb_cursor(deck_card_deck_id_sdb, errors);
-  // TODO: refactor Bdb::select_by_secondary_db_key() based on this and use it
   Deck_card_DTO_list deck_card_dto_list;
   if (!errors.has())
     Bdb_DAO::select_by_secondary_db_key
@@ -158,16 +155,9 @@ void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
 }
 
 void Card_DAO::update(Bdb_dbp &card_db,
-                      const std::string &card_id,
-                      const std::string &name,
-                      const std::string &type_id,
                       Card_DTO &card_dto,
                       Bdb_errors &errors) {
-  Card_DTO_key card_dto_key(card_id);
-  Bdb_DAO::lookup<Card_DTO_key, Card_DTO>
-      (card_db, card_dto_key, card_dto, errors);
-  card_dto.name = name;
-  card_dto.type_id = type_id;
+  Card_DTO_key card_dto_key(card_dto);
   Bdb_DAO::save<Card_DTO_key, Card_DTO>
       (card_db, card_dto_key, card_dto, errors);
 }
