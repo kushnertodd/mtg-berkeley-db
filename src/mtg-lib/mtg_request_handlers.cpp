@@ -1047,3 +1047,60 @@ bool Mtg_deck_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
   return true;
 }
 
+// Mtg_workflow_request_handler methods
+
+bool Mtg_workflow_request_handler::create_card(Mtg_inet_app_init &Mtg_inet_app_init,
+                                               const Mtg_request &mtg_request,
+                                               Mtg_request_response &mtg_request_response,
+                                               Bdb_errors &errors) {
+  return true;
+}
+
+bool Mtg_workflow_request_handler::remove_card(Mtg_inet_app_init &Mtg_inet_app_init,
+                                               const Mtg_request &mtg_request,
+                                               Mtg_request_response &mtg_request_response,
+                                               Bdb_errors &errors) {
+  return true;
+}
+
+bool Mtg_workflow_request_handler::select_cards_for_type_id(Mtg_inet_app_init &mtg_inet_app_init,
+                                                            const Mtg_request &mtg_request,
+                                                            Mtg_request_response &mtg_request_response,
+                                                            Bdb_errors &errors) {
+  return true;
+}
+
+bool Mtg_workflow_request_handler::add_card_to_deck(Mtg_inet_app_init &Mtg_inet_app_init,
+                                                    const Mtg_request &mtg_request,
+                                                    Mtg_request_response &mtg_request_response,
+                                                    Bdb_errors &errors) {
+  return true;
+}
+
+bool Mtg_workflow_request_handler::create_deck(Mtg_inet_app_init &Mtg_inet_app_init,
+                                               const Mtg_request &mtg_request,
+                                               Mtg_request_response &mtg_request_response,
+                                               Bdb_errors &errors) {
+  return true;
+}
+
+bool Mtg_workflow_request_handler::remove_deck(Mtg_inet_app_init &Mtg_inet_app_init,
+                                               const Mtg_request &mtg_request,
+                                               Mtg_request_response &mtg_request_response,
+                                               Bdb_errors &errors) {
+  return true;
+}
+
+bool Mtg_workflow_request_handler::remove_card_from_deck(Mtg_inet_app_init &Mtg_inet_app_init,
+                                                         const Mtg_request &mtg_request,
+                                                         Mtg_request_response &mtg_request_response,
+                                                         Bdb_errors &errors) {
+  return true;
+}
+
+bool Mtg_workflow_request_handler::select_decks_for_name(Mtg_inet_app_init &mtg_inet_app_init,
+                                                         const Mtg_request &mtg_request,
+                                                         Mtg_request_response &mtg_request_response,
+                                                         Bdb_errors &errors) {
+  return true;
+}
