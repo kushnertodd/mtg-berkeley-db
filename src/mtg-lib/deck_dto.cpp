@@ -17,7 +17,10 @@ Deck_DTO::Deck_DTO(void *buffer) {
   deserialize(buffer);
 }
 
-Deck_DTO::Deck_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
+Deck_DTO::Deck_DTO(int count,
+                   const std::string &line,
+                   Bdb_errors &errors,
+                   char delimiter) {
   parse(count, line, errors, delimiter);
 }
 
@@ -46,12 +49,15 @@ void Deck_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
     errors.add("Deck_DTO::from_json", "2", "not class Deck_DTO");
   // parse: ' { "deck_id": ... `
   if (!errors.has())
-    deck_id = Bdb_json_utils::get_json_string("Deck_DTO::from_json", "1", jobj, "deck_id", errors);
+    deck_id = Bdb_json_utils::get_json_string("Deck_DTO::from_json",
+                                              "3", jobj, "deck_id", errors);
   if (!errors.has())
-    account_id = Bdb_json_utils::get_json_string("Deck_DTO::from_json", "2", jobj, "account_id", errors);
+    account_id = Bdb_json_utils::get_json_string("Deck_DTO::from_json",
+                                                 "4", jobj, "account_id", errors);
   if (!errors.has())
     // parse: ' { primaryDeck": ... `
-    name = Bdb_json_utils::get_json_string("Deck_DTO::from_json", "3", jobj, "name", errors);
+    name = Bdb_json_utils::get_json_string("Deck_DTO::from_json",
+                                           "35", jobj, "name", errors);
 }
 
 int Deck_DTO::get_deck_name(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
@@ -84,8 +90,10 @@ int Deck_DTO::get_deck_account_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Db
   return 0;
 }
 
-void Deck_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
-  // nconst	primaryPrincipals	birthYear	deathYear	primaryProfession	knownForTitle
+void Deck_DTO::parse(int count,
+                     const std::string &line,
+                     Bdb_errors &errors,
+                     char delimiter) {
   std::vector<std::string> token_list = Bdb_tokens::tokenize(line, delimiter);
   int i = 0;
   for (const std::string &token_str: token_list) {
@@ -103,15 +111,14 @@ void Deck_DTO::parse(int count, const std::string &line, Bdb_errors &errors, cha
         break;
       }
       default: {
-        errors.add("Deck_DTO::create", "3", "too many deck fields on line "
+        errors.add("Deck_DTO::create", "1", "too many deck fields on line "
             + Bdb_tokens::line_print(count, line));
       }
     }
     i++;
   }
-  // Store the tokens as per structure members , where (i==0) is first member and so on..
   if (i < 3) {
-    errors.add("Deck_DTO::create", "4", "too few deck fields on line "
+    errors.add("Deck_DTO::create", "2", "too few deck fields on line "
         + Bdb_tokens::line_print(count, line));
   }
 }
@@ -130,10 +137,14 @@ json_object *Deck_DTO::to_json(Bdb_errors &errors) const {
     errors.add("Deck_DTO::to_json", "1", "json-c allocate error");
     return nullptr;
   }
-  json_object_object_add(root, "class_deck", json_object_new_string(class_deck().c_str()));
-  json_object_object_add(root, "deck_id", json_object_new_string(deck_id.c_str()));
-  json_object_object_add(root, "account_id", json_object_new_string(deck_id.c_str()));
-  json_object_object_add(root, "name", json_object_new_string(name.c_str()));
+  json_object_object_add(root, "class_deck",
+                         json_object_new_string(class_deck().c_str()));
+  json_object_object_add(root, "deck_id",
+                         json_object_new_string(deck_id.c_str()));
+  json_object_object_add(root, "account_id",
+                         json_object_new_string(deck_id.c_str()));
+  json_object_object_add(root, "name",
+                         json_object_new_string(name.c_str()));
   return root;
 }
 
@@ -146,9 +157,11 @@ std::string Deck_DTO::to_string() const {
   return os.str();
 }
 
-Deck_DTO_key::Deck_DTO_key(const Deck_DTO &deck_dto) : deck_id(deck_dto.deck_id) {}
+Deck_DTO_key::Deck_DTO_key(const Deck_DTO &deck_dto) :
+    deck_id(deck_dto.deck_id) {}
 
-Deck_DTO_key::Deck_DTO_key(std::string deck_id_) : deck_id(std::move(deck_id_)) {}
+Deck_DTO_key::Deck_DTO_key(std::string deck_id_) :
+    deck_id(std::move(deck_id_)) {}
 
 Deck_DTO_key::Deck_DTO_key(void *buffer) {
   deserialize(buffer);
@@ -226,10 +239,11 @@ std::string Deck_DTO_name_key::to_string() const {
 json_object *Deck_DTO_list::to_json(Bdb_errors &errors) const {
   json_object *root = json_object_new_object();
   if (!root) {
-    errors.add("Primary_database_config::to_json", "1", "json-c allocate error");
+    errors.add("Deck_DTO_list::to_json", "1", "json-c allocate error");
     return nullptr;
   }
-  json_object_object_add(root, "class_deck", json_object_new_string(class_deck().c_str()));
+  json_object_object_add(root, "class_deck",
+                         json_object_new_string(class_deck().c_str()));
   if (!errors.has() && !list.empty()) {
     json_object *deck_dto_list_json = json_object_new_array();
     json_object_object_add(root, "deck_dto_list", deck_dto_list_json);

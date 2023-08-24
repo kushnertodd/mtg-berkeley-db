@@ -311,7 +311,7 @@ bool Mtg_card_request_handler::select_cards_for_name(Mtg_inet_app_init &mtg_inet
   if (mtg_request.request != "card_select_all_for_type_id")
     return false;
   if (mtg_request.arguments.empty())
-    errors.add("Mtg_request::select_cards_for_name",
+    errors.add("Mtg_card_request_handler::select_cards_for_name",
                "1",
                "parameters: type_id");
   std::string type_id;
@@ -459,7 +459,7 @@ bool Mtg_deck_request_handler::select_decks_for_account_id(Mtg_inet_app_init &mt
   if (mtg_request.request != "select_decks_for_account_id")
     return false;
   if (mtg_request.arguments.empty())
-    errors.add("Mtg_request::select_decks_for_account_id",
+    errors.add("Mtg_deck_request_handler::select_decks_for_account_id",
                "1",
                "parameters: account_id");
   std::string account_id;
@@ -618,7 +618,7 @@ bool Mtg_deck_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
   if (mtg_request.request != "deck_card_load")
     return false;
   if (mtg_request.arguments.empty())
-    errors.add("Mtg_inet_request::process_load_deck_card_request", "1", "missing mtg load deck_card request arguments");
+    errors.add("Mtg_deck_card_request_handler::load", "1", "missing mtg load deck_card request arguments");
   Primary_database_config deck_card_primary_database_config;
   mtg_inet_app_init.bdb_databases_config.select("deck_card", deck_card_primary_database_config, errors);
   if (!errors.has()) {

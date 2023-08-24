@@ -12,11 +12,12 @@ Mtg_request::Mtg_request(const std::string &request, Bdb_errors &errors) {
                "invalid request json: " + request, errno);
   else {
     std::string request_class_name =
-        Bdb_json_utils::get_json_string("Mtg_request_handler::Mtg_request", "2",
+        Bdb_json_utils::get_json_string("Mtg_request_handler::Mtg_request", "1",
                                         request_json, "class_name",
                                         errors);
     if (request_class_name != Mtg_request::class_name())
-      errors.add("Mtg_request_handler::Mtg_request", "3", "invalid request class: " + request_class_name);
+      errors.add("Mtg_request_handler::Mtg_request", "2", "invalid request class: "
+          + request_class_name);
   }
   if (!errors.has())
     from_json(request_json, errors);
@@ -25,23 +26,26 @@ Mtg_request::Mtg_request(const std::string &request, Bdb_errors &errors) {
 void Mtg_request::from_json(json_object *jobj, Bdb_errors &errors) {
   // parse: ' { "class_name": ... `
   std::string jobj_class_name =
-      Bdb_json_utils::get_json_string("Mtg_request::from_json", "1", jobj, "class_name", errors);
+      Bdb_json_utils::get_json_string("Mtg_request::from_json",
+                                      "1", jobj, "class_name", errors);
   if (!errors.has() && jobj_class_name != class_name())
-    errors.add("Mtg_request::from_json", "1", "not class mtg_request");
+    errors.add("Mtg_request::from_json", "2", "not class mtg_request");
   // parse: request": ...
-  request = Bdb_json_utils::get_json_string("Mtg_request::from_json", "3", jobj, "request", errors);
+  request = Bdb_json_utils::get_json_string("Mtg_request::from_json",
+                                            "3", jobj, "request", errors);
   if (!errors.has()) {
     // parse: ' { "arguments": ... `
     json_object *arguments_json =
-        Bdb_json_utils::get_json_object("Mtg_request::from_json", "2", jobj, "arguments", json_type_array,
+        Bdb_json_utils::get_json_object("Mtg_request::from_json",
+                                        "4", jobj, "arguments", json_type_array,
                                         errors);
     if (!errors.has()) {
       size_t n_args = json_object_array_length(arguments_json);
       for (size_t i = 0; i < n_args && !errors.has(); i++) {
         json_object *argument_json = json_object_array_get_idx(arguments_json, i);
         std::string
-            argument = Bdb_json_utils::get_json_string_type("Mtg_request::from_json", "3", argument_json,
-                                                            errors);
+            argument = Bdb_json_utils::get_json_string_type("Mtg_request::from_json",
+                                                            "5", argument_json, errors);
         if (!errors.has())
           arguments.push_back(argument);
       }
@@ -55,8 +59,10 @@ json_object *Mtg_request::to_json(Bdb_errors &errors) {
     errors.add("Mtg_request::to_json", "1", "json-c allocate error");
     return nullptr;
   }
-  json_object_object_add(root, "class_name", json_object_new_string(class_name().c_str()));
-  json_object_object_add(root, "request", json_object_new_string(request.c_str()));
+  json_object_object_add(root, "class_name",
+                         json_object_new_string(class_name().c_str()));
+  json_object_object_add(root, "request",
+                         json_object_new_string(request.c_str()));
 
   json_object *arguments_json = json_object_new_array();
   json_object_object_add(root, "arguments", arguments_json);
@@ -84,7 +90,8 @@ Mtg_request_response::Mtg_request_response(Bdb_errors &errors) {
   if (!jobj) {
     errors.add("Mtg_request_response::to_json", "1", "json-c allocate error");
   } else {
-    json_object_object_add(jobj, "class_name", json_object_new_string(class_name().c_str()));
+    json_object_object_add(jobj, "class_name",
+                           json_object_new_string(class_name().c_str()));
   }
 }
 
@@ -115,12 +122,13 @@ json_object *Mtg_request_response::to_load_response(int count, Bdb_errors &error
     errors.add("Mtg_request::to_json", "1", "json-c allocate error");
     return nullptr;
   }
-  json_object_object_add(load_response_json, "class_name", json_object_new_string(class_name().c_str()));
-  json_object_object_add(load_response_json, "record_count", json_object_new_string(std::to_string(count).c_str()));
+  json_object_object_add(load_response_json, "class_name",
+                         json_object_new_string(class_name().c_str()));
+  json_object_object_add(load_response_json, "record_count",
+                         json_object_new_string(std::to_string(count).c_str()));
   return load_response_json;
 }
 
 std::string Mtg_request_response::to_string() const {
-  return json_object_to_json_string_ext(jobj,
-                                        JSON_C_TO_STRING_PRETTY);
+  return json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY);
 }

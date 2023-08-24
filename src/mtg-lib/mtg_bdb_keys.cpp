@@ -5,7 +5,6 @@
 #include "deck_card_dto.hpp"
 #include "mtg_bdb_keys.hpp"
 
-// TODO: add various other secondary key extractors card, deck, account, etc.
 KEY_EXTRACTOR_FCT_TYPE Mtg_bdb_key_extractor::key_extractor_fct(const char *key_extractor_name) {
   if (!strcmp(key_extractor_name, "get_account_email"))
     return Account_DTO::get_account_email;

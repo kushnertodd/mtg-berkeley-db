@@ -19,7 +19,10 @@ Account_DTO::Account_DTO(void *buffer) {
   deserialize(buffer);
 }
 
-Account_DTO::Account_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
+Account_DTO::Account_DTO(int count,
+                         const std::string &line,
+                         Bdb_errors &errors,
+                         char delimiter) {
   parse(count, line, errors, delimiter);
 }
 
@@ -49,16 +52,20 @@ void Account_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   if (!errors.has() && jobj_class_account != class_account())
     errors.add("Account_DTO::from_json", "2", "not class Account_DTO");
   // parse: ' { "account_id": ... `
-  account_id = Bdb_json_utils::get_json_string("Account_DTO::from_json", "1", jobj, "account_id", errors);
+  account_id = Bdb_json_utils::get_json_string("Account_DTO::from_json",
+                                               "3", jobj, "account_id", errors);
   if (!errors.has())
     // parse: ' { username": ... `
-    username = Bdb_json_utils::get_json_string("Account_DTO::from_json", "2", jobj, "username", errors);
+    username = Bdb_json_utils::get_json_string("Account_DTO::from_json",
+                                               "4", jobj, "username", errors);
   if (!errors.has())
     // parse: ' { "email": ... `
-    email = Bdb_json_utils::get_json_string("Account_DTO::from_json", "3", jobj, "email", errors);
+    email = Bdb_json_utils::get_json_string("Account_DTO::from_json",
+                                            "5", jobj, "email", errors);
   if (!errors.has())
     // parse: ' { "created": ... `
-    created = Bdb_json_utils::get_json_string("Account_DTO::from_json", "4", jobj, "created", errors);
+    created = Bdb_json_utils::get_json_string("Account_DTO::from_json",
+                                              "6", jobj, "created", errors);
 }
 
 int Account_DTO::get_account_email(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
@@ -91,8 +98,12 @@ int Account_DTO::get_account_username(Db *dbp, const Dbt *pkey, const Dbt *pdata
   return 0;
 }
 
-void Account_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
-  std::vector<std::string> token_list = Bdb_tokens::tokenize(line, delimiter);
+void Account_DTO::parse(int count,
+                        const std::string &line,
+                        Bdb_errors &errors,
+                        char delimiter) {
+  std::vector<std::string> token_list =
+      Bdb_tokens::tokenize(line, delimiter);
   int i = 0;
   for (const std::string &token_str: token_list) {
     switch (i) {
@@ -120,7 +131,7 @@ void Account_DTO::parse(int count, const std::string &line, Bdb_errors &errors, 
     i++;
   }
   if (i < 4) {
-    errors.add("Account_DTO::parse", "4", "too few account fields on line "
+    errors.add("Account_DTO::parse", "2", "too few account fields on line "
         + Bdb_tokens::line_print(count, line));
   }
 }
@@ -235,7 +246,7 @@ std::string Account_username_DTO_key::to_string() const {
 json_object *Account_DTO_list::to_json(Bdb_errors &errors) const {
   json_object *root = json_object_new_object();
   if (!root) {
-    errors.add("Primary_database_config::to_json", "1", "json-c allocate error");
+    errors.add("Account_DTO_list::to_json", "1", "json-c allocate error");
     return nullptr;
   }
   json_object_object_add(root, "class_account", json_object_new_string(class_account().c_str()));

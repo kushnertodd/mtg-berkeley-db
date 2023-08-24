@@ -15,12 +15,12 @@ int Account_DAO::load(Bdb_dbp &account_db,
                       const std::string &text_file,
                       Bdb_errors &errors,
                       char delimiter) {
-  return Bdb_DAO::load_triplets<Account_DTO_key,
-                                Account_DTO>(account_db,
-                                             account_bdb_triplet_db,
-                                             text_file,
-                                             errors,
-                                             delimiter);
+  return Bdb_DAO::load_triplets<Account_DTO_key, Account_DTO>
+      (account_db,
+       account_bdb_triplet_db,
+       text_file,
+       errors,
+       delimiter);
 }
 
 /*!
@@ -35,8 +35,8 @@ void Account_DAO::lookup(Bdb_dbp &account_db,
                          Account_DTO &account_dto,
                          Bdb_errors &errors) {
   Account_DTO_key account_dto_key(account_id);
-  Bdb_DAO::lookup<Account_DTO_key,
-                  Account_DTO>(account_db, account_dto_key, account_dto, errors);
+  Bdb_DAO::lookup<Account_DTO_key, Account_DTO>
+      (account_db, account_dto_key, account_dto, errors);
 }
 
 /*!
@@ -45,10 +45,12 @@ void Account_DAO::lookup(Bdb_dbp &account_db,
  * @param account_dto prinicpals dto to save
  * @param errors if save fails
  */
-void Account_DAO::save(Bdb_dbp &account_db, Account_DTO &account_dto, Bdb_errors &errors) {
+void Account_DAO::save(Bdb_dbp &account_db,
+                       Account_DTO &account_dto,
+                       Bdb_errors &errors) {
   Account_DTO_key account_dto_key(account_dto);
-  Bdb_DAO::save<Account_DTO_key,
-                Account_DTO>(account_db, account_dto_key, account_dto, errors);
+  Bdb_DAO::save<Account_DTO_key, Account_DTO>
+      (account_db, account_dto_key, account_dto, errors);
 }
 
 /*!
@@ -57,12 +59,13 @@ void Account_DAO::save(Bdb_dbp &account_db, Account_DTO &account_dto, Bdb_errors
  * @param account_dto_list all account dtos in database
  * @param errors if select fails
  */
-void Account_DAO::select_all(Bdb_dbp &account_db, Account_DTO_list &account_dto_list, Bdb_errors &errors) {
+void Account_DAO::select_all(Bdb_dbp &account_db,
+                             Account_DTO_list &account_dto_list,
+                             Bdb_errors &errors) {
   Bdb_cursor bdb_cursor(account_db, errors);
   if (!errors.has())
-    bdb_cursor.dto_get_list<Account_DTO_key,
-                            Account_DTO,
-                            Account_DTO_list>(account_dto_list, errors);
+    bdb_cursor.dto_get_list<Account_DTO_key, Account_DTO, Account_DTO_list>
+        (account_dto_list, errors);
 }
 
 /*!
@@ -83,16 +86,18 @@ void Account_DAO::select_accounts_for_email(Bdb_dbp &account_email_sdb,
   if (!errors.has())
     bdb_cursor.dto_get_duplicate_list<Account_email_DTO_key,
                                       Account_DTO_key,
-                                      Account_DTO_key_list>(account_email_dto_key,
-                                                            account_dto_key_list,
-                                                            errors);
+                                      Account_DTO_key_list>
+        (account_email_dto_key,
+         account_dto_key_list,
+         errors);
   Bdb_DAO::select_by_key_list<Account_DTO_key,
                               Account_DTO_key_list,
                               Account_DTO,
-                              Account_DTO_list>(account_db,
-                                                account_dto_key_list,
-                                                account_dto_list,
-                                                errors);
+                              Account_DTO_list>
+      (account_db,
+       account_dto_key_list,
+       account_dto_list,
+       errors);
 }
 
 /*!

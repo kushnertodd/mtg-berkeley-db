@@ -46,7 +46,7 @@ void Card_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   if (!errors.has() && jobj_class_card != class_card())
     errors.add("Card_DTO::from_json", "2", "not class Card_DTO");
   // parse: ' { "card_id": ... `
-  card_id = Bdb_json_utils::get_json_string("Card_DTO::from_json", "1", jobj, "card_id", errors);
+  card_id = Bdb_json_utils::get_json_string("Card_DTO::from_json", "3", jobj, "card_id", errors);
   if (!errors.has())
     // parse: ' { name": ... `
     name = Bdb_json_utils::get_json_string("Card_DTO::from_json", "4", jobj, "name", errors);
@@ -104,7 +104,7 @@ void Card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, cha
         break;
       }
       default: {
-        errors.add("Card_DTO::create", "3", "too many card fields on line "
+        errors.add("Card_DTO::create", "1", "too many card fields on line "
             + Bdb_tokens::line_print(count, line));
       }
     }
@@ -112,7 +112,7 @@ void Card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, cha
   }
   // Store the tokens as per structure members , where (i==0) is first member and so on..
   if (i < 3) {
-    errors.add("Card_DTO::create", "4", "too few card fields on line "
+    errors.add("Card_DTO::create", "2", "too few card fields on line "
         + Bdb_tokens::line_print(count, line));
   }
 }
@@ -227,7 +227,7 @@ std::string Card_DTO_type_id_key::to_string() const {
 json_object *Card_DTO_list::to_json(Bdb_errors &errors) const {
   json_object *root = json_object_new_object();
   if (!root) {
-    errors.add("Primary_database_config::to_json", "1", "json-c allocate error");
+    errors.add("Card_DTO_list::to_json", "1", "json-c allocate error");
     return nullptr;
   }
   json_object_object_add(root, "class_card", json_object_new_string(class_card().c_str()));

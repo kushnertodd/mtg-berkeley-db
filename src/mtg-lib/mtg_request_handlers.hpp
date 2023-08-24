@@ -19,6 +19,83 @@ class Mtg_request_handler {
                      Mtg_request_response &mtg_request_response,
                      Bdb_errors &errors);
 
+  template<typename DA>
+  static void load(Mtg_inet_app_init &mtg_inet_app_init,
+                   const Mtg_request &mtg_request,
+                   const std::string &dto_db_name,
+                   const std::string &dto_triplet_db_name,
+                   Mtg_request_response &mtg_request_response,
+                   Bdb_errors &errors) {
+    if (mtg_request.arguments.empty())
+      errors.add("Mtg_request_handler::load", "1", "missing text file");
+    Primary_database_config dto_primary_database_config;
+    mtg_inet_app_init.bdb_databases_config.select(dto_db_name,
+                                                  dto_primary_database_config,
+                                                  errors);
+    if (!errors.has()) {
+      std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+          std::make_unique<Mtg_bdb_key_extractor>();
+      Primary_database
+          dto_db(dto_primary_database_config, mtg_bdb_key_extractor.get(),
+                 mtg_inet_app_init.db_home, errors);
+      if (!errors.has()) {
+        Primary_database_config dto_triplets_primary_database_config;
+        mtg_inet_app_init.bdb_databases_config.select(dto_triplet_db_name,
+                                                      dto_triplets_primary_database_config,
+                                                      errors);
+        if (!errors.has()) {
+          Primary_database dto_triplets_db(dto_triplets_primary_database_config,
+                                           mtg_bdb_key_extractor.get(),
+                                           mtg_inet_app_init.db_home,
+                                           errors);
+          if (!errors.has()) {
+            std::string text_file = mtg_inet_app_init.tsv_home + "/"
+                + mtg_request.arguments.at(0);
+            int count = DA::load(dto_db.bdb_db, dto_triplets_db.bdb_db,
+                                 text_file, errors, tab);
+            if (!errors.has())
+              mtg_request_response.add_response(
+                  Mtg_request_response::to_load_response(count, errors));
+          }
+        }
+      }
+    }
+  }
+
+  template<typename D, typename DA>
+  static void lookup(Mtg_inet_app_init &mtg_inet_app_init,
+                     const Mtg_request &mtg_request,
+                     const std::string &dto_db_name,
+                     Mtg_request_response &mtg_request_response,
+                     Bdb_errors &errors) {
+    if (mtg_request.arguments.empty())
+      errors.add("Mtg_request_handler::lookup", "1", "missing id");
+    Primary_database_config primary_database_config;
+    mtg_inet_app_init.bdb_databases_config.select(dto_db_name,
+                                                  primary_database_config,
+                                                  errors);
+    if (!errors.has()) {
+      std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+          std::make_unique<Mtg_bdb_key_extractor>();
+      Primary_database
+          dto_db(primary_database_config,
+                 mtg_bdb_key_extractor.get(),
+                 mtg_inet_app_init.db_home,
+                 errors);
+      if (!errors.has()) {
+        std::string dto_id = mtg_request.arguments.at(0);
+        D dto;
+        DA::lookup(dto_db.bdb_db, dto_id, dto, errors);
+        if (!errors.has()) {
+          json_object *dto_json = dto.to_json(errors);
+          if (!errors.has()) {
+            mtg_request_response.add_response(dto_json);
+          }
+        }
+      }
+    }
+  }
+
   template<typename D, typename DA, typename DL>
   static void match_text(Mtg_inet_app_init &mtg_inet_app_init,
                          const Mtg_request &mtg_request,
@@ -27,7 +104,8 @@ class Mtg_request_handler {
                          Mtg_request_response &mtg_request_response,
                          Bdb_errors &errors) {
     if (mtg_request.arguments.size() < 3)
-      errors.add("Mtg_request_handler::match_text", "1", "parameters: text, min-score, score-count");
+      errors.add("Mtg_request_handler::match_text",
+                 "1", "parameters: text, min-score, score-count");
     std::string text;
     int min_score;
     int score_count;
@@ -37,9 +115,12 @@ class Mtg_request_handler {
       score_count = Misc_utils::string_to_int(mtg_request.arguments.at(2), errors);
     }
     if (!errors.has()) {
-      std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor = std::make_unique<Mtg_bdb_key_extractor>();
+      std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+          std::make_unique<Mtg_bdb_key_extractor>();
       Primary_database_config dto_primary_database_config;
-      mtg_inet_app_init.bdb_databases_config.select(dto_db_name, dto_primary_database_config, errors);
+      mtg_inet_app_init.bdb_databases_config.select(dto_db_name,
+                                                    dto_primary_database_config,
+                                                    errors);
       if (!errors.has()) {
         Primary_database dto_db(dto_primary_database_config,
                                 mtg_bdb_key_extractor.get(),
@@ -119,12 +200,17 @@ class Mtg_request_handler {
                          Mtg_request_response &mtg_request_response,
                          Bdb_errors &errors) {
     Primary_database_config primary_database_config;
-    mtg_inet_app_init.bdb_databases_config.select(dto_db_name, primary_database_config, errors);
+    mtg_inet_app_init.bdb_databases_config.select(dto_db_name,
+                                                  primary_database_config,
+                                                  errors);
     if (!errors.has()) {
       std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
           std::make_unique<Mtg_bdb_key_extractor>();
       Primary_database
-          deck_db(primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
+          deck_db(primary_database_config,
+                  mtg_bdb_key_extractor.get(),
+                  mtg_inet_app_init.db_home,
+                  errors);
       if (!errors.has()) {
         DL deck_dto_list;
         DA::select_all(deck_db.bdb_db, deck_dto_list, errors);
@@ -138,73 +224,6 @@ class Mtg_request_handler {
     }
   }
 
-  template<typename DA>
-  static void load(Mtg_inet_app_init &mtg_inet_app_init,
-                   const Mtg_request &mtg_request,
-                   const std::string &dto_db_name,
-                   const std::string &dto_triplet_db_name,
-                   Mtg_request_response &mtg_request_response,
-                   Bdb_errors &errors) {
-    if (mtg_request.arguments.empty())
-      errors.add("Mtg_request::load", "1", "missing text file");
-    Primary_database_config dto_primary_database_config;
-    mtg_inet_app_init.bdb_databases_config.select(dto_db_name, dto_primary_database_config, errors);
-    if (!errors.has()) {
-      std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
-          std::make_unique<Mtg_bdb_key_extractor>();
-      Primary_database
-          dto_db(dto_primary_database_config, mtg_bdb_key_extractor.get(),
-                 mtg_inet_app_init.db_home, errors);
-      if (!errors.has()) {
-        Primary_database_config dto_triplets_primary_database_config;
-        mtg_inet_app_init.bdb_databases_config.select(dto_triplet_db_name,
-                                                      dto_triplets_primary_database_config,
-                                                      errors);
-        if (!errors.has()) {
-          Primary_database dto_triplets_db(dto_triplets_primary_database_config,
-                                           mtg_bdb_key_extractor.get(),
-                                           mtg_inet_app_init.db_home,
-                                           errors);
-          if (!errors.has()) {
-            std::string text_file = mtg_inet_app_init.tsv_home + "/" + mtg_request.arguments.at(0);
-            int count = DA::load(dto_db.bdb_db, dto_triplets_db.bdb_db,
-                                 text_file, errors, tab);
-            if (!errors.has())
-              mtg_request_response.add_response(Mtg_request_response::to_load_response(count, errors));
-          }
-        }
-      }
-    }
-  }
-
-  template<typename D, typename DA>
-  static void lookup(Mtg_inet_app_init &mtg_inet_app_init,
-                     const Mtg_request &mtg_request,
-                     const std::string &dto_db_name,
-                     Mtg_request_response &mtg_request_response,
-                     Bdb_errors &errors) {
-    if (mtg_request.arguments.empty())
-      errors.add("Mtg_request_handler::lookup", "1", "missing id");
-    Primary_database_config primary_database_config;
-    mtg_inet_app_init.bdb_databases_config.select(dto_db_name, primary_database_config, errors);
-    if (!errors.has()) {
-      std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
-          std::make_unique<Mtg_bdb_key_extractor>();
-      Primary_database
-          dto_db(primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
-      if (!errors.has()) {
-        std::string dto_id = mtg_request.arguments.at(0);
-        D dto;
-        DA::lookup(dto_db.bdb_db, dto_id, dto, errors);
-        if (!errors.has()) {
-          json_object *dto_json = dto.to_json(errors);
-          if (!errors.has()) {
-            mtg_request_response.add_response(dto_json);
-          }
-        }
-      }
-    }
-  }
 };
 
 class Mtg_account_request_handler {

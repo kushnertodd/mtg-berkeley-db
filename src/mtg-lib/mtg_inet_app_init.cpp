@@ -1,5 +1,4 @@
 #include <json-c/json.h>
-#include "bdb_databases_config.hpp"
 #include "bdb_errors.hpp"
 #include "bdb_file_io.hpp"
 #include "misc_utils.hpp"
@@ -8,8 +7,8 @@
 std::string Mtg_inet_app_init::app_name{"bdb_unix_lookup"};
 
 Mtg_inet_app_init::Mtg_inet_app_init(int argc,
-                                       const char **argv,
-                                       Bdb_errors &errors) {
+                                     const char **argv,
+                                     Bdb_errors &errors) {
   // https://man7.org/linux/man-pages/man3/getopt.3.html
   int ch;
   while ((ch = getopt(argc, (char **) argv, ":b:d:g:h:p:t:")) != EOF)
@@ -47,7 +46,7 @@ Mtg_inet_app_init::Mtg_inet_app_init(int argc,
         break;
       case '?':
         errors.add("Mtg_inet_app_init::Mtg_inet_app_init",
-                   "1",
+                   "2",
                    "Invalid option -" + Misc_utils::char_to_string((char) ch));
         break;
       default:
@@ -56,7 +55,7 @@ Mtg_inet_app_init::Mtg_inet_app_init(int argc,
   if (!have_db_config_filename)
     errors.add("Mtg_inet_app_init::init", "2", "-d required");
   if (!have_db_home)
-    errors.add("Mtg_inet_app_init::init", "4", "-h required");
+    errors.add("Mtg_inet_app_init::init", "3", "-h required");
   if (!errors.has())
     init(errors);
   else
@@ -69,7 +68,7 @@ void Mtg_inet_app_init::init(Bdb_errors &errors) {
   if (bdb_json != nullptr)
     bdb_databases_config.from_json(bdb_json, errors);
   else
-    errors.add("Mtg_inet_app_init::init", "1",
+    errors.add("Mtg_inet_app_init::init", "4",
                "invalid json file "
                    + db_config_filename
                    + "(error: " + db_strerror(errno) + ")");

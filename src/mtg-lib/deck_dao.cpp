@@ -58,7 +58,9 @@ void Deck_DAO::save(Bdb_dbp &deck_db, Deck_DTO &deck_dto, Bdb_errors &errors) {
  * @param deck_dto_list all deck dtos in database
  * @param errors if select fails
  */
-void Deck_DAO::select_all(Bdb_dbp &deck_db, Deck_DTO_list &deck_dto_list, Bdb_errors &errors) {
+void Deck_DAO::select_all(Bdb_dbp &deck_db,
+                          Deck_DTO_list &deck_dto_list,
+                          Bdb_errors &errors) {
   Bdb_cursor bdb_cursor(deck_db, errors);
   if (!errors.has())
     bdb_cursor.dto_get_list<Deck_DTO_key,
@@ -82,11 +84,16 @@ void Deck_DAO::select_decks_for_account_id(Bdb_dbp &deck_account_id_sdb,
   Deck_DTO_key_list deck_dto_key_list;
   Bdb_cursor bdb_cursor(deck_account_id_sdb, errors);
   if (!errors.has())
-    bdb_cursor.dto_get_duplicate_list<Deck_DTO_account_id_key, Deck_DTO_key, Deck_DTO_key_list>
+    bdb_cursor.dto_get_duplicate_list<Deck_DTO_account_id_key,
+                                      Deck_DTO_key,
+                                      Deck_DTO_key_list>
         (deck_dto_account_id_key,
          deck_dto_key_list,
          errors);
-  Bdb_DAO::select_by_key_list<Deck_DTO_key, Deck_DTO_key_list, Deck_DTO, Deck_DTO_list>
+  Bdb_DAO::select_by_key_list<Deck_DTO_key,
+                              Deck_DTO_key_list,
+                              Deck_DTO,
+                              Deck_DTO_list>
       (deck_db,
        deck_dto_key_list,
        deck_dto_list,
@@ -109,11 +116,16 @@ void Deck_DAO::select_decks_for_name(Bdb_dbp &deck_name_sdb,
   Deck_DTO_key_list deck_dto_key_list;
   Bdb_cursor bdb_cursor(deck_name_sdb, errors);
   if (!errors.has())
-    bdb_cursor.dto_get_duplicate_list<Deck_DTO_name_key, Deck_DTO_key, Deck_DTO_key_list>
+    bdb_cursor.dto_get_duplicate_list<Deck_DTO_name_key,
+                                      Deck_DTO_key,
+                                      Deck_DTO_key_list>
         (deck_dto_name_key,
          deck_dto_key_list,
          errors);
-  Bdb_DAO::select_by_key_list<Deck_DTO_key, Deck_DTO_key_list, Deck_DTO, Deck_DTO_list>
+  Bdb_DAO::select_by_key_list<Deck_DTO_key,
+                              Deck_DTO_key_list,
+                              Deck_DTO,
+                              Deck_DTO_list>
       (deck_db,
        deck_dto_key_list,
        deck_dto_list,
@@ -153,7 +165,7 @@ void Deck_DAO::select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
 }
 
 void Deck_DAO::update(Bdb_dbp &deck_db,
-                       Deck_DTO &deck_dto,
+                      Deck_DTO &deck_dto,
                       Bdb_errors &errors) {
   Deck_DTO_key deck_dto_key(deck_dto);
   Bdb_DAO::save<Deck_DTO_key, Deck_DTO>
