@@ -48,7 +48,6 @@ int main(int argc, const char **argv) {
       }
       if (errors.has()) {
         std::cout << errors.to_string() << std::endl;
-        errors.error_ct = 0;
       }
     }
   }
