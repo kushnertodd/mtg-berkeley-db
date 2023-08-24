@@ -48,7 +48,7 @@ bool Mtg_account_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
   Mtg_request_handler::load<Account_DAO>(mtg_inet_app_init,
                                          mtg_request,
                                          "account",
-                                         "account_triplets",
+                                         "account_username_triplets",
                                          mtg_request_response,
                                          errors);
   return true;

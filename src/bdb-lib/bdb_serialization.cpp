@@ -20,12 +20,12 @@ size_t Bdb_serialization::buffer_len_string(const std::string &string_val) {
   return buffer_len_char_string(string_val.c_str());
 }
 
-void *Bdb_serialization::deserialize_date(time_t &date_val, void *buffer) {
-  auto *p = (unsigned char *) buffer;
-  std::memcpy(&date_val, p, sizeof(struct tm));
-  p += sizeof(long);
-  return p;
-}
+//void *Bdb_serialization::deserialize_date(time_t &date_val, void *buffer) {
+//  auto *p = (unsigned char *) buffer;
+//  std::memcpy(&date_val, p, sizeof(struct tm));
+//  p += sizeof(long);
+//  return p;
+//}
 
 /*!
  * @brief deserialize double value
@@ -99,12 +99,14 @@ void *Bdb_serialization::deserialize_string(std::string &string_val, void *buffe
  * @brief serialize long value
  * @param long_val long value to serialize
  */
+/*
 void *Bdb_serialization::serialize_date(time_t &date_val, void *buffer) {
   auto *p = (unsigned char *) buffer;
   std::memcpy(p, &date_val, sizeof(struct tm));
   p += sizeof(long);
   return p;
 }
+*/
 
 /*!
  * @brief serialize double value

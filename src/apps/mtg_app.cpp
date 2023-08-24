@@ -46,6 +46,10 @@ int main(int argc, const char **argv) {
           mtg_request_response.cleanup();
         }
       }
+      if (errors.has()) {
+        std::cout << errors.to_string() << std::endl;
+        errors.error_ct = 0;
+      }
     }
   }
   return 0;
