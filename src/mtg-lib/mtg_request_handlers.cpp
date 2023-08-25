@@ -219,7 +219,7 @@ bool Mtg_card_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
                                       const Mtg_request &mtg_request,
                                       Mtg_request_response &mtg_request_response,
                                       Bdb_errors &errors) {
-  if (mtg_request.request != "lookup_card")
+  if (mtg_request.request != "card_lookup")
     return false;
   Mtg_request_handler::lookup<Card_DTO, Card_DAO>(mtg_inet_app_init,
                                                   mtg_request,
@@ -426,7 +426,7 @@ bool Mtg_deck_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
                                       const Mtg_request &mtg_request,
                                       Mtg_request_response &mtg_request_response,
                                       Bdb_errors &errors) {
-  if (mtg_request.request != "lookup_deck")
+  if (mtg_request.request != "deck_lookup")
     return false;
   Mtg_request_handler::lookup<Deck_DTO, Deck_DAO>(mtg_inet_app_init,
                                                   mtg_request,
@@ -608,7 +608,16 @@ bool Mtg_deck_card_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
                                            const Mtg_request &mtg_request,
                                            Mtg_request_response &mtg_request_response,
                                            Bdb_errors &errors) {
-  return Mtg_deck_card_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors);
+  if (!Mtg_deck_card_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_deck_card_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+//        && !Mtg_deck_card_request_handler::match_name(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+//        && !Mtg_deck_card_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+//        && !Mtg_deck_card_request_handler::select_all_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+//        && !Mtg_deck_card_request_handler::select_other_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+//        && !Mtg_deck_card_request_handler::update(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      )
+    return false;
+  return true;
 }
 
 bool Mtg_deck_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
@@ -633,6 +642,20 @@ bool Mtg_deck_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
         mtg_request_response.add_response(Mtg_request_response::to_load_response(count, errors));
     }
   }
+  return true;
+}
+
+bool Mtg_deck_card_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
+                                           const Mtg_request &mtg_request,
+                                           Mtg_request_response &mtg_request_response,
+                                           Bdb_errors &errors) {
+  if (mtg_request.request != "deck_card_lookup")
+    return false;
+  Mtg_request_handler::lookup<Deck_card_DTO, Deck_card_DAO>(mtg_inet_app_init,
+                                                            mtg_request,
+                                                            "deck_card",
+                                                            mtg_request_response,
+                                                            errors);
   return true;
 }
 

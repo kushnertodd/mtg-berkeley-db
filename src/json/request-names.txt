@@ -2,3 +2,7 @@ account_load
 card_load
 deck_card_load
 deck_load
+account_lookup
+card_lookup
+deck_card_lookup
+deck_lookup

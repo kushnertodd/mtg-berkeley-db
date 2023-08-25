@@ -78,10 +78,8 @@ class Mtg_request_handler {
       std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
           std::make_unique<Mtg_bdb_key_extractor>();
       Primary_database
-          dto_db(primary_database_config,
-                 mtg_bdb_key_extractor.get(),
-                 mtg_inet_app_init.db_home,
-                 errors);
+          dto_db(primary_database_config, mtg_bdb_key_extractor.get(),
+                 mtg_inet_app_init.db_home, errors);
       if (!errors.has()) {
         std::string dto_id = mtg_request.arguments.at(0);
         D dto;
@@ -357,6 +355,11 @@ class Mtg_deck_card_request_handler {
                    const Mtg_request &mtg_request,
                    Mtg_request_response &mtg_request_response,
                    Bdb_errors &errors);
+  static bool lookup(Mtg_inet_app_init &mtg_inet_app_init,
+                     const Mtg_request &mtg_request,
+                     Mtg_request_response &mtg_request_response,
+                     Bdb_errors &errors);
+
 };
 
 class Mtg_workflow_request_handler {

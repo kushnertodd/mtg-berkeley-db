@@ -1,4 +1,3 @@
-#include <json-c/json.h>
 #include <iostream>
 #include "bdb_common.hpp"
 #include "bdb_errors.hpp"

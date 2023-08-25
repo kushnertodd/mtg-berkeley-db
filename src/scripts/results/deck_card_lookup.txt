@@ -1,0 +1,16 @@
+{
+  "class_name":"Mtg_request_response",
+  "mtg_request":{
+    "class_name":"Mtg_request",
+    "request":"deck_card_lookup",
+    "arguments":[
+      "1"
+    ]
+  },
+  "mtg_request_response":{
+    "class_deck_card":"Deck_card_DTO",
+    "deck_card_id":"1",
+    "primaryDeck_card":"1",
+    "birthYear":"1"
+  }
+}
