@@ -1,0 +1,27 @@
+{
+  "class_name":"Mtg_request_response",
+  "mtg_request":{
+    "class_name":"Mtg_request",
+    "request":"deck_select_all_for_account_id",
+    "arguments":[
+      "2"
+    ]
+  },
+  "mtg_request_response":{
+    "class_deck":"Deck_DTO_list",
+    "deck_dto_list":[
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"3",
+        "account_id":"3",
+        "name":"Josh's Green-white"
+      },
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"4",
+        "account_id":"4",
+        "name":"Josh's White-black"
+      }
+    ]
+  }
+}
