@@ -3,7 +3,9 @@
   "mtg_request":{
     "class_name":"Mtg_request",
     "request":"account_select_all",
-    "arguments":[]
+    "arguments":[
+      "dkushner42@gmail.com"
+    ]
   },
   "mtg_request_response":{
     "class_account":"Account_DTO_list",
@@ -13,21 +15,24 @@
         "account_id":"1",
         "username":"ShadowCalibrator",
         "email":"dkushner42@gmail.com",
-        "created":"2023-08-24"
+        "created":"2023-08-24",
+        "score":""
       },
       {
         "class_account":"Account_DTO",
         "account_id":"2",
         "username":"Accalia",
         "email":"j.kushner27@gmail.com",
-        "created":"2023-08-24"
+        "created":"2023-08-24",
+        "score":""
       },
       {
         "class_account":"Account_DTO",
         "account_id":"3",
         "username":"InigoMontoya",
         "email":"kushnertodd@gmail.com",
-        "created":"2023-08-24"
+        "created":"2023-08-24",
+        "score":""
       }
     ]
   }

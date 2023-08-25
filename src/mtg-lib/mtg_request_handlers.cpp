@@ -192,7 +192,10 @@ bool Mtg_card_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
       && !Mtg_card_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_card_request_handler::match_name(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_card_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_card_request_handler::select_cards_for_deck(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_card_request_handler::select_cards_for_deck(mtg_inet_app_init,
+                                                          mtg_request,
+                                                          mtg_request_response,
+                                                          errors) // TODO
       && !Mtg_card_request_handler::select_all_for_type_id(mtg_inet_app_init,
                                                            mtg_request,
                                                            mtg_request_response,
