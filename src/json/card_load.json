@@ -1,7 +1,7 @@
 {
   "class_name": "Mtg_request",
-  "request": "load_ratings",
+  "request": "card_load",
   "arguments": [
-    "title.ratings.tsv"
+    "card.tsv"
   ]
 }

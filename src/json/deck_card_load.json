@@ -1,7 +1,7 @@
 {
   "class_name": "Mtg_request",
-  "request": "search_ratings",
+  "request": "deck_card_load",
   "arguments": [
-    "nm0000026"
+    "deck_card.tsv"
   ]
 }

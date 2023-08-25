@@ -209,7 +209,7 @@ bool Mtg_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
   Mtg_request_handler::load<Card_DAO>(mtg_inet_app_init,
                                       mtg_request,
                                       "card",
-                                      "card_triplets",
+                                      "card_name_triplets",
                                       mtg_request_response,
                                       errors);
   return true;
@@ -416,7 +416,7 @@ bool Mtg_deck_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
   Mtg_request_handler::load<Deck_DAO>(mtg_inet_app_init,
                                       mtg_request,
                                       "deck",
-                                      "deck_triplets",
+                                      "deck_name_triplets",
                                       mtg_request_response,
                                       errors);
   return true;
@@ -426,7 +426,7 @@ bool Mtg_deck_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
                                       const Mtg_request &mtg_request,
                                       Mtg_request_response &mtg_request_response,
                                       Bdb_errors &errors) {
-  if (mtg_request.request == "lookup_deck")
+  if (mtg_request.request != "lookup_deck")
     return false;
   Mtg_request_handler::lookup<Deck_DTO, Deck_DAO>(mtg_inet_app_init,
                                                   mtg_request,

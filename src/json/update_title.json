@@ -1,9 +1,0 @@
-{
-  "class_name": "Mtg_request",
-  "request": "update_title",
-  "arguments": [
-    "tt0060522",
-    "best title",
-    "good title"
-  ]
-}

@@ -1,9 +1,0 @@
-{
-  "class_name": "Mtg_request",
-  "request": "update_name",
-  "arguments": [
-    "nm0000026",
-    "best",
-    "good movie"
-  ]
-}
