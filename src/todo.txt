@@ -1,0 +1,9 @@
+account_update
+card_select_all_for_deck
+card_update
+deck_select_all_cards
+deck_select_other_cards
+deck_update
+
+missing
+deck_select_all_for_card
