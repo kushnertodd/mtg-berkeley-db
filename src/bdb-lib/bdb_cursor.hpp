@@ -1,4 +1,4 @@
-  #pragma once
+#pragma once
 
 #include <cstring>
 #include <db_cxx.h>
@@ -124,10 +124,10 @@ class Bdb_cursor {
    * @details assumes secondary database or primary database with duplicates permitted
    */
   template<typename K, typename T, typename L>
-  void dto_get_duplicate_list(K &bdb_key_dto, L &bdb_data_dto_list, Bdb_errors &errors) {
+  void dto_get_duplicate_list(K &bdb_key_dto, L &bdb_data_dto_list, Bdb_errors &errors, bool ignore_not_found = false) {
     T bdb_data_dto;
     K bdb_key_dto_next;
-    for (dto_get_key<K, T>(bdb_key_dto, bdb_data_dto, errors);
+    for (dto_get_key<K, T>(bdb_key_dto, bdb_data_dto, errors, ignore_not_found);
          !done;
          dto_get_next_dup<K, T>(bdb_key_dto_next, bdb_data_dto, errors))
       bdb_data_dto_list.add(bdb_data_dto);
@@ -159,14 +159,15 @@ class Bdb_cursor {
    * @post for secondary databases, the data is the primary database key
    */
   template<typename K, typename T>
-  void dto_get_key(K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors) {
+  void dto_get_key(K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors, bool ignore_not_found = false) {
     Bdb_dbt bdb_key_dbt{bdb_key_dto};
     Bdb_dbt bdb_data_dbt{};
     try {
       int ret = cursorp->get(&bdb_key_dbt.get_dbt(), &bdb_data_dbt.get_dbt(), DB_SET);
       if (ret == DB_NOTFOUND) {
         done = true;
-        errors.add("Bdb_cursor::dto_get_key", "1", " key not found in database " + bdb_db->to_string(), ret);
+        if (!ignore_not_found)
+          errors.add("Bdb_cursor::dto_get_key", "1", " key not found in database " + bdb_db->to_string(), ret);
       } else if (ret) {
         done = true;
         errors.add("Bdb_cursor::dto_get_key", "2", "cursor set key error in database " + bdb_db->to_string(), ret);

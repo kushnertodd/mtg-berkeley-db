@@ -10,7 +10,8 @@
   "mtg_request_response":{
     "class_card":"Card_DTO",
     "card_id":"1",
-    "name":"Akki Ronin",
-    "type_id":"red"
+    "name":"Inkrise Infiltrator",
+    "type_id":"red",
+    "score":""
   }
 }

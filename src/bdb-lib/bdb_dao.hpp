@@ -335,7 +335,8 @@ class Bdb_DAO {
       Bdb_dbp &bdb_triplet_db,
       const std::string &triplet,
       Bdb_text_id_occurrence_list &bdb_text_id_occurrence_list,
-      Bdb_errors &errors) {
+      Bdb_errors &errors,
+      bool ignore_not_found = false) {
     Bdb_cursor bdb_cursor(bdb_triplet_db, errors);
     Bdb_triplets_DTO_key bdb_triplets_DTO_key(triplet);
     bdb_cursor.dto_get_duplicate_list<Bdb_triplets_DTO_key,
@@ -343,7 +344,8 @@ class Bdb_DAO {
                                       Bdb_text_id_occurrence_list>(
         bdb_triplets_DTO_key,
         bdb_text_id_occurrence_list,
-        errors);
+        errors,
+        ignore_not_found);
   }
 };
 

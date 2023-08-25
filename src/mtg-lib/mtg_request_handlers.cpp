@@ -235,7 +235,7 @@ bool Mtg_card_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
                                           Bdb_errors &errors) {
   if (mtg_request.request != "card_match_name")
     return false;
-  Mtg_request_handler::match_text<Account_DTO, Account_DAO, Account_DTO_list>
+  Mtg_request_handler::match_text<Card_DTO, Card_DAO, Card_DTO_list>
       (mtg_inet_app_init,
        mtg_request,
        "card",
@@ -442,7 +442,7 @@ bool Mtg_deck_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
                                           Bdb_errors &errors) {
   if (mtg_request.request != "deck_match_name")
     return false;
-  Mtg_request_handler::match_text<Account_DTO, Account_DAO, Account_DTO_list>
+  Mtg_request_handler::match_text<Deck_DTO, Deck_DAO, Deck_DTO_list>
       (mtg_inet_app_init,
        mtg_request,
        "deck",

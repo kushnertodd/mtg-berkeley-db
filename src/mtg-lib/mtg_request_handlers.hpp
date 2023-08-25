@@ -103,7 +103,7 @@ class Mtg_request_handler {
                          Bdb_errors &errors) {
     if (mtg_request.arguments.size() < 3)
       errors.add("Mtg_request_handler::match_text",
-                 "1", "parameters: text, min-score, score-count");
+                 "1", "parameters: text, min_score, score_count");
     std::string text;
     int min_score;
     int score_count;
@@ -143,7 +143,7 @@ class Mtg_request_handler {
               Bdb_DAO::select_triplets_by_key_list(dto_triplets_db.bdb_db,
                                                    text_triplet_occurrence.triplet,
                                                    bdb_text_id_occurrence_list,
-                                                   errors);
+                                                   errors, true);
               if (!errors.has()) {
                 for (const auto &text_id_occurence: bdb_text_id_occurrence_list.list) {
                   std::string id = text_id_occurence.id;

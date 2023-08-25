@@ -1,0 +1,9 @@
+{
+  "class_name": "Mtg_request",
+  "request": "card_match_name",
+  "arguments": [
+    "Spirit Sistr's Call",
+    "10",
+    "10"
+  ]
+}

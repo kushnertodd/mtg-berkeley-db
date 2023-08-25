@@ -135,6 +135,7 @@ json_object *Card_DTO::to_json(Bdb_errors &errors) const {
   json_object_object_add(root, "card_id", json_object_new_string(card_id.c_str()));
   json_object_object_add(root, "name", json_object_new_string(name.c_str()));
   json_object_object_add(root, "type_id", json_object_new_string(type_id.c_str()));
+  json_object_object_add(root, "score", json_object_new_string(score.c_str()));
   return root;
 }
 
