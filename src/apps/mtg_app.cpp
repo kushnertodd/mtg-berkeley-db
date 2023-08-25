@@ -13,7 +13,7 @@ int main(int argc, const char **argv) {
   if (!errors.has()) {
     Bdb_inet_socket_server bdb_socket_server(mtg_inet_app_init.port, errors);
     while (true) {
-      errors.error_ct = 0;
+      errors.clear();
       Bdb_inet_socket_server::Bdb_inet_socket_client bdb_socket_client(bdb_socket_server,
                                                                        errors);
       if (!errors.has()) {

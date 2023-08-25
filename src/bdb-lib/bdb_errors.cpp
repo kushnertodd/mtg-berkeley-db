@@ -81,6 +81,11 @@ void Bdb_errors::check_exit(const std::string &message) {
   }
 }
 
+void Bdb_errors::clear() {
+  error_ct = 0;
+  errors.clear();
+}
+
 /*!
  * checks whether error has been seen
  * @return non-zero error count

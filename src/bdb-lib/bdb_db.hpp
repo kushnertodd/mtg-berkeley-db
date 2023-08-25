@@ -1,7 +1,3 @@
-//
-// Created by kushn on 6/18/2023.
-//
-
 #pragma once
 
 #include <db_cxx.h>

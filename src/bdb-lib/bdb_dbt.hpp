@@ -1,7 +1,3 @@
-//
-// Created by kushn on 6/21/2023.
-//
-
 #pragma once
 
 #include <cstring>

@@ -37,6 +37,7 @@ class Bdb_errors {
   void check_exit(const std::string &message = "");
   static std::string class_name() { return "Bdb_errors"; }
 
+  void clear();
   [[nodiscard]] bool has() const;
   [[nodiscard]] json_object *to_json() const;
   [[nodiscard]] std::string to_json_string() const;

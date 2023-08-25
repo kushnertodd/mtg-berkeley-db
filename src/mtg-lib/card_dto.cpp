@@ -112,7 +112,7 @@ void Card_DTO::parse(int count, const std::string &line, Bdb_errors &errors, cha
   }
   // Store the tokens as per structure members , where (i==0) is first member and so on..
   if (i < 3) {
-    errors.add("Card_DTO::create", "2", "too few card fields on line "
+    errors.add("Card_DTO::parse", "2", "too few card fields on line "
         + Bdb_tokens::line_print(count, line));
   }
 }
