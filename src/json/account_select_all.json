@@ -1,0 +1,6 @@
+{
+  "class_name": "Mtg_request",
+  "request": "account_select_all",
+  "arguments": [
+  ]
+}

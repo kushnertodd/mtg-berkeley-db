@@ -246,10 +246,10 @@ class Mtg_account_request_handler {
                              Mtg_request_response &mtg_request_response,
                              Bdb_errors &errors);
 
-  static bool select_all_email(Mtg_inet_app_init &mtg_inet_app_init,
-                               const Mtg_request &mtg_request,
-                               Mtg_request_response &mtg_request_response,
-                               Bdb_errors &errors);
+  static bool select_all_for_email(Mtg_inet_app_init &mtg_inet_app_init,
+                                   const Mtg_request &mtg_request,
+                                   Mtg_request_response &mtg_request_response,
+                                   Bdb_errors &errors);
 
   static bool select_all(Mtg_inet_app_init &mtg_inet_app_init,
                          const Mtg_request &mtg_request,

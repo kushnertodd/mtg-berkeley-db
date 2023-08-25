@@ -32,7 +32,10 @@ bool Mtg_account_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
   if (!Mtg_account_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_account_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_account_request_handler::match_username(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_account_request_handler::select_all_email(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_account_request_handler::select_all_for_email(mtg_inet_app_init,
+                                                            mtg_request,
+                                                            mtg_request_response,
+                                                            errors)
       && !Mtg_account_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_account_request_handler::update(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
     return false;
@@ -85,10 +88,10 @@ bool Mtg_account_request_handler::match_username(Mtg_inet_app_init &mtg_inet_app
   return true;
 }
 
-bool Mtg_account_request_handler::select_all_email(Mtg_inet_app_init &mtg_inet_app_init,
-                                                   const Mtg_request &mtg_request,
-                                                   Mtg_request_response &mtg_request_response,
-                                                   Bdb_errors &errors) {
+bool Mtg_account_request_handler::select_all_for_email(Mtg_inet_app_init &mtg_inet_app_init,
+                                                       const Mtg_request &mtg_request,
+                                                       Mtg_request_response &mtg_request_response,
+                                                       Bdb_errors &errors) {
   if (mtg_request.request != "account_select_all_for_email")
     return false;
   if (mtg_request.arguments.empty())
