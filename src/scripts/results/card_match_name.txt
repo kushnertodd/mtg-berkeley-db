@@ -17,21 +17,14 @@
         "card_id":"3",
         "name":"Spririt Sisters Call",
         "type_id":"green",
-        "score":"1840"
+        "score":"30"
       },
       {
         "class_card":"Card_DTO",
         "card_id":"5",
         "name":"Spiritual Guardian",
         "type_id":"white",
-        "score":"787"
-      },
-      {
-        "class_card":"Card_DTO",
-        "card_id":"6",
-        "name":"Scheming Aspirant",
-        "type_id":"white",
-        "score":"213"
+        "score":"12"
       }
     ]
   }

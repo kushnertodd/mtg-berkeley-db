@@ -1,3 +1,4 @@
+sh rm-db-samples.sh
 for f in `cat ../json/request-names.txt` ; do
   out=$f.txt
   sh request.sh $f

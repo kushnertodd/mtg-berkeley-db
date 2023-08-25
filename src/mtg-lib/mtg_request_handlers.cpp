@@ -399,9 +399,9 @@ bool Mtg_deck_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
       && !Mtg_deck_request_handler::match_name(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_all_for_account_id(mtg_inet_app_init,
-                                                                mtg_request,
-                                                                mtg_request_response,
-                                                                errors)
+                                                              mtg_request,
+                                                              mtg_request_response,
+                                                              errors)
       && !Mtg_deck_request_handler::select_all_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_other_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::update(mtg_inet_app_init, mtg_request, mtg_request_response, errors))
@@ -455,9 +455,9 @@ bool Mtg_deck_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
 }
 
 bool Mtg_deck_request_handler::select_all_for_account_id(Mtg_inet_app_init &mtg_inet_app_init,
-                                                           const Mtg_request &mtg_request,
-                                                           Mtg_request_response &mtg_request_response,
-                                                           Bdb_errors &errors) {
+                                                         const Mtg_request &mtg_request,
+                                                         Mtg_request_response &mtg_request_response,
+                                                         Bdb_errors &errors) {
   if (mtg_request.request != "deck_select_all_for_account_id")
     return false;
   if (mtg_request.arguments.empty())
