@@ -1,6 +1,6 @@
 /*
   let request_names = [
-    "lookup_name",
+    "deck_select_all_for_account_id",
     "lookup_ratings",
     "lookup_title",
     "search_name",
@@ -12,27 +12,23 @@
   ];
 */
 let request_parameters = {
-    lookup_name: {"label": "Lookup actor", "needs_argument": true, "placeholder": "Enter actor id"},
-    lookup_title: {"label": "Lookup movie", "needs_argument": true, "placeholder": "Enter movie id"},
-    search_title: {"label": "Search for actor movies", "needs_argument": true, "placeholder": "Enter actor id"},
-    search_name: {"label": "Search for movie actors", "needs_argument": true, "placeholder": "Enter movie id"},
-    select_name: {"label": "Select all actor names", "needs_argument": true, "placeholder": "Enter actor name"},
-    select_title: {"label": "Select all movie titles", "needs_argument": true, "placeholder": "Enter movie name"}
+    account_select_all: {"needs_argument": false},
+    deck_select_all_for_account_id: {"needs_argument": true},
 };
 
 let table_headers = {
-    "name": ["id", "name", "born", "died", "user rating", "priority"],
-    "title": ["id", "title", "year", "rating", "votes", "user rating", "priority"]
+    "card": ["name", "color"],
+    "deck": ["name", "user"]
 }
 
 // after DOM loaded
 let dialog_mode;
 
 $(document).ready(function () {
-    $("#argument_input").hide();
+    //$("#argument_input").hide();
     create_mtg_request_list();
     $("#send_request_button").prop("disabled", true);
-
+/*
     // change movie dialog
 
     $("#movie-row-dialog-contextmenu").dialog({
@@ -112,6 +108,7 @@ $(document).ready(function () {
         $("#actor-row-dialog-contextmenu").dialog("close");
         search_actor_element();
     });
+    */
 });
 
 function clear_table(tbody) {
@@ -147,9 +144,9 @@ function create_mtg_request(request, arguments) {
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces
 // https://stackoverflow.com/questions/14643617/create-table-using-javascript
-function create_mtg_table(table_type) {
+function create_mtg_table(response) {
     <!-- list of header column names -->
-    let headers = table_headers[table_type];
+    let headers = table_headers["deck"];
     // disable context menu on right click
     let tbody = get_mtg_table_tbody_DOM_object();
     clear_table(tbody);
@@ -157,7 +154,7 @@ function create_mtg_table(table_type) {
     tbody.appendChild(tr);
     // might be the right way to set columns widths:
     // https://stackoverflow.com/questions/928849/setting-table-column-width
-    let cellWidths = ['30%', '15%', '40%', '15%'];
+    let cellWidths = ['50%', '50%'];
     for (let i = 0; i < headers.length; i++) {
         let th = document.createElement('TH');
         tr.appendChild(th);
@@ -165,50 +162,46 @@ function create_mtg_table(table_type) {
         th.width = cellWidths[i];
         th.appendChild(document.createTextNode(headers[i]));
     }
+    let decks = response.deck_dto_list;
+    for (let i = 0; i < decks.length; i++) {
+        let tr = document.createElement('TR');
+        tbody.appendChild(tr);
+         td = document.createElement('TD');
+        tr.appendChild(td);
+        //td.className += " header";
+        //td.width = cellWidths[i];
+        td.appendChild(document.createTextNode(decks[i].name));
+         td = document.createElement('TD');
+        tr.appendChild(td);
+        //td.className += " header";
+        //td.width = cellWidths[i];
+        td.appendChild(document.createTextNode(decks[i].account_id));
+    }
 }
 
 function create_mtg_request_list() {
-    let select_request_list = document.getElementById("mtg_select_request");
-    for (const opt in request_parameters) {
+    let payload = create_mtg_request("account_select_all", "");
+    send_mtg_request(payload, select_user_request_success, select_user_request_failure);
+    return false;
+}
+function populate_mtg_request_list(response) {
+    let select_request_list = document.getElementById("mtg_select_user");
+    for (let i = 0; i < response.account_dto_list.length; i++) {
+        let account = response.account_dto_list[i];
         let el = document.createElement("option");
-        let request_descriptor = request_parameters[opt];
-        el.textContent = request_descriptor.label;
-        el.value = opt;
+        el.textContent = account.username;
+        el.value = account.account_id;
         select_request_list.appendChild(el);
     }
 }
 
 function display_response(request_name, result_obj) {
     switch (request_name) {
-        case 'lookup_name':
-            create_mtg_table("name");
-            mtg_table_append_actor(result_obj.mtg_request_response);
+        case 'account_select_all':
+            populate_mtg_request_list(result_obj.mtg_request_response);
             break;
-        case 'lookup_title':
-            create_mtg_table("title");
-            mtg_table_append_movie(result_obj.mtg_request_response);
-            break;
-        case 'search_name':
-            create_mtg_table("name");
-            mtg_table_append_actors(result_obj.mtg_request_response);
-            break;
-        case 'search_title':
-            create_mtg_table("title");
-            mtg_table_append_movies(result_obj.mtg_request_response);
-            break;
-        case 'select_name':
-            create_mtg_table("name");
-            mtg_table_append_actors(result_obj.mtg_request_response);
-            break;
-        case 'select_title':
-            create_mtg_table("title");
-            mtg_table_append_movies(result_obj.mtg_request_response);
-            break;
-        case 'update_name':
-            mtg_table_replace_actor(result_obj.mtg_request_response);
-            break;
-        case 'update_title':
-            mtg_table_replace_movie(result_obj.mtg_request_response);
+        case 'deck_select_all_for_account_id':
+            create_mtg_table(result_obj.mtg_request_response);
             break;
         default:
             console.log("unexpected result request: " + request_name);
@@ -216,13 +209,13 @@ function display_response(request_name, result_obj) {
 }
 
 // cache movie table body DOM object
-let movie_selection_list = undefined;
+let user_selection_list = undefined;
 
 // get movie table body DOM object
-function get_mtg_select_request_DOM_object() {
-    if (movie_selection_list === undefined) movie_selection_list =
-        document.getElementById("mtg_select_request");
-    return movie_selection_list;
+function get_mtg_select_user_DOM_object() {
+    if (user_selection_list === undefined) user_selection_list =
+        document.getElementById("mtg_select_user");
+    return user_selection_list;
 }
 
 // cache movie table div DOM object
@@ -262,7 +255,7 @@ function get_mtg_table_tbody_DOM_object() {
     }
     return mtg_table_tbody;
 }
-
+/*
 function mtg_table_append_actor(response) {
     let tbody = get_mtg_table_tbody_DOM_object();
     // add new row
@@ -515,9 +508,12 @@ function mtg_table_td_for_tag(tr, tag) {
     }
     return undefined;
 }
-
-function request_selected() {
-    let opt = $("#mtg_select_request")[0].value;
+*/
+function user_selected() {
+    let opt = $("#mtg_select_user")[0].value;
+    let payload = create_mtg_request("deck_select_all_for_account_id", opt);
+    send_mtg_request(payload, select_user_decks_request_success, select_user_decks_request_failure);
+    /*
     let request_descriptor = request_parameters[opt];
     if (request_descriptor.needs_argument) {
         let argument_input_el = $("#argument_input");
@@ -529,8 +525,9 @@ function request_selected() {
         $("#argument_input").hide();
     }
     $("#send_request_button").prop("disabled", false);
+    */
 }
-
+/*
 function save_actor_request(dialog) {
     let name_id = $("#change-actor-name-id")[0].textContent;
     let user_rating = $("#change-actor-user-rating")[0].value;
@@ -540,7 +537,33 @@ function save_actor_request(dialog) {
     send_mtg_request(req, save_actor_request_success, save_actor_request_failure);
 }
 
+*/
+function select_user_request_failure(req) {
+    alert("select user request failed: '" + req + "'");
+}
 
+function select_user_request_success(result) {
+    const data = JSON.stringify(result);
+    let result_obj = JSON.parse(data);
+    console.log("class name: " + result_obj.class_name);
+    console.log(data);
+    let request_name = result_obj.mtg_request.request;
+    display_response(request_name, result_obj);
+}
+
+function select_user_decks_request_failure(req) {
+    alert("select user request failed: '" + req + "'");
+}
+
+function select_user_decks_request_success(result) {
+    const data = JSON.stringify(result);
+    let result_obj = JSON.parse(data);
+    console.log("class name: " + result_obj.class_name);
+    console.log(data);
+    let request_name = result_obj.mtg_request.request;
+    display_response(request_name, result_obj);
+}
+/*
 function save_actor_request_failure(req) {
     alert("save request failed: '" + req + "'");
 }
@@ -548,7 +571,7 @@ function save_actor_request_failure(req) {
 function save_actor_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.mtg_request_response.class_name);
+    console.log("class name: " + result_obj.class_name);
     console.log(data);
     let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
@@ -571,7 +594,7 @@ function save_movie_request_failure(req) {
 function save_movie_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.mtg_request_response.class_name);
+    console.log("class name: " + result_obj.class_name);
     console.log(data);
     let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
@@ -581,7 +604,7 @@ function search_actor_element() {
     let name_id_td = mtg_table_td_for_tag(actor_row_selected, "id");
     let name_id_text = name_id_td.textContent;
     let payload = create_mtg_request("search_title", name_id_text);
-    send_mtg_request(payload, send_movie_request_success, send_movie_request_failure);
+    send_mtg_request(payload, select_user_request_success, select_user_request_failure);
     return false;
 }
 
@@ -589,7 +612,7 @@ function search_movie_element() {
     let title_id_td = mtg_table_td_for_tag(movie_row_selected, "id");
     let title_id_text = title_id_td.textContent;
     let payload = create_mtg_request("search_name", title_id_text);
-    send_mtg_request(payload, send_movie_request_success, send_movie_request_failure);
+    send_mtg_request(payload, select_user_request_success, select_user_request_failure);
     return false;
 }
 
@@ -654,7 +677,7 @@ function select_movie_elements() {
     let priority_el = $("#change-movie-priority");
     priority_el[0].value = priority_text;
 }
-
+*/
 // run mtg_request
 // success: return data
 // fail: return null
@@ -676,8 +699,8 @@ function send_mtg_request(req, success_callback, failure_callback) {
     }
 }
 
-function send_movie_request() {
-    let request = $("#mtg_select_request")[0].value;
+function select_user_request() {
+    let request = $("#mtg_select_user")[0].value;
     let argument_el = $('#argument_input')[0];
     let argument = argument_el.value;
     let request_descriptor = request_parameters[request];
@@ -686,18 +709,18 @@ function send_movie_request() {
         return false;
     }
     let payload = create_mtg_request(request, argument);
-    send_mtg_request(payload, send_movie_request_success, send_movie_request_failure);
+    send_mtg_request(payload, select_user_request_success, select_user_request_failure);
     return false;
 }
 
-function send_movie_request_failure(req) {
+function select_user_request_failure(req) {
     alert("request failed: '" + req + "'");
 }
 
-function send_movie_request_success(result) {
+function select_user_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.mtg_request_response.class_name);
+    console.log("class name: " + result_obj.class_name);
     console.log(data);
     let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);

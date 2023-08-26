@@ -848,35 +848,16 @@ bool Mtg_workflow_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
                                           const Mtg_request &mtg_request,
                                           Mtg_request_response &mtg_request_response,
                                           Bdb_errors &errors) {
-  if (!Mtg_workflow_request_handler::create_account(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_workflow_request_handler::remove_account(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_workflow_request_handler::create_card(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+  if (!Mtg_workflow_request_handler::remove_account(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_workflow_request_handler::remove_card(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_workflow_request_handler::select_cards_for_type_id(mtg_inet_app_init,
-                                                                 mtg_request,
-                                                                 mtg_request_response,
-                                                                 errors)
       && !Mtg_workflow_request_handler::add_card_to_deck(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_workflow_request_handler::create_deck(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_workflow_request_handler::remove_deck(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_workflow_request_handler::remove_card_from_deck(mtg_inet_app_init,
-                                                              mtg_request,
-                                                              mtg_request_response,
-                                                              errors)
-      && !Mtg_workflow_request_handler::select_decks_for_name(mtg_inet_app_init,
                                                               mtg_request,
                                                               mtg_request_response,
                                                               errors))
     return false;
   return true;
-}
-
-bool Mtg_workflow_request_handler::create_account(Mtg_inet_app_init &Mtg_inet_app_init,
-                                                  const Mtg_request &mtg_request,
-                                                  Mtg_request_response &mtg_request_response,
-                                                  Bdb_errors &errors) {
-
-  return false;
 }
 
 bool Mtg_workflow_request_handler::remove_account(Mtg_inet_app_init &Mtg_inet_app_init,
@@ -887,13 +868,6 @@ bool Mtg_workflow_request_handler::remove_account(Mtg_inet_app_init &Mtg_inet_ap
   return false;
 }
 
-bool Mtg_workflow_request_handler::create_card(Mtg_inet_app_init &mtg_inet_app_init,
-                                               const Mtg_request &mtg_request,
-                                               Mtg_request_response &mtg_request_response,
-                                               Bdb_errors &errors) {
-  return false;
-}
-
 bool Mtg_workflow_request_handler::remove_card(Mtg_inet_app_init &mtg_inet_app_init,
                                                const Mtg_request &mtg_request,
                                                Mtg_request_response &mtg_request_response,
@@ -901,24 +875,10 @@ bool Mtg_workflow_request_handler::remove_card(Mtg_inet_app_init &mtg_inet_app_i
   return true;
 }
 
-bool Mtg_workflow_request_handler::select_cards_for_type_id(Mtg_inet_app_init &mtg_inet_app_init,
-                                                            const Mtg_request &mtg_request,
-                                                            Mtg_request_response &mtg_request_response,
-                                                            Bdb_errors &errors) {
-  return false;
-}
-
 bool Mtg_workflow_request_handler::add_card_to_deck(Mtg_inet_app_init &mtg_inet_app_init,
                                                     const Mtg_request &mtg_request,
                                                     Mtg_request_response &mtg_request_response,
                                                     Bdb_errors &errors) {
-  return false;
-}
-
-bool Mtg_workflow_request_handler::create_deck(Mtg_inet_app_init &mtg_inet_app_init,
-                                               const Mtg_request &mtg_request,
-                                               Mtg_request_response &mtg_request_response,
-                                               Bdb_errors &errors) {
   return false;
 }
 
@@ -936,9 +896,3 @@ bool Mtg_workflow_request_handler::remove_card_from_deck(Mtg_inet_app_init &mtg_
   return false;
 }
 
-bool Mtg_workflow_request_handler::select_decks_for_name(Mtg_inet_app_init &mtg_inet_app_init,
-                                                         const Mtg_request &mtg_request,
-                                                         Mtg_request_response &mtg_request_response,
-                                                         Bdb_errors &errors) {
-  return false;
-}
