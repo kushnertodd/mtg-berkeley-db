@@ -170,9 +170,11 @@ std::string Account_DTO::to_string() const {
   return os.str();
 }
 
-Account_DTO_key::Account_DTO_key(const Account_DTO &account_dto) : account_id(account_dto.account_id) {}
+Account_DTO_key::Account_DTO_key(const Account_DTO &account_dto) :
+    account_id(account_dto.account_id) {}
 
-Account_DTO_key::Account_DTO_key(std::string account_id_) : account_id(std::move(account_id_)) {}
+Account_DTO_key::Account_DTO_key(std::string account_id_) :
+    account_id(std::move(account_id_)) {}
 
 Account_DTO_key::Account_DTO_key(void *buffer) {
   deserialize(buffer);

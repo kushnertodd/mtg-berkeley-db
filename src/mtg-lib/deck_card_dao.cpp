@@ -117,28 +117,6 @@ void Deck_card_DAO::select_by_key_list(Bdb_dbp &deck_card_db,
 }
 
 /*!
- * @brief select card dto list using deck_card dto list
- * @param card_db card primary database
- * @param deck_card_dto_list select one card dto per deck_card dto
- * @param card_dto_list selected card dto list
- * @param errors if deck_card key not found
- */
-void Deck_card_DAO::select_card_list(Bdb_dbp &card_db,
-                                     Deck_card_DTO_list &deck_card_dto_list,
-                                     Card_DTO_list &card_dto_list,
-                                     Bdb_errors &errors) {
-  for (Deck_card_DTO &deck_card_dto: deck_card_dto_list.list) {
-    Card_DTO_key card_dto_key(deck_card_dto);
-    Card_DTO card_dto;
-    Card_DAO::lookup(card_db, card_dto_key.card_id, card_dto, errors);
-    if (!errors.has())
-      card_dto_list.add(card_dto);
-    if (errors.has())
-      break;
-  }
-}
-
-/*!
  * @brief select all card records corresponding to deck id via deck id->deck_card key secondary database
  * @param deck_card_deck_id_sdb deck id->deck_card key secondary database
  * @param deck_card_db deck_card database
@@ -161,23 +139,22 @@ void Deck_card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
 }
 
 /*!
- * @brief select deck dto list using deck_card dto list
- * @param deck_db deck primary database
- * @param deck_card_dto_list select one deck dto per deck_card dto
- * @param deck_dto_list selected deck dto list
+ * @brief select card dto list using deck_card dto list
+ * @param card_db card primary database
+ * @param deck_card_dto_list select one card dto per deck_card dto
+ * @param card_dto_list selected card dto list
  * @param errors if deck_card key not found
  */
-void Deck_card_DAO::select_deck_list(Bdb_dbp &deck_db,
+void Deck_card_DAO::select_card_list(Bdb_dbp &card_db,
                                      Deck_card_DTO_list &deck_card_dto_list,
-                                     Deck_DTO_list &deck_dto_list,
+                                     Card_DTO_list &card_dto_list,
                                      Bdb_errors &errors) {
   for (Deck_card_DTO &deck_card_dto: deck_card_dto_list.list) {
-    Deck_DTO_key deck_dto_key(deck_card_dto);
-    Deck_DTO deck_dto;
-    Bdb_DAO::lookup<Deck_DTO_key, Deck_DTO>
-        (deck_db, deck_dto_key, deck_dto, errors);
+    Card_DTO_key card_dto_key(deck_card_dto);
+    Card_DTO card_dto;
+    Card_DAO::lookup(card_db, card_dto_key.card_id, card_dto, errors);
     if (!errors.has())
-      deck_dto_list.add(deck_dto);
+      card_dto_list.add(card_dto);
     if (errors.has())
       break;
   }
@@ -205,4 +182,27 @@ void Deck_card_DAO::select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
   select_deck_list(deck_db, deck_card_dto_list, deck_dto_list, errors);
 }
 
+
+/*!
+ * @brief select deck dto list using deck_card dto list
+ * @param deck_db deck primary database
+ * @param deck_card_dto_list select one deck dto per deck_card dto
+ * @param deck_dto_list selected deck dto list
+ * @param errors if deck_card key not found
+ */
+void Deck_card_DAO::select_deck_list(Bdb_dbp &deck_db,
+                                     Deck_card_DTO_list &deck_card_dto_list,
+                                     Deck_DTO_list &deck_dto_list,
+                                     Bdb_errors &errors) {
+  for (Deck_card_DTO &deck_card_dto: deck_card_dto_list.list) {
+    Deck_DTO_key deck_dto_key(deck_card_dto);
+    Deck_DTO deck_dto;
+    Bdb_DAO::lookup<Deck_DTO_key, Deck_DTO>
+        (deck_db, deck_dto_key, deck_dto, errors);
+    if (!errors.has())
+      deck_dto_list.add(deck_dto);
+    if (errors.has())
+      break;
+  }
+}
 

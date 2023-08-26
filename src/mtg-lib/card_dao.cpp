@@ -68,37 +68,6 @@ void Card_DAO::select_all(Bdb_dbp &card_db,
                             Card_DTO_list>(card_dto_list, errors);
 }
 
-//void Card_DAO::select_all_decks(Bdb_dbp &deck_card_deck_id_sdb,
-//                                Bdb_dbp &deck_card_db,
-//                                Bdb_dbp &card_db,
-//                                const std::string &deck_id,
-//                                Deck_DTO_list &deck_dto_list,
-//                                Bdb_errors &errors) {
-//  Deck_DTO_key deck_dto_key(deck_id);
-//  Deck_card_DTO_list deck_card_dto_list;
-//    Bdb_DAO::select_by_secondary_db_key
-//        <Deck_card_DTO_key,
-//         Deck_card_DTO,
-//         Deck_card_DTO_key_list,
-//         Deck_card_DTO_list,
-//         Deck_DTO_key>
-//        (deck_card_deck_id_sdb,
-//         deck_card_db,
-//         deck_dto_key,
-//         deck_card_dto_list,
-//         errors);
-//  if (!errors.has())
-//    Bdb_DAO::select_by_join_dto_list<Deck_card_DTO,
-//                                     Deck_card_DTO_list,
-//                                     Deck_DTO_key,
-//                                     Deck_DTO,
-//                                     Deck_DTO_list>
-//        (card_db,
-//         deck_card_dto_list,
-//         deck_dto_list,
-//         errors);
-//}
-//
 /*!
  * @brief select card key list using card id to search card id->card key secondary database
  * @param card_card_id_sdb card id->card key secondary database

@@ -54,17 +54,40 @@ void Account_DAO::save(Bdb_dbp &account_db,
 }
 
 /*!
+ * @brief select all account dto records from account database
+ * @param account_db account database to select from
+ * @param account_dto_list all account dtos in database
+ * @param errors if select fails
+ */
+void Account_DAO::select_all(Bdb_dbp &account_db,
+                             Account_DTO_list &account_dto_list,
+                             Bdb_errors &errors) {
+  Bdb_cursor bdb_cursor(account_db, errors);
+  if (!errors.has())
+    bdb_cursor.dto_get_list<Account_DTO_key, Account_DTO, Account_DTO_list>
+        (account_dto_list, errors);
+}
+
+void Account_DAO::update(Bdb_dbp &account_db,
+                         Account_DTO &account_dto,
+                         Bdb_errors &errors) {
+  Account_DTO_key account_dto_key(account_dto);
+  Bdb_DAO::save<Account_DTO_key, Account_DTO>
+      (account_db, account_dto_key, account_dto, errors);
+}
+
+/*!
  * @brief select account key list using account account_id to search account account_id->account key secondary database
  * @param account_account_id_sdb account account_id->account key secondary database
  * @param account_id secondary database search key
  * @param account_dto_key_list selected account key list
  * @param errors if account key not found
  */
-void Account_DAO::select_accounts_for_email(Bdb_dbp &account_email_sdb,
-                                            Bdb_dbp &account_db,
-                                            const std::string &email,
-                                            Account_DTO_list &account_dto_list,
-                                            Bdb_errors &errors) {
+void Account_DAO::select_all_for_email(Bdb_dbp &account_email_sdb,
+                                       Bdb_dbp &account_db,
+                                       const std::string &email,
+                                       Account_DTO_list &account_dto_list,
+                                       Bdb_errors &errors) {
   Account_email_DTO_key account_email_dto_key(email);
   Account_DTO_key_list account_dto_key_list;
   Bdb_cursor bdb_cursor(account_email_sdb, errors);
@@ -92,12 +115,12 @@ void Account_DAO::select_accounts_for_email(Bdb_dbp &account_email_sdb,
  * @param account_dto_key_list selected account key list
  * @param errors if account key not found
  */
-void Account_DAO::select_accounts_for_username(Bdb_dbp &account_username_sdb,
-                                               Bdb_dbp &account_db,
-                                               const std::string &username,
-                                               Account_DTO_list &account_dto_list,
-                                               Bdb_errors &errors) {
-  Account_username_DTO_key account_username_dto_key(username);
+void Account_DAO::select_all_for_username(Bdb_dbp &account_username_sdb,
+                                          Bdb_dbp &account_db,
+                                          const std::string &email,
+                                          Account_DTO_list &account_dto_list,
+                                          Bdb_errors &errors) {
+  Account_username_DTO_key account_username_dto_key(email);
   Account_DTO_key_list account_dto_key_list;
   Bdb_cursor bdb_cursor(account_username_sdb, errors);
   if (!errors.has())
@@ -117,25 +140,3 @@ void Account_DAO::select_accounts_for_username(Bdb_dbp &account_username_sdb,
        errors);
 }
 
-/*!
- * @brief select all account dto records from account database
- * @param account_db account database to select from
- * @param account_dto_list all account dtos in database
- * @param errors if select fails
- */
-void Account_DAO::select_all(Bdb_dbp &account_db,
-                             Account_DTO_list &account_dto_list,
-                             Bdb_errors &errors) {
-  Bdb_cursor bdb_cursor(account_db, errors);
-  if (!errors.has())
-    bdb_cursor.dto_get_list<Account_DTO_key, Account_DTO, Account_DTO_list>
-        (account_dto_list, errors);
-}
-
-void Account_DAO::update(Bdb_dbp &account_db,
-                         Account_DTO &account_dto,
-                         Bdb_errors &errors) {
-  Account_DTO_key account_dto_key(account_dto);
-  Bdb_DAO::save<Account_DTO_key, Account_DTO>
-      (account_db, account_dto_key, account_dto, errors);
-}

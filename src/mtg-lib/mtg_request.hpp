@@ -34,7 +34,6 @@ class Mtg_request {
   std::string request{};
   json_object *request_json{};
   std::vector<std::string> arguments{};
-
   Mtg_request() = default;
   Mtg_request(const std::string &request, Bdb_errors &errors);
   void from_json(json_object *jobj, Bdb_errors &errors);
@@ -47,10 +46,8 @@ class Mtg_request_response {
   static std::string class_name() { return "Mtg_request_response"; }
   json_object *jobj{};
   json_object *jobj_array{};
-
   Mtg_request_response() = default;
   explicit Mtg_request_response(Bdb_errors &errors);
-
   void add_array();
   void add_request(json_object *request_json) const;
   void add_response(json_object *response_json) const;

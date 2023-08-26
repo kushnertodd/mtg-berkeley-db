@@ -148,9 +148,11 @@ std::string Card_DTO::to_string() const {
   return os.str();
 }
 
-Card_DTO_key::Card_DTO_key(const Card_DTO &card_DTO) : card_id(card_DTO.card_id) {}
+Card_DTO_key::Card_DTO_key(const Card_DTO &card_DTO) :
+    card_id(card_DTO.card_id) {}
 
-Card_DTO_key::Card_DTO_key(std::string card_id_) : card_id(std::move(card_id_)) {}
+Card_DTO_key::Card_DTO_key(std::string card_id_) :
+    card_id(std::move(card_id_)) {}
 
 Card_DTO_key::Card_DTO_key(void *buffer) {
   deserialize(buffer);

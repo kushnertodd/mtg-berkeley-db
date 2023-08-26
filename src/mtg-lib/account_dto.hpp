@@ -24,7 +24,6 @@ class Account_DTO { // use Mtg_DTO as pattern but do not inherit
               std::string created_);
   explicit Account_DTO(void *buffer);
   Account_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
-
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void from_json(json_object *jobj, Bdb_errors &errors);
@@ -46,7 +45,6 @@ class Account_DTO_key {
   explicit Account_DTO_key(const Account_DTO &account_dto);
   explicit Account_DTO_key(std::string account_id_);
   explicit Account_DTO_key(void *buffer);
-
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void *serialize(void *buffer) const;

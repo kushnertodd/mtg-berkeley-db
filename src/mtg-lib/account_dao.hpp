@@ -25,19 +25,19 @@ class Account_DAO {
   static void save(Bdb_dbp &account_db,
                    Account_DTO &account_dto,
                    Bdb_errors &errors);
-  static void select_accounts_for_email(Bdb_dbp &account_email_sdb,
-                                        Bdb_dbp &account_db,
-                                        const std::string &email,
-                                        Account_DTO_list &account_dto_list,
-                                        Bdb_errors &errors);
-  static void select_accounts_for_username(Bdb_dbp &account_username_sdb,
-                                           Bdb_dbp &account_db,
-                                           const std::string &email,
-                                           Account_DTO_list &account_dto_list,
-                                           Bdb_errors &errors);
   static void select_all(Bdb_dbp &account_db,
                          Account_DTO_list &account_dto_list,
                          Bdb_errors &errors);
+  static void select_all_for_email(Bdb_dbp &account_email_sdb,
+                                   Bdb_dbp &account_db,
+                                   const std::string &email,
+                                   Account_DTO_list &account_dto_list,
+                                   Bdb_errors &errors);
+  static void select_all_for_username(Bdb_dbp &account_username_sdb,
+                                      Bdb_dbp &account_db,
+                                      const std::string &email,
+                                      Account_DTO_list &account_dto_list,
+                                      Bdb_errors &errors);
   static void update(Bdb_dbp &account_db,
                      Account_DTO &account_dto,
                      Bdb_errors &errors);

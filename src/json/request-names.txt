@@ -9,6 +9,7 @@ card_match_name
 card_select_all
 card_select_all_decks
 card_select_all_for_name
+card_select_all_for_type_id
 deck_card_load
 deck_card_lookup
 deck_load

@@ -14,12 +14,10 @@ class Deck_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string account_id{};
   std::string name{};
   std::string score{};
-
   Deck_DTO() = default;
   Deck_DTO(std::string deck_id_, std::string account_id_, std::string name_);
   explicit Deck_DTO(void *buffer);
   Deck_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
-
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void from_json(json_object *jobj, Bdb_errors &errors);
@@ -41,7 +39,6 @@ class Deck_DTO_key {
   explicit Deck_DTO_key(std::string deck_id_);
   explicit Deck_DTO_key(void *buffer);
   explicit Deck_DTO_key(const Deck_card_DTO &deck_card_dto);
-
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void *serialize(void *buffer) const;
@@ -54,7 +51,6 @@ class Deck_DTO_account_id_key {
   Deck_DTO_account_id_key() = default;
   explicit Deck_DTO_account_id_key(std::string account_id_) :
       account_id(std::move(account_id_)) {}
-
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void *serialize(void *buffer) const;
@@ -67,7 +63,6 @@ class Deck_DTO_name_key {
   Deck_DTO_name_key() = default;
   explicit Deck_DTO_name_key(std::string name_) :
       name(std::move(name_)) {}
-
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void *serialize(void *buffer) const;

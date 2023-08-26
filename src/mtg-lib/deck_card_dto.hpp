@@ -12,11 +12,9 @@ class Deck_card_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string deck_card_id{};
   std::string deck_id{};
   std::string card_id{};
-
   Deck_card_DTO() = default;
   explicit Deck_card_DTO(void *buffer);
   Deck_card_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
-
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void from_json(json_object *jobj, Bdb_errors &errors);
@@ -36,7 +34,6 @@ class Deck_card_DTO_key {
   explicit Deck_card_DTO_key(const Deck_card_DTO &deck_card_dto);
   explicit Deck_card_DTO_key(std::string deck_card_id_);
   explicit Deck_card_DTO_key(void *buffer);
-
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   void *serialize(void *buffer) const;
