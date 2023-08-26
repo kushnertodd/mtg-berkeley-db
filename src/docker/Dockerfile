@@ -4,22 +4,29 @@ FROM ubuntu:latest
 #WORKDIR /app
 
 # Copy the C++ source code into the container
-COPY ./bdb_inet_lookup.sh /
-RUN chmod 755 /bdb_inet_lookup.sh 
-COPY ./bdb_inet_lookup .
+COPY ./mtg_app.sh /
+RUN chmod 755 /mtg_app.sh 
+COPY ./mtg_app .
 COPY ./bdb_databases.json .
-COPY ./name.db .
-COPY ./name_triplets.db .
-COPY ./principals.db .
-COPY ./principals_name_id.sdb .
-COPY ./principals_title_id.sdb .
-COPY ./ratings.db .
-COPY ./title.db .
-COPY ./title_triplets.db .
+COPY ./account.db .
+COPY ./account_email.sdb .
+COPY ./account_username.sdb .
+COPY ./account_username_triplets.db .
+COPY ./card.db .
+COPY ./card_name.sdb .
+COPY ./card_name_triplets.db .
+COPY ./card_type_id.sdb .
+COPY ./deck_account_id.sdb .
+COPY ./deck_card_card_id.sdb .
+COPY ./deck_card.db .
+COPY ./deck_card_deck_id.sdb .
+COPY ./deck.db .
+COPY ./deck_name.sdb .
+COPY ./deck_name_triplets.db .
 
 # Expose any necessary ports.
 EXPOSE 8000
 
 # Set the command to run the executable when the container starts
-ENTRYPOINT ["/bdb_inet_lookup.sh"]
+ENTRYPOINT ["/mtg_app.sh"]
 #CMD ["bdb_inet_lookup", "-d", "bdb_databases.json", "-h", "."] 

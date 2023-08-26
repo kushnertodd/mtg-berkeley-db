@@ -14,6 +14,7 @@
 let request_parameters = {
     account_select_all: {"needs_argument": false},
     deck_select_all_for_account_id: {"needs_argument": true},
+    deck_select_all_cards: {"needs_argument": true},
 };
 
 let table_headers = {
@@ -144,7 +145,7 @@ function create_mtg_request(request, arguments) {
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces
 // https://stackoverflow.com/questions/14643617/create-table-using-javascript
-function create_mtg_table(response) {
+function create_deck_table(response) {
     <!-- list of header column names -->
     let headers = table_headers["deck"];
     // disable context menu on right click
@@ -167,7 +168,7 @@ function create_mtg_table(response) {
         let tr = document.createElement('TR');
         tbody.appendChild(tr);
         tr.tag = decks[i].deck_id;
-        mtg_movie_table_cell_add_text(tr, "deck-name", decks[i].name)
+        mtg_table_cell_add_text(tr, "deck-name", decks[i].name)
         /*
          td = document.createElement('TD');
         tr.appendChild(td);
@@ -178,7 +179,7 @@ function create_mtg_table(response) {
     }
 }
 
-function mtg_movie_table_cell_add_text(tr, cellName, cellText) {
+function mtg_table_cell_add_text(tr, cellName, cellText) {
     let td = document.createElement('TD');
     td.tag = cellText;
     mtg_deck_table_cell_setup_onclick_handler(td);
@@ -193,8 +194,11 @@ function mtg_deck_table_cell_setup_onclick_handler(cell) {
         // Get the row id where the cell exists
         let deck_row_selected = this.parentNode;
         let deck_row_text = this.outerText;
-        alert("building table for deck "+deck_row_text+" id "+deck_row_selected.tag);
+        let deck_id = +deck_row_selected.tag;
+       // alert("building table for deck "+deck_row_text+" id "+deck_id);
         // build card table response
+        let payload = create_mtg_request("deck_select_all_cards", deck_id);
+        send_mtg_request(payload, select_deck_cards_request_success, select_deck_cards_request_failure);
     }, false);
 }
 
@@ -202,7 +206,7 @@ function create_card_table(response) {
     <!-- list of header column names -->
     let headers = table_headers["card"];
     // disable context menu on right click
-    let tbody = get_mtg_table_tbody_DOM_object();
+    let tbody = get_card_table_tbody_DOM_object();
     clear_table(tbody);
     let tr = document.createElement('TR');
     tbody.appendChild(tr);
@@ -216,11 +220,13 @@ function create_card_table(response) {
         th.width = cellWidths[i];
         th.appendChild(document.createTextNode(headers[i]));
     }
-    let decks = response.deck_dto_list;
-    for (let i = 0; i < decks.length; i++) {
+    let cards = response.card_dto_list;
+    for (let i = 0; i < cards.length; i++) {
         let tr = document.createElement('TR');
         tbody.appendChild(tr);
-        mtg_card_table_cell_add_text(tr, "deck-name", decks[i].name)
+        tr.tag = cards[i].cards_id;
+        mtg_table_cell_add_text(tr, "cards-name", cards[i].name)
+        mtg_table_cell_add_text(tr, "cards-color", cards[i].type_id)
         /*
          td = document.createElement('TD');
         tr.appendChild(td);
@@ -230,15 +236,6 @@ function create_card_table(response) {
         */
     }
 }
-
-function mtg_card_table_cell_add_text(tr, cellName, cellText) {
-    let td = document.createElement('TD');
-    td.tag = cellText;
-    //mtg_deck_table_cell_setup_onclick_handler(td);
-    tr.appendChild(td);
-    td.appendChild(document.createTextNode(cellText));
-}
-
 
 function create_mtg_request_list() {
     let payload = create_mtg_request("account_select_all", "");
@@ -262,7 +259,10 @@ function display_response(request_name, result_obj) {
             populate_mtg_request_list(result_obj.mtg_request_response);
             break;
         case 'deck_select_all_for_account_id':
-            create_mtg_table(result_obj.mtg_request_response);
+            create_deck_table(result_obj.mtg_request_response);
+            break;
+        case 'deck_select_all_cards':
+            create_card_table(result_obj.mtg_request_response);
             break;
         default:
             console.log("unexpected result request: " + request_name);
@@ -656,6 +656,19 @@ function select_user_decks_request_failure(req) {
 }
 
 function select_user_decks_request_success(result) {
+    const data = JSON.stringify(result);
+    let result_obj = JSON.parse(data);
+    console.log("class name: " + result_obj.class_name);
+    console.log(data);
+    let request_name = result_obj.mtg_request.request;
+    display_response(request_name, result_obj);
+}
+
+function select_deck_cards_request_failure(req) {
+    alert("select user request failed: '" + req + "'");
+}
+
+function select_deck_cards_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
     console.log("class name: " + result_obj.class_name);

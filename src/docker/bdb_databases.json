@@ -3,49 +3,97 @@
   "primary_databases": [
     {
       "class_name": "Primary_database_config",
-      "name": "title",
-      "filename": "title.db"
-    },
-    {
-      "class_name": "Primary_database_config",
-      "name": "title_triplets",
-      "filename": "title_triplets.db",
-      "has_duplicates": "true"
-    },
-    {
-      "class_name": "Primary_database_config",
-      "name": "name",
-      "filename": "name.db"
-    },
-    {
-      "class_name": "Primary_database_config",
-      "name": "name_triplets",
-      "filename": "name_triplets.db",
-      "has_duplicates": "true"
-    },
-    {
-      "class_name": "Primary_database_config",
-      "name": "ratings",
-      "filename": "ratings.db"
-    },
-    {
-      "class_name": "Primary_database_config",
-      "name": "principals",
-      "filename": "principals.db",
+      "name": "account",
+      "filename": "account.db",
       "secondary_databases": [
         {
           "class_name": "Secondary_database_config",
-          "name": "principals_name_id",
-          "filename": "principals_name_id.sdb",
-          "key_extractor": "get_principals_name_id"
+          "name": "account_email",
+          "filename": "account_email.sdb",
+          "key_extractor": "get_account_email"
         },
         {
           "class_name": "Secondary_database_config",
-          "name": "principals_title_id",
-          "filename": "principals_title_id.sdb",
-          "key_extractor": "get_principals_title_id"
+          "name": "account_username",
+          "filename": "account_username.sdb",
+          "key_extractor": "get_account_username"
         }
       ]
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "account_username_triplets",
+      "filename": "account_username_triplets.db",
+      "has_duplicates": "true"
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "card",
+      "filename": "card.db",
+      "secondary_databases": [
+        {
+          "class_name": "Secondary_database_config",
+          "name": "card_name",
+          "filename": "card_name.sdb",
+          "key_extractor": "get_card_name"
+        },
+        {
+          "class_name": "Secondary_database_config",
+          "name": "card_type_id",
+          "filename": "card_type_id.sdb",
+          "key_extractor": "get_card_type_id"
+        }
+      ]
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "card_name_triplets",
+      "filename": "card_name_triplets.db",
+      "has_duplicates": "true"
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "deck",
+      "filename": "deck.db",
+      "secondary_databases": [
+        {
+          "class_name": "Secondary_database_config",
+          "name": "deck_account_id",
+          "filename": "deck_account_id.sdb",
+          "key_extractor": "get_deck_account_id"
+        },
+        {
+          "class_name": "Secondary_database_config",
+          "name": "deck_name",
+          "filename": "deck_name.sdb",
+          "key_extractor": "get_deck_name"
+        }
+      ]
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "deck_card",
+      "filename": "deck_card.db",
+      "secondary_databases": [
+        {
+          "class_name": "Secondary_database_config",
+          "name": "deck_card_card_id",
+          "filename": "deck_card_card_id.sdb",
+          "key_extractor": "get_deck_card_card_id"
+        },
+        {
+          "class_name": "Secondary_database_config",
+          "name": "deck_card_deck_id",
+          "filename": "deck_card_deck_id.sdb",
+          "key_extractor": "get_deck_card_deck_id"
+        }
+      ]
+    },
+    {
+      "class_name": "Primary_database_config",
+      "name": "deck_name_triplets",
+      "filename": "deck_name_triplets.db",
+      "has_duplicates": "true"
     }
   ]
 }
