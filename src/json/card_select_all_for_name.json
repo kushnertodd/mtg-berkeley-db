@@ -1,0 +1,7 @@
+{
+  "class_name": "Mtg_request",
+  "request": "card_select_all_for_name",
+  "arguments": [
+    "Angelic Guardian"
+  ]
+}
