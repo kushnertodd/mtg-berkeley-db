@@ -54,21 +54,6 @@ void Account_DAO::save(Bdb_dbp &account_db,
 }
 
 /*!
- * @brief select all account dto records from account database
- * @param account_db account database to select from
- * @param account_dto_list all account dtos in database
- * @param errors if select fails
- */
-void Account_DAO::select_all(Bdb_dbp &account_db,
-                             Account_DTO_list &account_dto_list,
-                             Bdb_errors &errors) {
-  Bdb_cursor bdb_cursor(account_db, errors);
-  if (!errors.has())
-    bdb_cursor.dto_get_list<Account_DTO_key, Account_DTO, Account_DTO_list>
-        (account_dto_list, errors);
-}
-
-/*!
  * @brief select account key list using account account_id to search account account_id->account key secondary database
  * @param account_account_id_sdb account account_id->account key secondary database
  * @param account_id secondary database search key
@@ -130,6 +115,21 @@ void Account_DAO::select_accounts_for_username(Bdb_dbp &account_username_sdb,
        account_dto_key_list,
        account_dto_list,
        errors);
+}
+
+/*!
+ * @brief select all account dto records from account database
+ * @param account_db account database to select from
+ * @param account_dto_list all account dtos in database
+ * @param errors if select fails
+ */
+void Account_DAO::select_all(Bdb_dbp &account_db,
+                             Account_DTO_list &account_dto_list,
+                             Bdb_errors &errors) {
+  Bdb_cursor bdb_cursor(account_db, errors);
+  if (!errors.has())
+    bdb_cursor.dto_get_list<Account_DTO_key, Account_DTO, Account_DTO_list>
+        (account_dto_list, errors);
 }
 
 void Account_DAO::update(Bdb_dbp &account_db,

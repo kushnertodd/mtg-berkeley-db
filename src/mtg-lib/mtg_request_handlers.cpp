@@ -139,6 +139,54 @@ bool Mtg_account_request_handler::select_all_for_email(Mtg_inet_app_init &mtg_in
   return true;
 }
 
+bool Mtg_account_request_handler::select_all_for_username(Mtg_inet_app_init &mtg_inet_app_init,
+                                                       const Mtg_request &mtg_request,
+                                                       Mtg_request_response &mtg_request_response,
+                                                       Bdb_errors &errors) {
+  if (mtg_request.request != "account_select_all_for_username")
+    return false;
+  if (mtg_request.arguments.empty())
+    errors.add("Mtg_request::select_accounts_for_username", "1", "missing username");
+  std::string username;
+  if (!errors.has()) {
+    std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor = std::make_unique<Mtg_bdb_key_extractor>();
+    Primary_database_config account_primary_database_config;
+    mtg_inet_app_init.bdb_databases_config.select("account", account_primary_database_config, errors);
+    Secondary_database_config account_username_secondary_database_config;
+    if (!errors.has())
+      account_primary_database_config.select("account_username",
+                                             account_username_secondary_database_config,
+                                             errors);
+    if (!errors.has()) {
+      Primary_database account_db(account_primary_database_config,
+                                  mtg_bdb_key_extractor.get(),
+                                  mtg_inet_app_init.db_home,
+                                  errors);
+      if (!errors.has()) {
+        Secondary_database account_username_sdb(account_username_secondary_database_config,
+                                             mtg_inet_app_init.db_home,
+                                             errors);
+        Account_DTO_list account_dto_list;
+        if (!errors.has()) {
+          username = mtg_request.arguments.at(0);
+          Account_DAO::select_accounts_for_username(account_username_sdb.bdb_db,
+                                                 account_db.bdb_db,
+                                                 username,
+                                                 account_dto_list,
+                                                 errors);
+        }
+        if (!errors.has()) {
+          json_object *account_dto_list_json = account_dto_list.to_json(errors);
+          if (!errors.has()) {
+            mtg_request_response.add_response(account_dto_list_json);
+          }
+        }
+      }
+    }
+  }
+  return true;
+}
+
 bool Mtg_account_request_handler::select_all(Mtg_inet_app_init &mtg_inet_app_init,
                                              const Mtg_request &mtg_request,
                                              Mtg_request_response &mtg_request_response,

@@ -21,6 +21,6 @@ x   card_update
     deck_select_all
     deck_select_all_cards
     deck_select_all_for_account_id
-x   deck_select_all_for_name
+    deck_select_all_for_name
 x   deck_select_other_cards
 x   deck_update
