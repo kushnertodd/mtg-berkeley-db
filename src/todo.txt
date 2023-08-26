@@ -1,7 +1,7 @@
 account_update
-card_select_all_for_deck
+card_select_all_decks
 card_update
-deck_select_all_cards
+xdeck_select_all_cards
 deck_select_other_cards
 deck_update
 

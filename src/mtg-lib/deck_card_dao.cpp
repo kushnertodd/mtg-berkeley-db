@@ -60,12 +60,12 @@ void Deck_card_DAO::save(Bdb_dbp &deck_card_db,
  * @param deck_dto_list selected decks list
  * @param errors if card key not found
  */
-void Deck_card_DAO::select_by_card(Bdb_dbp &deck_card_card_id_sdb,
-                                   Bdb_dbp &deck_card_db,
-                                   Bdb_dbp &deck_db,
-                                   const std::string &card_id,
-                                   Deck_DTO_list &deck_dto_list,
-                                   Bdb_errors &errors) {
+void Deck_card_DAO::select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
+                                          Bdb_dbp &deck_card_db,
+                                          Bdb_dbp &deck_db,
+                                          const std::string &card_id,
+                                          Deck_DTO_list &deck_dto_list,
+                                          Bdb_errors &errors) {
   Deck_card_DTO_key_list deck_card_dto_key_list;
   select_by_card_sdb(deck_card_card_id_sdb, card_id, deck_card_dto_key_list, errors);
   Deck_card_DTO_list deck_card_dto_list;

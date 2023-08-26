@@ -195,7 +195,7 @@ bool Mtg_card_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
       && !Mtg_card_request_handler::select_all_decks(mtg_inet_app_init,
                                                           mtg_request,
                                                           mtg_request_response,
-                                                          errors) // TODO
+                                                          errors)
       && !Mtg_card_request_handler::select_all_for_name(mtg_inet_app_init,
                                                            mtg_request,
                                                            mtg_request_response,
@@ -281,13 +281,13 @@ bool Mtg_card_request_handler::select_all_decks(Mtg_inet_app_init &mtg_inet_app_
   deck_card_primary_database_config.select("deck_card_card_id",
                                            deck_card_deck_id_secondary_database_config,
                                            errors);
-  Primary_database_config card_primary_database_config;
-  mtg_inet_app_init.bdb_databases_config.select("deck", card_primary_database_config, errors);
+  Primary_database_config deck_primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("deck", deck_primary_database_config, errors);
   if (!errors.has()) {
     std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
         std::make_unique<Mtg_bdb_key_extractor>();
     Primary_database
-        card_db(card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home,
+        deck_db(deck_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home,
                 errors);
     Primary_database
         deck_card_db(deck_card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home,
@@ -295,14 +295,14 @@ bool Mtg_card_request_handler::select_all_decks(Mtg_inet_app_init &mtg_inet_app_
     Secondary_database
         deck_card_deck_id_sdb(deck_card_deck_id_secondary_database_config, mtg_inet_app_init.db_home, errors);
     if (!errors.has()) {
-      std::string deck_id = mtg_request.arguments.at(0);
+      std::string card_id = mtg_request.arguments.at(0);
       Deck_DTO_list deck_dto_list;
-      Deck_card_DAO::select_by_card(deck_card_deck_id_sdb.bdb_db,
-                                    deck_card_db.bdb_db,
-                                    card_db.bdb_db,
-                                    deck_id,
-                                    deck_dto_list,
-                                    errors);
+      Deck_card_DAO::select_decks_for_card(deck_card_deck_id_sdb.bdb_db,
+                                           deck_card_db.bdb_db,
+                                           deck_db.bdb_db,
+                                           card_id,
+                                           deck_dto_list,
+                                           errors);
       if (!errors.has()) {
         json_object *card_dto_list_json = deck_dto_list.to_json(errors);
         if (!errors.has()) {
