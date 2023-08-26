@@ -1,0 +1,19 @@
+{
+  "class_name":"Mtg_request_response",
+  "mtg_request":{
+    "class_name":"Mtg_request",
+    "request":"deck_update",
+    "arguments":[
+      "5",
+      "3",
+      "Dad's White-blue"
+    ]
+  },
+  "mtg_request_response":{
+    "class_deck":"Deck_DTO",
+    "deck_id":"5",
+    "account_id":"3",
+    "name":"Dad's White-blue",
+    "score":""
+  }
+}

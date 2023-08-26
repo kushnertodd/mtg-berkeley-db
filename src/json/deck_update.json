@@ -1,0 +1,9 @@
+{
+  "class_name": "Mtg_request",
+  "request": "deck_update",
+  "arguments": [
+    "5",
+    "3",
+    "Dad's White-blue"
+  ]
+}

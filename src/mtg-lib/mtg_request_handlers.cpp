@@ -472,7 +472,7 @@ bool Mtg_card_request_handler::update(Mtg_inet_app_init &mtg_inet_app_init,
                                       Bdb_errors &errors) {
   if (mtg_request.request != "card_update")
     return false;
-  if (mtg_request.arguments.size() < 4)
+  if (mtg_request.arguments.size() < 3)
     errors.add("Mtg_card_request_handler::process_update_card_request", "1", "missing card_id");
   Primary_database_config primary_database_config;
   mtg_inet_app_init.bdb_databases_config.select("card", primary_database_config, errors);
@@ -483,8 +483,7 @@ bool Mtg_card_request_handler::update(Mtg_inet_app_init &mtg_inet_app_init,
     if (!errors.has()) {
       std::string card_id = mtg_request.arguments.at(0);
       std::string name = mtg_request.arguments.at(1);
-      std::string email = mtg_request.arguments.at(2);
-      std::string type_id = mtg_request.arguments.at(3);
+      std::string type_id = mtg_request.arguments.at(2);
       Card_DTO card_dto(card_id, name, type_id);
       Card_DAO::update(card_db.bdb_db, card_dto, errors);
       if (!errors.has()) {
@@ -752,8 +751,8 @@ bool Mtg_deck_request_handler::update(Mtg_inet_app_init &mtg_inet_app_init,
     Primary_database deck_db(primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home, errors);
     if (!errors.has()) {
       std::string deck_id = mtg_request.arguments.at(0);
-      std::string name = mtg_request.arguments.at(1);
-      std::string account_id = mtg_request.arguments.at(2);
+      std::string account_id = mtg_request.arguments.at(1);
+      std::string name = mtg_request.arguments.at(2);
       Deck_DTO deck_dto(deck_id, account_id, name);
       Deck_DAO::update(deck_db.bdb_db, deck_dto, errors);
       if (!errors.has()) {
