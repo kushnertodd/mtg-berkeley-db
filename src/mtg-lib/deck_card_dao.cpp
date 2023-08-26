@@ -52,28 +52,6 @@ void Deck_card_DAO::save(Bdb_dbp &deck_card_db,
 }
 
 /*!
- * @brief select all deck records corresponding to card id via card id->deck_card key secondary database
- * @param deck_card_card_id_sdb card id->deck_card key secondary database
- * @param deck_card_db deck_card database
- * @param deck_db decks database
- * @param card_id secondary database search key
- * @param deck_dto_list selected decks list
- * @param errors if card key not found
- */
-void Deck_card_DAO::select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
-                                          Bdb_dbp &deck_card_db,
-                                          Bdb_dbp &deck_db,
-                                          const std::string &card_id,
-                                          Deck_DTO_list &deck_dto_list,
-                                          Bdb_errors &errors) {
-  Deck_card_DTO_key_list deck_card_dto_key_list;
-  select_by_card_sdb(deck_card_card_id_sdb, card_id, deck_card_dto_key_list, errors);
-  Deck_card_DTO_list deck_card_dto_list;
-  select_by_key_list(deck_card_db, deck_card_dto_key_list, deck_card_dto_list, errors);
-  select_deck_list(deck_db, deck_card_dto_list, deck_dto_list, errors);
-}
-
-/*!
  * @brief select deck_card key list using deck id to search deck id->deck_card key secondary database
  * @param deck_card_deck_id_sdb deck id->deck_card key secondary database
  * @param deck_id secondary database search key
@@ -93,28 +71,6 @@ void Deck_card_DAO::select_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
         (card_dto_key,
          deck_card_dto_key_list,
          errors);
-}
-
-/*!
- * @brief select all card records corresponding to deck id via deck id->deck_card key secondary database
- * @param deck_card_deck_id_sdb deck id->deck_card key secondary database
- * @param deck_card_db deck_card database
- * @param card_db cards database
- * @param deck_id secondary database search key
- * @param card_dto_list selected cards list
- * @param errors if deck key not found
- */
-void Deck_card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
-                                          Bdb_dbp &deck_card_db,
-                                          Bdb_dbp &card_db,
-                                          const std::string &deck_id,
-                                          Card_DTO_list &card_dto_list,
-                                          Bdb_errors &errors) {
-  Deck_card_DTO_key_list deck_card_dto_key_list;
-  select_by_deck_sdb(deck_card_deck_id_sdb, deck_id, deck_card_dto_key_list, errors);
-  Deck_card_DTO_list deck_card_dto_list;
-  select_by_key_list(deck_card_db, deck_card_dto_key_list, deck_card_dto_list, errors);
-  select_card_list(card_db, deck_card_dto_list, card_dto_list, errors);
 }
 
 /*!
@@ -183,6 +139,28 @@ void Deck_card_DAO::select_card_list(Bdb_dbp &card_db,
 }
 
 /*!
+ * @brief select all card records corresponding to deck id via deck id->deck_card key secondary database
+ * @param deck_card_deck_id_sdb deck id->deck_card key secondary database
+ * @param deck_card_db deck_card database
+ * @param card_db cards database
+ * @param deck_id secondary database search key
+ * @param card_dto_list selected cards list
+ * @param errors if deck key not found
+ */
+void Deck_card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
+                                          Bdb_dbp &deck_card_db,
+                                          Bdb_dbp &card_db,
+                                          const std::string &deck_id,
+                                          Card_DTO_list &card_dto_list,
+                                          Bdb_errors &errors) {
+  Deck_card_DTO_key_list deck_card_dto_key_list;
+  select_by_deck_sdb(deck_card_deck_id_sdb, deck_id, deck_card_dto_key_list, errors);
+  Deck_card_DTO_list deck_card_dto_list;
+  select_by_key_list(deck_card_db, deck_card_dto_key_list, deck_card_dto_list, errors);
+  select_card_list(card_db, deck_card_dto_list, card_dto_list, errors);
+}
+
+/*!
  * @brief select deck dto list using deck_card dto list
  * @param deck_db deck primary database
  * @param deck_card_dto_list select one deck dto per deck_card dto
@@ -203,6 +181,28 @@ void Deck_card_DAO::select_deck_list(Bdb_dbp &deck_db,
     if (errors.has())
       break;
   }
+}
+
+/*!
+ * @brief select all deck records corresponding to card id via card id->deck_card key secondary database
+ * @param deck_card_card_id_sdb card id->deck_card key secondary database
+ * @param deck_card_db deck_card database
+ * @param deck_db decks database
+ * @param card_id secondary database search key
+ * @param deck_dto_list selected decks list
+ * @param errors if card key not found
+ */
+void Deck_card_DAO::select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
+                                          Bdb_dbp &deck_card_db,
+                                          Bdb_dbp &deck_db,
+                                          const std::string &card_id,
+                                          Deck_DTO_list &deck_dto_list,
+                                          Bdb_errors &errors) {
+  Deck_card_DTO_key_list deck_card_dto_key_list;
+  select_by_card_sdb(deck_card_card_id_sdb, card_id, deck_card_dto_key_list, errors);
+  Deck_card_DTO_list deck_card_dto_list;
+  select_by_key_list(deck_card_db, deck_card_dto_key_list, deck_card_dto_list, errors);
+  select_deck_list(deck_db, deck_card_dto_list, deck_dto_list, errors);
 }
 
 
