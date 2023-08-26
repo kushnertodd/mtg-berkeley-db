@@ -1,0 +1,29 @@
+{
+  "class_name":"Mtg_request_response",
+  "mtg_request":{
+    "class_name":"Mtg_request",
+    "request":"deck_select_all_cards",
+    "arguments":[
+      "1"
+    ]
+  },
+  "mtg_request_response":{
+    "class_card":"Card_DTO_list",
+    "card_dto_list":[
+      {
+        "class_card":"Card_DTO",
+        "card_id":"1",
+        "name":"Inkrise Infiltrator",
+        "type_id":"red",
+        "score":""
+      },
+      {
+        "class_card":"Card_DTO",
+        "card_id":"3",
+        "name":"Spririt Sisters Call",
+        "type_id":"green",
+        "score":""
+      }
+    ]
+  }
+}

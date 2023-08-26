@@ -233,47 +233,6 @@ class Bdb_DAO {
   }
 
   /*!
- * @brief select data DTO list fpr secondary database key
- * @tparam PT primary db dto type
- * @tparam PK primary db dto key type
- * @tparam PKL primary db dto key list type
- * @tparam PTL primary db dto list type
- * @tparam SK secondary db dto key type
- * @param bdb_secondary_sdb secondary key db
- * @param bdb_primary_db data DTO db
- * @param bdb_secondary_dto_key secondary database search key
- * @param bdb_primary_dto_list selected account data DTO list
- * @param errors key not found
- */
-  template<
-      typename PK,
-      typename PT,
-      typename PKL,
-      typename PTL,
-      typename SK
-  >
-  static void select_by_secondary_db_key(
-      Bdb_dbp &bdb_secondary_sdb,
-      Bdb_dbp &bdb_primary_db,
-      SK &bdb_secondary_dto_key,
-      PTL &bdb_primary_dto_list,
-      Bdb_errors &errors) {
-    PKL bdb_primary_dto_key_list;
-    Bdb_cursor bdb_cursor(bdb_secondary_sdb, errors);
-    if (!errors.has())
-      bdb_cursor.dto_get_duplicate_list<SK, PK, PKL>
-          (bdb_secondary_dto_key,
-           bdb_primary_dto_key_list,
-           errors);
-    if (!errors.has())
-      Bdb_DAO::select_by_key_list<PK, PKL, PT, PTL>
-          (bdb_primary_db,
-           bdb_primary_dto_key_list,
-           bdb_primary_dto_list,
-           errors);
-  }
-
-  /*!
  * @brief select data DTO list fpr secondary database key and join table
  * @tparam PT primary db dto type
  * @tparam PK primary db dto key type
@@ -320,6 +279,47 @@ class Bdb_DAO {
       Bdb_DAO::select_by_join_dto_list<JT, JTL, PK, PT, PTL>
           (bdb_primary_db,
            bdb_join_dto_list,
+           bdb_primary_dto_list,
+           errors);
+  }
+
+  /*!
+ * @brief select data DTO list fpr secondary database key
+ * @tparam PT primary db dto type
+ * @tparam PK primary db dto key type
+ * @tparam PKL primary db dto key list type
+ * @tparam PTL primary db dto list type
+ * @tparam SK secondary db dto key type
+ * @param bdb_secondary_sdb secondary key db
+ * @param bdb_primary_db data DTO db
+ * @param bdb_secondary_dto_key secondary database search key
+ * @param bdb_primary_dto_list selected account data DTO list
+ * @param errors key not found
+ */
+  template<
+      typename PK,
+      typename PT,
+      typename PKL,
+      typename PTL,
+      typename SK
+  >
+  static void select_by_secondary_db_key(
+      Bdb_dbp &bdb_secondary_sdb,
+      Bdb_dbp &bdb_primary_db,
+      SK &bdb_secondary_dto_key,
+      PTL &bdb_primary_dto_list,
+      Bdb_errors &errors) {
+    PKL bdb_primary_dto_key_list;
+    Bdb_cursor bdb_cursor(bdb_secondary_sdb, errors);
+    if (!errors.has())
+      bdb_cursor.dto_get_duplicate_list<SK, PK, PKL>
+          (bdb_secondary_dto_key,
+           bdb_primary_dto_key_list,
+           errors);
+    if (!errors.has())
+      Bdb_DAO::select_by_key_list<PK, PKL, PT, PTL>
+          (bdb_primary_db,
+           bdb_primary_dto_key_list,
            bdb_primary_dto_list,
            errors);
   }

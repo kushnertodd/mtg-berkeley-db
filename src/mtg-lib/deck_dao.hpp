@@ -18,39 +18,32 @@ class Deck_DAO {
                   const std::string &text_file,
                   Bdb_errors &errors,
                   char delimiter = tab);
-
   static void lookup(Bdb_dbp &deck_db,
                      const std::string &deck_id,
                      Deck_DTO &deck_dto,
                      Bdb_errors &errors);
-
   static void save(Bdb_dbp &deck_db,
                    Deck_DTO &deck_dto,
                    Bdb_errors &errors);
-
   static void select_all(Bdb_dbp &deck_db,
                          Deck_DTO_list &deck_dto_list,
                          Bdb_errors &errors);
-
-  static void select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
-                                    Bdb_dbp &deck_card_db,
-                                    Bdb_dbp &deck_db,
-                                    const std::string &card_id,
-                                    Deck_DTO_list &deck_dto_list,
-                                    Bdb_errors &errors);
-
-  static void select_decks_for_account_id(Bdb_dbp &deck_account_id_sdb,
-                                          Bdb_dbp &deck_db,
-                                          const std::string &account_id,
-                                          Deck_DTO_list &deck_dto_list,
-                                          Bdb_errors &errors);
-
-  static void select_decks_for_name(Bdb_dbp &deck_name_sdb,
-                                    Bdb_dbp &deck_db,
-                                    const std::string &name,
-                                    Deck_DTO_list &deck_dto_list,
-                                    Bdb_errors &errors);
-
+  static void select_all_cards(Bdb_dbp &deck_card_card_id_sdb,
+                               Bdb_dbp &deck_card_db,
+                               Bdb_dbp &deck_db,
+                               const std::string &card_id,
+                               Card_DTO_list &card_dto_list,
+                               Bdb_errors &errors);
+  static void select_all_for_account_id(Bdb_dbp &deck_account_id_sdb,
+                                        Bdb_dbp &deck_db,
+                                        const std::string &account_id,
+                                        Deck_DTO_list &deck_dto_list,
+                                        Bdb_errors &errors);
+  static void select_all_for_name(Bdb_dbp &deck_name_sdb,
+                                  Bdb_dbp &deck_db,
+                                  const std::string &name,
+                                  Deck_DTO_list &deck_dto_list,
+                                  Bdb_errors &errors);
   static void update(Bdb_dbp &deck_db,
                      Deck_DTO &deck_dto,
                      Bdb_errors &errors);
