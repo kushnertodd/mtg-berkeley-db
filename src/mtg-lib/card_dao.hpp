@@ -32,7 +32,7 @@ class Card_DAO {
                          Card_DTO_list &card_dto_list,
                          Bdb_errors &errors);
 
-  static void select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
+  static void select_all_decks(Bdb_dbp &deck_card_deck_id_sdb,
                                     Bdb_dbp &deck_card_db,
                                     Bdb_dbp &card_db,
                                     const std::string &deck_id,

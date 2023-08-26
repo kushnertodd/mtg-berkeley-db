@@ -77,14 +77,14 @@
       "secondary_databases": [
         {
           "class_name": "Secondary_database_config",
-          "name": "deck_card_card",
-          "filename": "deck_card_card.sdb",
+          "name": "deck_card_card_id",
+          "filename": "deck_card_card_id.sdb",
           "key_extractor": "get_deck_card_card_id"
         },
         {
           "class_name": "Secondary_database_config",
-          "name": "deck_card_deck",
-          "filename": "deck_card_deck.sdb",
+          "name": "deck_card_deck_id",
+          "filename": "deck_card_deck_id.sdb",
           "key_extractor": "get_deck_card_deck_id"
         }
       ]

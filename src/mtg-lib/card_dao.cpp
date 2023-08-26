@@ -122,7 +122,7 @@ void Card_DAO::select_cards_for_name(Bdb_dbp &card_name_sdb,
          errors);
 }
 
-void Card_DAO::select_cards_for_deck(Bdb_dbp &deck_card_deck_id_sdb,
+void Card_DAO::select_all_decks(Bdb_dbp &deck_card_deck_id_sdb,
                                      Bdb_dbp &deck_card_db,
                                      Bdb_dbp &card_db,
                                      const std::string &deck_id,

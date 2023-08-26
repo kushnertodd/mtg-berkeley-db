@@ -192,7 +192,7 @@ bool Mtg_card_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
       && !Mtg_card_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_card_request_handler::match_name(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_card_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_card_request_handler::select_cards_for_deck(mtg_inet_app_init,
+      && !Mtg_card_request_handler::select_all_decks(mtg_inet_app_init,
                                                           mtg_request,
                                                           mtg_request_response,
                                                           errors) // TODO
@@ -313,26 +313,27 @@ bool Mtg_card_request_handler::select_all_for_type_id(Mtg_inet_app_init &mtg_ine
   return true;
 }
 
-bool Mtg_card_request_handler::select_cards_for_deck(Mtg_inet_app_init &mtg_inet_app_init,
+bool Mtg_card_request_handler::select_all_decks(Mtg_inet_app_init &mtg_inet_app_init,
                                                      const Mtg_request &mtg_request,
                                                      Mtg_request_response &mtg_request_response,
                                                      Bdb_errors &errors) {
-  if (mtg_request.request != "card_select_all_for_deck")
+  if (mtg_request.request != "card_select_all_decks")
     return false;
   if (mtg_request.arguments.empty())
-    errors.add("Mtg_card_request_handler::select_cards_for_deck", "1", "missing card_id");
+    errors.add("Mtg_card_request_handler::select_all_decks", "1", "missing card_id");
   Primary_database_config deck_card_primary_database_config;
   mtg_inet_app_init.bdb_databases_config.select("deck_card", deck_card_primary_database_config, errors);
   Secondary_database_config deck_card_deck_id_secondary_database_config;
-  deck_card_primary_database_config.select("deck_card_deck_id",
+  deck_card_primary_database_config.select("deck_card_card_id",
                                            deck_card_deck_id_secondary_database_config,
                                            errors);
   Primary_database_config card_primary_database_config;
-  mtg_inet_app_init.bdb_databases_config.select("card", card_primary_database_config, errors);
+  mtg_inet_app_init.bdb_databases_config.select("deck", card_primary_database_config, errors);
   if (!errors.has()) {
     std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
         std::make_unique<Mtg_bdb_key_extractor>();
-    Primary_database card_db(card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home,
+    Primary_database 
+    card_db(card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home,
                              errors);
     Primary_database
         deck_card_db(deck_card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home,
