@@ -28,12 +28,12 @@ class Deck_DAO {
   static void select_all(Bdb_dbp &deck_db,
                          Deck_DTO_list &deck_dto_list,
                          Bdb_errors &errors);
-  static void select_all_cards(Bdb_dbp &deck_card_card_id_sdb,
-                               Bdb_dbp &deck_card_db,
-                               Bdb_dbp &deck_db,
-                               const std::string &card_id,
-                               Card_DTO_list &card_dto_list,
-                               Bdb_errors &errors);
+//  static void select_all_cards(Bdb_dbp &deck_card_card_id_sdb,
+//                               Bdb_dbp &deck_card_db,
+//                               Bdb_dbp &deck_db,
+//                               const std::string &card_id,
+//                               Card_DTO_list &card_dto_list,
+//                               Bdb_errors &errors);
   static void select_all_for_account_id(Bdb_dbp &deck_account_id_sdb,
                                         Bdb_dbp &deck_db,
                                         const std::string &account_id,

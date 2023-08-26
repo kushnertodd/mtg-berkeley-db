@@ -134,37 +134,37 @@ void Deck_DAO::select_all_for_name(Bdb_dbp &deck_name_sdb,
        errors);
 }
 
-void Deck_DAO::select_all_cards(Bdb_dbp &deck_card_deck_id_sdb,
-                                Bdb_dbp &deck_card_db,
-                                Bdb_dbp &deck_db,
-                                const std::string &deck_id,
-                                Card_DTO_list &card_dto_list,
-                                Bdb_errors &errors) {
-  Deck_DTO_key deck_dto_key(deck_id);
-  Deck_card_DTO_list deck_card_dto_list;
-  if (!errors.has())
-    Bdb_DAO::select_by_secondary_db_key
-        <Deck_card_DTO_key,
-         Deck_card_DTO,
-         Deck_card_DTO_key_list,
-         Deck_card_DTO_list,
-         Deck_DTO_key>
-        (deck_card_deck_id_sdb,
-         deck_card_db,
-         deck_dto_key,
-         deck_card_dto_list,
-         errors);
-  if (!errors.has())
-    Bdb_DAO::select_by_join_dto_list<Deck_card_DTO,
-                                     Deck_card_DTO_list,
-                                     Card_DTO_key,
-                                     Card_DTO,
-                                     Card_DTO_list>
-        (deck_db,
-         deck_card_dto_list,
-         card_dto_list,
-         errors);
-}
+//void Deck_DAO::select_all_cards(Bdb_dbp &deck_card_deck_id_sdb,
+//                                Bdb_dbp &deck_card_db,
+//                                Bdb_dbp &deck_db,
+//                                const std::string &deck_id,
+//                                Card_DTO_list &card_dto_list,
+//                                Bdb_errors &errors) {
+//  Deck_DTO_key deck_dto_key(deck_id);
+//  Deck_card_DTO_list deck_card_dto_list;
+//  if (!errors.has())
+//    Bdb_DAO::select_by_secondary_db_key
+//        <Deck_card_DTO_key,
+//         Deck_card_DTO,
+//         Deck_card_DTO_key_list,
+//         Deck_card_DTO_list,
+//         Deck_DTO_key>
+//        (deck_card_deck_id_sdb,
+//         deck_card_db,
+//         deck_dto_key,
+//         deck_card_dto_list,
+//         errors);
+//  if (!errors.has())
+//    Bdb_DAO::select_by_join_dto_list<Deck_card_DTO,
+//                                     Deck_card_DTO_list,
+//                                     Card_DTO_key,
+//                                     Card_DTO,
+//                                     Card_DTO_list>
+//        (deck_db,
+//         deck_card_dto_list,
+//         card_dto_list,
+//         errors);
+//}
 
 void Deck_DAO::update(Bdb_dbp &deck_db,
                       Deck_DTO &deck_dto,

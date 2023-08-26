@@ -722,12 +722,7 @@ bool Mtg_deck_card_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
                                            Mtg_request_response &mtg_request_response,
                                            Bdb_errors &errors) {
   if (!Mtg_deck_card_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-      && !Mtg_deck_card_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-//        && !Mtg_deck_card_request_handler::match_name(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-//        && !Mtg_deck_card_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-//        && !Mtg_deck_card_request_handler::select_all_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-//        && !Mtg_deck_card_request_handler::select_other_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
-//        && !Mtg_deck_card_request_handler::update(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+//      && !Mtg_deck_card_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       )
     return false;
   return true;
@@ -758,19 +753,19 @@ bool Mtg_deck_card_request_handler::load(Mtg_inet_app_init &mtg_inet_app_init,
   return true;
 }
 
-bool Mtg_deck_card_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
-                                           const Mtg_request &mtg_request,
-                                           Mtg_request_response &mtg_request_response,
-                                           Bdb_errors &errors) {
-  if (mtg_request.request != "deck_card_lookup")
-    return false;
-  Mtg_request_handler::lookup<Deck_card_DTO, Deck_card_DAO>(mtg_inet_app_init,
-                                                            mtg_request,
-                                                            "deck_card",
-                                                            mtg_request_response,
-                                                            errors);
-  return true;
-}
+//bool Mtg_deck_card_request_handler::lookup(Mtg_inet_app_init &mtg_inet_app_init,
+//                                           const Mtg_request &mtg_request,
+//                                           Mtg_request_response &mtg_request_response,
+//                                           Bdb_errors &errors) {
+//  if (mtg_request.request != "deck_card_lookup")
+//    return false;
+//  Mtg_request_handler::lookup<Deck_card_DTO, Deck_card_DAO>(mtg_inet_app_init,
+//                                                            mtg_request,
+//                                                            "deck_card",
+//                                                            mtg_request_response,
+//                                                            errors);
+//  return true;
+//}
 
 // Mtg_workflow_request_handler methods
 
