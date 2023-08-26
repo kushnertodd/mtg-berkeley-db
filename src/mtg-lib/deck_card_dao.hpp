@@ -59,4 +59,10 @@ class Deck_card_DAO {
                                Deck_card_DTO_list &deck_card_key_list,
                                Deck_DTO_list &deck_dto_list,
                                Bdb_errors &errors);
+  static void select_other_cards(Bdb_dbp &deck_card_deck_id_sdb,
+                                         Bdb_dbp &deck_card_db,
+                                         Bdb_dbp &card_db,
+                                         const std::string &deck_id,
+                                         Card_DTO_list &card_dto_list,
+                                         Bdb_errors &errors);
 };

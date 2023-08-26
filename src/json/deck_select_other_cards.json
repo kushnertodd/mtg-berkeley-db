@@ -1,6 +1,6 @@
 {
   "class_name": "Mtg_request",
-  "request": "deck_card_lookup",
+  "request": "deck_select_other_cards",
   "arguments": [
     "1"
   ]

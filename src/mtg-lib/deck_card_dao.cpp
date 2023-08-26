@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "bdb_dao.hpp"
 #include "deck_dto.hpp"
 #include "deck_card_dto.hpp"
@@ -182,7 +183,6 @@ void Deck_card_DAO::select_decks_for_card(Bdb_dbp &deck_card_card_id_sdb,
   select_deck_list(deck_db, deck_card_dto_list, deck_dto_list, errors);
 }
 
-
 /*!
  * @brief select deck dto list using deck_card dto list
  * @param deck_db deck primary database
@@ -203,6 +203,37 @@ void Deck_card_DAO::select_deck_list(Bdb_dbp &deck_db,
       deck_dto_list.add(deck_dto);
     if (errors.has())
       break;
+  }
+}
+
+/*!
+ * @brief select deck dto list using deck_card dto list
+ * @param deck_db deck primary database
+ * @param deck_card_dto_list select one deck dto per deck_card dto
+ * @param deck_dto_list selected deck dto list
+ * @param errors if deck_card key not found
+ */
+void Deck_card_DAO::select_other_cards(Bdb_dbp &deck_card_deck_id_sdb,
+                                       Bdb_dbp &deck_card_db,
+                                       Bdb_dbp &card_db,
+                                       const std::string &deck_id,
+                                       Card_DTO_list &card_dto_list,
+                                       Bdb_errors &errors) {
+  Card_DTO_list cards_in_deck_dto_list;
+  Deck_card_DAO::select_cards_for_deck(deck_card_deck_id_sdb,
+                                       deck_card_db,
+                                       card_db,
+                                       deck_id,
+                                       cards_in_deck_dto_list,
+                                       errors);
+  Card_DAO::select_all(card_db, card_dto_list, errors);
+  for (auto &card_dto: cards_in_deck_dto_list.list) {
+    auto it = std::remove_if(card_dto_list.list.begin(),
+                             card_dto_list.list.end(),
+                             [&card_dto](Card_DTO &dto) {
+                               return card_dto.card_id == dto.card_id;
+                             });
+    card_dto_list.list.erase(it, card_dto_list.list.end());
   }
 }
 
