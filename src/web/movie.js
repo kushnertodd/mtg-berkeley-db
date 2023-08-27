@@ -149,7 +149,8 @@ function create_deck_table(response) {
     let headers = table_headers["deck"];
     let deck_table = Table.get({name: "deck_table"})
     deck_table.clear();
-    deck_table.add_row({id: "r0"})
+    let card_table = Table.get({name: "card_table"})
+    card_table.clear();    deck_table.add_row({id: "r0"})
     // might be the right way to set columns widths:
     // https://stackoverflow.com/questions/928849/setting-table-column-width
     let cellWidths = ['50%', '50%'];
@@ -222,6 +223,10 @@ function create_mtg_request_list() {
 }
 function populate_mtg_request_list(response) {
     let select_request_list = document.getElementById("mtg_select_user");
+    let deck_table = Table.get({name: "deck_table"})
+    deck_table.clear();
+    let card_table = Table.get({name: "card_table"})
+    card_table.clear();
     for (let i = 0; i < response.account_dto_list.length; i++) {
         let account = response.account_dto_list[i];
         let el = document.createElement("option");
