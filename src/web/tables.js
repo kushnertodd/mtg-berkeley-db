@@ -18,11 +18,13 @@ class Table {
     table.appendChild(this.tbody);
     this.rows = {};
   }
-  // usage: add_row({id: "id", text: "text"});
+  // usage: add_row({id: "id", data: obj, text: "text"});
   add_row(args) {
     let row = document.createElement('TR');
     this.tbody.appendChild(row)
+    row.table = this;
     row.id = args.id;
+    if (args.data) row.data = args.data;
     if (args.text) row.innerText = args.text;
     this.rows[args.id] = row;
     row.tds = {};
@@ -32,6 +34,7 @@ class Table {
   add_td(args) {
     let row = this.rows[args.row_id];
     let td = document.createElement('TD');
+    td.row = row;
     row.appendChild(td)
     td.id = args.id;
     td.appendChild(document.createTextNode(args.text));
@@ -41,6 +44,7 @@ class Table {
   add_th(args) {
     let row = this.rows[args.row_id];
     let th = document.createElement('TH');
+    th.row = row;
     row.appendChild(th)
     th.id = args.id;
     th.innerText = args.text;

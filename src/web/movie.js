@@ -158,9 +158,9 @@ function create_deck_table(response) {
     let decks = response.deck_dto_list;
     for (let i = 0; i < decks.length; i++) {
         row_id = "r"+i;
-        deck_table.add_row({name: decks[i].deck_id, id: row_id})
-        deck_table.add_td({row_id: row_id, id: row_id, text: decks[i].name})
-        mtg_deck_table_cell_setup_onclick_handler(deck_table.get_td({row_id: row_id, id:row_id}));
+        deck_table.add_row({data: decks[i], id: row_id})
+        deck_table.add_td({row_id: row_id, id: "d0", text: decks[i].name})
+        mtg_deck_table_cell_setup_onclick_handler(deck_table.get_td({row_id: row_id, id:"d0"}));
     }
 }
 /*
@@ -177,9 +177,9 @@ function mtg_deck_table_cell_setup_onclick_handler(cell) {
     cell.addEventListener('contextmenu', function (e) {
         e.preventDefault();
         // Get the row id where the cell exists
-        let deck_row_selected = this.parentNode;
-        let deck_row_text = this.outerText;
-        let deck_id = +deck_row_selected.tag;
+        let deck_row_selected = e.target;
+        let deck_row_text = e.outerText;
+        let deck_id = +deck_row_selected.row.data.deck_id;
        // alert("building table for deck "+deck_row_text+" id "+deck_id);
         // build card table response
         let payload = create_mtg_request("deck_select_all_cards", deck_id);
@@ -197,17 +197,17 @@ function create_card_table(response) {
     let cellWidths = ['50%', '50%'];
     for (let i = 0; i < headers.length; i++)
         card_table.add_th({row_id: "r0", id: "h"+i, text: headers[i], class_name: " header", width: cellWidths[i]});
-    let decks = response.deck_dto_list;
-    for (let i = 0; i < decks.length; i++) {
-        row_id = "r"+i;
-        card_table.add_row({name: decks[i].deck_id, id: row_id})
-        card_table.add_td({row_id: row_id, id: row_id, text: decks[i].name})
-        mtg_deck_table_cell_setup_onclick_handler(card_table.get_td({row_id: row_id, id:row_id}));
-    }
+    // let decks = response.deck_dto_list;
+    // for (let i = 0; i < decks.length; i++) {
+    //     row_id = "r"+i;
+    //     card_table.add_row({data: decks[i], id: row_id})
+    //     card_table.add_td({row_id: row_id, id: row_id, text: decks[i].name})
+    //     mtg_deck_table_cell_setup_onclick_handler(card_table.get_td({row_id: row_id, id:row_id}));
+    // }
     let cards = response.card_dto_list;
     for (let i = 0; i < cards.length; i++) {
         row_id = "r"+i;
-        card_table.add_row({name: cards[i].cards_id, id: row_id})
+        card_table.add_row({data: cards[i], id: row_id})
         card_table.add_td({row_id: row_id, id: "cards-name", text: cards[i].name})
         mtg_deck_table_cell_setup_onclick_handler(card_table.get_td({row_id: row_id, id:"cards-name"}));
         card_table.add_td({row_id: row_id, id: "cards-color", text: cards[i].type_id})
