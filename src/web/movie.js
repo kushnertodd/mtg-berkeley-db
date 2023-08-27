@@ -25,8 +25,16 @@ let table_headers = {
 // after DOM loaded
 let dialog_mode;
 
+document.addEventListener("DOMContentLoaded", function () {
+    let a = 1;
+});
+
+let card_table = undefined;
+let deck_table = undefined;
+
 $(document).ready(function () {
-    //$("#argument_input").hide();
+    let card_table = new Table({name: "card_table", div_id: "card_table", id: "card_table"});
+    let deck_table = new Table({name: "deck_table", div_id: "deck_table", id: "deck_table"});
     create_mtg_request_list();
     $("#send_request_button").prop("disabled", true);
 /*
@@ -112,14 +120,6 @@ $(document).ready(function () {
     */
 });
 
-function clear_table(tbody) {
-    if (tbody.children.length > 0) {
-        let rows = tbody.getElementsByTagName('tr');
-        for (let row = rows.length - 1; row >= 0; row--) {
-            tbody.removeChild(rows[row]);
-        }
-    }
-}
 
 function create_mtg_request(request, arguments) {
     if (Array.isArray(arguments)) {
@@ -146,39 +146,24 @@ function create_mtg_request(request, arguments) {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces
 // https://stackoverflow.com/questions/14643617/create-table-using-javascript
 function create_deck_table(response) {
-    <!-- list of header column names -->
     let headers = table_headers["deck"];
-    // disable context menu on right click
-    let tbody = get_mtg_table_tbody_DOM_object();
-    clear_table(tbody);
-    let tr = document.createElement('TR');
-    tbody.appendChild(tr);
+    let deck_table = Table.get({name: "deck_table"})
+    deck_table.clear();
+    deck_table.add_row({id: "r0"})
     // might be the right way to set columns widths:
     // https://stackoverflow.com/questions/928849/setting-table-column-width
     let cellWidths = ['50%', '50%'];
-    for (let i = 0; i < headers.length; i++) {
-        let th = document.createElement('TH');
-        tr.appendChild(th);
-        th.className += " header";
-        th.width = cellWidths[i];
-        th.appendChild(document.createTextNode(headers[i]));
-    }
+    for (let i = 0; i < headers.length; i++)
+      deck_table.add_th({row_id: "r0", id: "h"+i, text: headers[i], class_name: " header", width: cellWidths[i]});
     let decks = response.deck_dto_list;
     for (let i = 0; i < decks.length; i++) {
-        let tr = document.createElement('TR');
-        tbody.appendChild(tr);
-        tr.tag = decks[i].deck_id;
-        mtg_table_cell_add_text(tr, "deck-name", decks[i].name)
-        /*
-         td = document.createElement('TD');
-        tr.appendChild(td);
-        //td.className += " header";
-        //td.width = cellWidths[i];
-        td.appendChild(document.createTextNode(decks[i].name));
-        */
+        row_id = "r"+i;
+        deck_table.add_row({name: decks[i].deck_id, id: row_id})
+        deck_table.add_td({row_id: row_id, id: row_id, text: decks[i].name})
+        mtg_deck_table_cell_setup_onclick_handler(deck_table.get_td({row_id: row_id, id:row_id}));
     }
 }
-
+/*
 function mtg_table_cell_add_text(tr, cellName, cellText) {
     let td = document.createElement('TD');
     td.tag = cellText;
@@ -186,7 +171,7 @@ function mtg_table_cell_add_text(tr, cellName, cellText) {
     tr.appendChild(td);
     td.appendChild(document.createTextNode(cellText));
 }
-
+*/
 function mtg_deck_table_cell_setup_onclick_handler(cell) {
     // do something on onclick event for cells
     cell.addEventListener('contextmenu', function (e) {
@@ -203,37 +188,30 @@ function mtg_deck_table_cell_setup_onclick_handler(cell) {
 }
 
 function create_card_table(response) {
-    <!-- list of header column names -->
     let headers = table_headers["card"];
-    // disable context menu on right click
-    let tbody = get_card_table_tbody_DOM_object();
-    clear_table(tbody);
-    let tr = document.createElement('TR');
-    tbody.appendChild(tr);
+    let card_table = Table.get({name: "card_table"})
+    card_table.clear();
+    card_table.add_row({id: "r0"})
     // might be the right way to set columns widths:
     // https://stackoverflow.com/questions/928849/setting-table-column-width
     let cellWidths = ['50%', '50%'];
-    for (let i = 0; i < headers.length; i++) {
-        let th = document.createElement('TH');
-        tr.appendChild(th);
-        th.className += " header";
-        th.width = cellWidths[i];
-        th.appendChild(document.createTextNode(headers[i]));
+    for (let i = 0; i < headers.length; i++)
+        card_table.add_th({row_id: "r0", id: "h"+i, text: headers[i], class_name: " header", width: cellWidths[i]});
+    let decks = response.deck_dto_list;
+    for (let i = 0; i < decks.length; i++) {
+        row_id = "r"+i;
+        card_table.add_row({name: decks[i].deck_id, id: row_id})
+        card_table.add_td({row_id: row_id, id: row_id, text: decks[i].name})
+        mtg_deck_table_cell_setup_onclick_handler(card_table.get_td({row_id: row_id, id:row_id}));
     }
     let cards = response.card_dto_list;
     for (let i = 0; i < cards.length; i++) {
-        let tr = document.createElement('TR');
-        tbody.appendChild(tr);
-        tr.tag = cards[i].cards_id;
-        mtg_table_cell_add_text(tr, "cards-name", cards[i].name)
-        mtg_table_cell_add_text(tr, "cards-color", cards[i].type_id)
-        /*
-         td = document.createElement('TD');
-        tr.appendChild(td);
-        //td.className += " header";
-        //td.width = cellWidths[i];
-        td.appendChild(document.createTextNode(decks[i].name));
-        */
+        row_id = "r"+i;
+        card_table.add_row({name: cards[i].cards_id, id: row_id})
+        card_table.add_td({row_id: row_id, id: "cards-name", text: cards[i].name})
+        mtg_deck_table_cell_setup_onclick_handler(card_table.get_td({row_id: row_id, id:"cards-name"}));
+        card_table.add_td({row_id: row_id, id: "cards-color", text: cards[i].type_id})
+        mtg_deck_table_cell_setup_onclick_handler(card_table.get_td({row_id: row_id, id:"cards-color"}));
     }
 }
 
@@ -285,75 +263,10 @@ let mtg_table_div = undefined;
 // get movie table div DOM object
 function get_mtg_table_div_DOM_object() {
     if (mtg_table_div === undefined) {
-        mtg_table_div = document.getElementById("mtg_table");
+        mtg_table_div = new Table({name: "mtg_table", div_id: "mtg_table", id: "mtg_table"});
     }
     return mtg_table_div;
 }
-
-// cache movie table DOM object
-let mtg_table = undefined;
-
-// get movie table DOM object
-function get_mtg_table_DOM_object() {
-    if (mtg_table === undefined) {
-        let mtg_table_div = get_mtg_table_div_DOM_object();
-        mtg_table = document.createElement('TABLE');
-        mtg_table_div.appendChild(mtg_table);
-        mtg_table.id = "mtg_table";
-    }
-    return mtg_table;
-}
-
-// cache movie table DOM object
-let mtg_table_tbody = undefined;
-
-// get movie table DOM object
-function get_mtg_table_tbody_DOM_object() {
-    if (mtg_table_tbody === undefined) {
-        let table = get_mtg_table_DOM_object();
-        mtg_table_tbody = document.createElement('TBODY');
-        table.appendChild(mtg_table_tbody);
-    }
-    return mtg_table_tbody;
-}
-// cache movie table div DOM object
-let card_table_div = undefined;
-
-// get movie table div DOM object
-function get_card_table_div_DOM_object() {
-    if (card_table_div === undefined) {
-        card_table_div = document.getElementById("card_table");
-    }
-    return card_table_div;
-}
-
-// cache movie table DOM object
-let card_table = undefined;
-
-// get movie table DOM object
-function get_card_table_DOM_object() {
-    if (card_table === undefined) {
-        let card_table_div = get_card_table_div_DOM_object();
-        card_table = document.createElement('TABLE');
-        card_table_div.appendChild(card_table);
-        card_table.id = "card_table";
-    }
-    return card_table;
-}
-
-// cache movie table DOM object
-let card_table_tbody = undefined;
-
-// get movie table DOM object
-function get_card_table_tbody_DOM_object() {
-    if (card_table_tbody === undefined) {
-        let table = get_card_table_DOM_object();
-        card_table_tbody = document.createElement('TBODY');
-        table.appendChild(card_table_tbody);
-    }
-    return card_table_tbody;
-}
-
 
 /*
 function mtg_table_append_actor(response) {
@@ -826,6 +739,7 @@ function select_user_request() {
     return false;
 }
 
+/*
 function select_user_request_failure(req) {
     alert("request failed: '" + req + "'");
 }
@@ -838,3 +752,4 @@ function select_user_request_success(result) {
     let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
 }
+*/
