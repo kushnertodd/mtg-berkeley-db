@@ -39,8 +39,8 @@ td {
 }
 
 .selected {
-    background-color: lightblue;
-    color: darkred;
+    background-color: Blue;
+    color: DodgerBlue;
     font-weight: bold;
 }
 

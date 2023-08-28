@@ -181,6 +181,7 @@ function mtg_deck_table_cell_setup_onclick_handler(cell) {
         let deck_row_selected = e.target;
         let deck_row_text = e.outerText;
         let deck_id = +deck_row_selected.row.data.deck_id;
+        Table.select_row(deck_row_selected);
        // alert("building table for deck "+deck_row_text+" id "+deck_id);
         // build card table response
         let payload = create_mtg_request("deck_select_all_cards", deck_id);
