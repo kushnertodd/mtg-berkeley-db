@@ -97,7 +97,7 @@ class Table {
     static select_row(tr) {
         Table.unselect_row();
         this.selected_row = tr;
-        tr.style.backgroundColor = "Gold";
+        tr.style.backgroundColor = "DodgerBlue";
         tr.className += " selected";
     }
 
