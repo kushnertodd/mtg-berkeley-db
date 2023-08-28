@@ -38,10 +38,20 @@ td {
     font-weight: bold;
 }
 
+.deckname {
+    text-align: left;
+}
+
 .selected {
-    background-color: Beige;
+    background-color: DodgerBlue;
     color: Gold;
     font-weight: bold;
+}
+
+.unselected {
+    background-color: White;
+    color: Black;
+    font-weight: normal;
 }
 
 .button {

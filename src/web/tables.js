@@ -33,6 +33,7 @@ class Table {
         this.rows[args.id] = row;
         row.tds = {};
         row.ths = {};
+        return row;
     }
 
     // usage: add_td({row_id: "row_id", id: "id", text: "text"});
@@ -44,6 +45,7 @@ class Table {
         td.id = args.id;
         td.appendChild(document.createTextNode(args.text));
         row.tds[args.id] = td;
+        return td;
     }
 
     // usage: add_th({row_id: "row_id", id: "id", text: "text", class_name: "class_name", width: "cell_width"});
@@ -97,15 +99,13 @@ class Table {
     static select_row(tr) {
         Table.unselect_row();
         this.selected_row = tr;
-        tr.style.backgroundColor = "DodgerBlue";
-        tr.className += " selected";
+        tr.classList.add("selected");
     }
 
     static unselect_row() {
         if (this.selected_row) {
+            this.selected_row.classList.remove("selected");
             this.selected_row = null;
-            tr.style.backgroundColor = "";
-            tr.classList.remove("selected");
         }
     }
 }
