@@ -19,6 +19,7 @@ let request_parameters = {
 
 let table_headers = {
     "card": ["name", "color"],
+    "card_description": ["item", "value"],
     "deck": ["name"]
 }
 
@@ -34,6 +35,11 @@ let deck_table = undefined;
 
 $(document).ready(function () {
     let card_table = new Table({name: "card_table", div_id: "card_table", id: "card_table"});
+    let card_description_table = new Table({
+        name: "card_description_table",
+        div_id: "card_description_table",
+        id: "card_description_table"
+    });
     let deck_table = new Table({name: "deck_table", div_id: "deck_table", id: "deck_table"});
     create_mtg_request_list();
     $("#send_request_button").prop("disabled", true);
@@ -120,6 +126,27 @@ $(document).ready(function () {
         */
 });
 
+function create_mtg_request(request, arguments) {
+    if (Array.isArray(arguments)) {
+        return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
+            + '"arguments":["' + arguments.join('","') + '"]}';
+    } else {
+        if (request === "select_title" || request === "select_name")
+            return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
+                + '"arguments":["' + arguments + '", "15", "8"]}';
+        //+ '"arguments":["' + arguments + '", "0", "20"]}';
+        else {
+            let request_descriptor = request_parameters[request];
+            if (request_descriptor.needs_argument) {
+                return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
+                    + '"arguments":["' + arguments + '"]}';
+            } else {
+                return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
+                    + '"arguments":[]}';
+            }
+        }
+    }
+}
 
 function create_mtg_request(request, arguments) {
     if (Array.isArray(arguments)) {
@@ -145,7 +172,7 @@ function create_mtg_request(request, arguments) {
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces
 // https://stackoverflow.com/questions/14643617/create-table-using-javascript
-function create_deck_table(response) {
+function deck_table_create(response) {
     let headers = table_headers["deck"];
     let deck_table = Table.get({name: "deck_table"})
     deck_table.clear();
@@ -167,20 +194,22 @@ function create_deck_table(response) {
     }
 }
 
-/*
-function mtg_table_cell_add_text(tr, cellName, cellText) {
-    let td = document.createElement('TD');
-    td.tag = cellText;
-    mtg_deck_table_cell_setup_onclick_handler(td);
-    tr.appendChild(td);
-    td.appendChild(document.createTextNode(cellText));
-}
-*/
-
 function card_table_row_onlick_handler(e) {
+    e.preventDefault();
+    let card_row_selected = e.target;
+    let data = card_row_selected.row.data;
+    let card_id = data.card_id;
+    Table.select_row(card_row_selected);
 }
 
 function card_table_row_contextmenu_onlick_handler(e) {
+    e.preventDefault();
+    let card_row_selected = e.target;
+    let data = card_row_selected.row.data;
+    let card_id = data.card_id;
+    Table.select_row(card_row_selected);
+    card_set_name(data.name);
+    card_description_table_create(data);
 }
 
 function deck_table_row_onlick_handler(e) {
@@ -197,37 +226,28 @@ function deck_table_row_contextmenu_onlick_handler(e) {
     let data = deck_row_selected.row.data;
     let deck_id = data.deck_id;
     Table.select_row(deck_row_selected);
-    $(displayed_deck).html("Deck: "+data.name);
+    deck_set_name(data.name);
     let payload = create_mtg_request("deck_select_all_cards", deck_id);
     send_mtg_request(payload, select_deck_cards_request_success, select_deck_cards_request_failure);
 }
 
-function deck_set_name() {
-    $(displayed_deck).html("Deck: "+data.name);
+function deck_set_name(deck_name) {
+    $(displayed_deck).html("Deck: " + deck_name);
 }
 
 function deck_unset_name() {
     $(displayed_deck).html("");
 }
 
-/*
-function mtg_deck_table_cell_setup_onclick_handler(cell) {
-    // do something on onclick event for cells
-    cell.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-        // Get the row id where the cell exists
-        let deck_row_selected = e.target;
-        let deck_row_text = e.outerText;
-        let deck_id = +deck_row_selected.row.data.deck_id;
-        Table.select_row(deck_row_selected);
-       // alert("building table for deck "+deck_row_text+" id "+deck_id);
-        // build card table response
-        let payload = create_mtg_request("deck_select_all_cards", deck_id);
-        send_mtg_request(payload, select_deck_cards_request_success, select_deck_cards_request_failure);
-    }, false);
+function card_set_name(card_name) {
+    $(displayed_card).html("Card: " + card_name);
 }
-*/
-function create_card_table(response) {
+
+function card_unset_name() {
+    $(displayed_card).html("");
+}
+
+function card_table_create(response) {
     let headers = table_headers["card"];
     let card_table = Table.get({name: "card_table"})
     card_table.clear();
@@ -237,13 +257,6 @@ function create_card_table(response) {
     let cellWidths = ['50%', '50%'];
     for (let i = 0; i < headers.length; i++)
         card_table.add_th({row_id: "r0", id: "h" + i, text: headers[i], class_name: " header", width: cellWidths[i]});
-    // let decks = response.deck_dto_list;
-    // for (let i = 0; i < decks.length; i++) {
-    //     row_id = "r"+i;
-    //     card_table.add_row({data: decks[i], id: row_id})
-    //     card_table.add_td({row_id: row_id, id: row_id, text: decks[i].name})
-    //     mtg_deck_table_cell_setup_onclick_handler(card_table.get_td({row_id: row_id, id:row_id}));
-    // }
     let cards = response.card_dto_list;
     for (let i = 0; i < cards.length; i++) {
         row_id = "r" + i;
@@ -253,6 +266,35 @@ function create_card_table(response) {
         card_table.add_td({row_id: row_id, id: "cards-name", text: cards[i].name})
         card_table.add_td({row_id: row_id, id: "cards-color", text: cards[i].type_id})
     }
+}
+
+function card_description_table_create(card) {
+    let headers = table_headers["card_description"];
+    let card_description_table = Table.get({name: "card_description_table"})
+    card_description_table.clear();
+    card_description_table.add_row({id: "r0"})
+    // might be the right way to set columns widths:
+    // https://stackoverflow.com/questions/928849/setting-table-column-width
+    let cellWidths = ['50%', '50%'];
+    for (let i = 0; i < headers.length; i++)
+        card_description_table.add_th({
+            row_id: "r0",
+            id: "h" + i,
+            text: headers[i],
+            class_name: " header",
+            width: cellWidths[i]
+        });
+    let name_tr = card_description_table.add_row({data: card.name, id: "r1"})
+    let name_item_td = card_description_table.add_td({row_id: "r1", id: card.name + "-name", text: card.name});
+    let name_td_input = document.createElement("input");
+    name_td_input.id = "card-name-td";
+    let name_td = card_description_table.add_td({row_id: "r1", id: card.name + "-name", text: card.name});
+    name_td.appendChild(name_td_input);
+    let type_id_tr = card_description_table.add_row({data: card.name, id: "r2"})
+    let type_id_td = card_description_table.add_td({row_id: "r2", id: card.type_id + "-color", text: card.type_id})
+    let type_id_td_input = document.createElement("input");
+    type_id_td_input.id = "card-type-id-td";
+    type_id_td.appendChild(type_id_td_input);
 }
 
 function create_mtg_request_list() {
@@ -282,10 +324,10 @@ function display_response(request_name, result_obj) {
             populate_mtg_request_list(result_obj.mtg_request_response);
             break;
         case 'deck_select_all_for_account_id':
-            create_deck_table(result_obj.mtg_request_response);
+            deck_table_create(result_obj.mtg_request_response);
             break;
         case 'deck_select_all_cards':
-            create_card_table(result_obj.mtg_request_response);
+            card_table_create(result_obj.mtg_request_response);
             break;
         default:
             console.log("unexpected result request: " + request_name);

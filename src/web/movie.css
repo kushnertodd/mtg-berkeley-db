@@ -38,6 +38,10 @@ td {
     font-weight: bold;
 }
 
+.cardname {
+    text-align: left;
+}
+
 .deckname {
     text-align: left;
 }
