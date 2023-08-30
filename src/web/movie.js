@@ -43,6 +43,7 @@ $(document).ready(function () {
     let deck_table = new Table({name: "deck_table", div_id: "deck_table", id: "deck_table"});
     create_mtg_request_list();
     $("#send_request_button").prop("disabled", true);
+    card_description_table_init();
     /*
         // change movie dialog
 
@@ -284,17 +285,54 @@ function card_description_table_create(card) {
             class_name: " header",
             width: cellWidths[i]
         });
-    let name_tr = card_description_table.add_row({data: card.name, id: "r1"})
-    let name_item_td = card_description_table.add_td({row_id: "r1", id: card.name + "-name", text: card.name});
-    let name_td_input = document.createElement("input");
-    name_td_input.id = "card-name-td";
-    let name_td = card_description_table.add_td({row_id: "r1", id: card.name + "-name", text: card.name});
-    name_td.appendChild(name_td_input);
+    let name_tr = card_description_table.add_row({data: card.name, id: "r1"});
+    let name_item_td = card_description_table.add_td({row_id: "r1", id: "card-name-item", text: card.name});
+    let name_input_td = card_description_table.add_td({row_id: "r1", id: "card-name-input", text: ""});
+    let name_input = document.createElement("input");
+    name_input.value = card.name;
+    name_input_td.id = "card-name-input";
+    name_input_td.appendChild(name_input);
     let type_id_tr = card_description_table.add_row({data: card.name, id: "r2"})
-    let type_id_td = card_description_table.add_td({row_id: "r2", id: card.type_id + "-color", text: card.type_id})
-    let type_id_td_input = document.createElement("input");
-    type_id_td_input.id = "card-type-id-td";
-    type_id_td.appendChild(type_id_td_input);
+    let type_id_item_td = card_description_table.add_td({row_id: "r2", id: "card-color-item", text: card.type_id})
+    let type_id_input_td = card_description_table.add_td({row_id: "r2", id: "card-color-input", text: ""});
+    let type_id_input = document.createElement("input");
+    type_id_input.value = card.type_id;
+    type_id_input_td.id = "card-type-id-input";
+    type_id_input_td.defaultValue = card.type_id;
+    type_id_input_td.appendChild(type_id_input);
+    card_description_table_show(card);
+}
+
+function card_description_table_hide() {
+    $("#card-description-table-buttons")[0].style.display = 'none';
+}
+
+function card_description_table_init() {
+    card_description_table_hide();
+    $("#card-description-table-save")[0].addEventListener('click', card_description_table_save);
+    $("#card-description-table-cancel")[0].addEventListener('click', card_description_table_cancel);
+}
+
+function card_description_table_show(card) {
+    $("#card-description-table-buttons")[0].style.display = 'block';
+    $("#card-description-table-save")[0].data = card;
+    $("#card-description-table-cancel")[0].data = card;
+}
+
+function card_description_table_save(e) {
+    alert("save!");
+    let card_description_table = Table.get({name: "card_description_table"})
+    card_description_table.clear();
+    card_description_table_hide();
+    card_unset_name();
+}
+
+function card_description_table_cancel(e) {
+    alert("cancel!");
+    let card_description_table = Table.get({name: "card_description_table"})
+    card_description_table.clear();
+    card_description_table_hide();
+    card_unset_name();
 }
 
 function create_mtg_request_list() {

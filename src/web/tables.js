@@ -16,6 +16,7 @@ class Table {
         this.dom = document.getElementById(args.div_id);
         let table = document.createElement('TABLE');
         this.dom.appendChild(table);
+        table.border = "4";
         table.id = args.id;
         this.tbody = document.createElement('TBODY');
         table.appendChild(this.tbody);
