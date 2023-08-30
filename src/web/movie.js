@@ -197,7 +197,7 @@ function deck_table_create(response) {
 
 function card_table_row_onlick_handler(e) {
     e.preventDefault();
-    let card_row_selected = e.target;
+    let card_row_selected = e.currentTarget;
     let data = card_row_selected.row.data;
     let card_id = data.card_id;
     Table.select_row(card_row_selected);
@@ -205,8 +205,8 @@ function card_table_row_onlick_handler(e) {
 
 function card_table_row_contextmenu_onlick_handler(e) {
     e.preventDefault();
-    let card_row_selected = e.target;
-    let data = card_row_selected.row.data;
+    let card_row_selected = e.currentTarget;
+    let data = card_row_selected.data;
     let card_id = data.card_id;
     Table.select_row(card_row_selected);
     card_set_name(data.name);
@@ -215,7 +215,7 @@ function card_table_row_contextmenu_onlick_handler(e) {
 
 function deck_table_row_onlick_handler(e) {
     e.preventDefault();
-    let deck_row_selected = e.target;
+    let deck_row_selected = e.currentTarget;
     let data = deck_row_selected.row.data;
     let deck_id = data.deck_id;
     Table.select_row(deck_row_selected);
@@ -223,8 +223,8 @@ function deck_table_row_onlick_handler(e) {
 
 function deck_table_row_contextmenu_onlick_handler(e) {
     e.preventDefault();
-    let deck_row_selected = e.target;
-    let data = deck_row_selected.row.data;
+    let deck_row_selected = e.currentTarget;
+    let data = deck_row_selected.data;
     let deck_id = data.deck_id;
     Table.select_row(deck_row_selected);
     deck_set_name(data.name);
@@ -286,14 +286,14 @@ function card_description_table_create(card) {
             width: cellWidths[i]
         });
     let name_tr = card_description_table.add_row({data: card.name, id: "r1"});
-    let name_item_td = card_description_table.add_td({row_id: "r1", id: "card-name-item", text: card.name});
+    let name_item_td = card_description_table.add_td({row_id: "r1", id: "card-name-item", text: "name"});
     let name_input_td = card_description_table.add_td({row_id: "r1", id: "card-name-input", text: ""});
     let name_input = document.createElement("input");
     name_input.value = card.name;
     name_input_td.id = "card-name-input";
     name_input_td.appendChild(name_input);
     let type_id_tr = card_description_table.add_row({data: card.name, id: "r2"})
-    let type_id_item_td = card_description_table.add_td({row_id: "r2", id: "card-color-item", text: card.type_id})
+    let type_id_item_td = card_description_table.add_td({row_id: "r2", id: "card-color-item", text: "color"})
     let type_id_input_td = card_description_table.add_td({row_id: "r2", id: "card-color-input", text: ""});
     let type_id_input = document.createElement("input");
     type_id_input.value = card.type_id;
@@ -321,7 +321,7 @@ function card_description_table_show(card) {
 
 function card_description_table_save(e) {
     alert("save!");
-    let card_description_table = Table.get({name: "card_description_table"})
+    let card_description_table = Table.get({name: "card_description_table"});
     card_description_table.clear();
     card_description_table_hide();
     card_unset_name();
