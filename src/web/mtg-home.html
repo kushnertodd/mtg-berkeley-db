@@ -23,7 +23,7 @@
 <!-- movie and actor request dropdown list -->
 <p></p>
 <label for="mtg_select_user">Select a user</label>
-<select name="mtg_select_user" id="mtg_select_user" onchange="user_selected()">
+<select name="mtg_select_user" id="mtg_select_user" onchange="user_list_selected()">
     <option>Choose user</option>
 </select>
 
@@ -42,6 +42,7 @@
 
 <!-- list of movies or actors -->
 <!-- https://jqueryui.com/resources/demos/dialog/modal-form.html -->
+<p id="displayed_user" class="username"></p>
 <div id="deck_table" class="ui-widget"></div>
 <p><p>
 <!-- list of movies or actors -->

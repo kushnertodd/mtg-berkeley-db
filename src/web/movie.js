@@ -18,9 +18,9 @@ let request_parameters = {
 };
 
 let table_headers = {
-    "card": ["name", "color"],
-    "card_description": ["item", "value"],
-    "deck": ["name"]
+    "card": ["Card", "Color"],
+    "card_description": ["Item", "Value"],
+    "deck": ["Deck"]
 }
 
 // after DOM loaded
@@ -41,7 +41,7 @@ $(document).ready(function () {
         id: "card_description_table"
     });
     let deck_table = new Table({name: "deck_table", div_id: "deck_table", id: "deck_table"});
-    request_list_create();
+    user_list_create();
     $("#send_request_button").prop("disabled", true);
     card_description_table_init();
     /*
@@ -201,6 +201,11 @@ function card_name_unset() {
     $(displayed_card).html("");
 }
 
+function card_table_clear() {
+    let card_table = Table.get({name: "card_table"})
+    card_table.clear();
+}
+
 function card_table_create(response) {
     let headers = table_headers["card"];
     let card_table = Table.get({name: "card_table"})
@@ -253,6 +258,10 @@ function create_mtg_request(request, arguments) {
     }
 }
 
+function deck_table_clear() {
+    let deck_table = Table.get({name: "deck_table"})
+    deck_table.clear();
+}
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces
 // https://stackoverflow.com/questions/14643617/create-table-using-javascript
@@ -276,6 +285,7 @@ function deck_table_create(response) {
         tr.addEventListener('contextmenu', deck_table_row_contextmenu_onlick_handler);
         deck_table.add_td({row_id: row_id, id: "d0", text: decks[i].name})
     }
+    user_name_set();
 }
 
 function card_table_row_onlick_handler(e) {
@@ -303,7 +313,7 @@ function deck_table_row_contextmenu_onlick_handler(e) {
     Table.select_row(deck_row_selected);
     deck_name_set(data.name);
     let payload = create_mtg_request("deck_select_all_cards", deck_id);
-    send_mtg_request(payload, select_deck_cards_request_success, select_deck_cards_request_failure);
+    mtg_request_send(payload, select_deck_cards_request_success, select_deck_cards_request_failure);
 }
 
 function deck_table_row_onlick_handler(e) {
@@ -317,7 +327,7 @@ function deck_table_row_onlick_handler(e) {
 function display_response(request_name, result_obj) {
     switch (request_name) {
         case 'account_select_all':
-            request_list_populate(result_obj.mtg_request_response);
+            user_list_populate(result_obj.mtg_request_response);
             break;
         case 'deck_select_all_for_account_id':
             deck_table_create(result_obj.mtg_request_response);
@@ -330,38 +340,27 @@ function display_response(request_name, result_obj) {
     }
 }
 
-function request_list_create() {
-    let payload = create_mtg_request("account_select_all", "");
-    send_mtg_request(payload, select_user_request_success, select_user_request_failure);
-    return false;
-}
-
-function request_list_populate(response) {
-    let select_request_list = document.getElementById("mtg_select_user");
-    let deck_table = Table.get({name: "deck_table"})
-    deck_table.clear();
-    let card_table = Table.get({name: "card_table"})
-    card_table.clear();
-    for (let i = 0; i < response.account_dto_list.length; i++) {
-        let account = response.account_dto_list[i];
-        let el = document.createElement("option");
-        el.textContent = account.username;
-        el.value = account.account_id;
-        select_request_list.appendChild(el);
+// run mtg_request
+// success: return data
+// fail: return null
+function mtg_request_send(req, success_callback, failure_callback) {
+    try {
+        $.ajax({
+            //url: "http://34.106.93.238:8000/mtg-request-dto",
+            url: "http://localhost:8000/mtg-request-dto",
+            type: "POST",
+            data: req,
+            success: function (result) {
+                success_callback(result);
+            }, failure: function (result) {
+                failure_callback(result);
+            }
+        });
+    } catch (error) {
+        console.error(error);
     }
 }
 
-/*
-// cache movie table body DOM object
-let user_selection_list = undefined;
-
-// get movie table body DOM object
-function get_mtg_select_user_DOM_object() {
-    if (user_selection_list === undefined) user_selection_list =
-        document.getElementById("mtg_select_user");
-    return user_selection_list;
-}
-*/
 
 function select_deck_cards_request_failure(req) {
     alert("select user request failed: '" + req + "'");
@@ -388,6 +387,7 @@ function select_user_request_success(result) {
     let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
 }
+
 function select_user_decks_request_failure(req) {
     alert("select user request failed: '" + req + "'");
 }
@@ -400,26 +400,6 @@ function select_user_decks_request_success(result) {
     let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
 }
-// run mtg_request
-// success: return data
-// fail: return null
-function send_mtg_request(req, success_callback, failure_callback) {
-    try {
-        $.ajax({
-            //url: "http://34.106.93.238:8000/mtg-request-dto",
-            url: "http://localhost:8000/mtg-request-dto",
-            type: "POST",
-            data: req,
-            success: function (result) {
-                success_callback(result);
-            }, failure: function (result) {
-                failure_callback(result);
-            }
-        });
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 function select_user_request() {
     let request = $("#mtg_select_user")[0].value;
@@ -431,11 +411,43 @@ function select_user_request() {
         return false;
     }
     let payload = create_mtg_request(request, argument);
-    send_mtg_request(payload, select_user_request_success, select_user_request_failure);
+    mtg_request_send(payload, select_user_request_success, select_user_request_failure);
     return false;
 }
-function user_selected() {
-    let opt = $("#mtg_select_user")[0].value;
-    let payload = create_mtg_request("deck_select_all_for_account_id", opt);
-    send_mtg_request(payload, select_user_decks_request_success, select_user_decks_request_failure);
+
+function user_list_create() {
+    let payload = create_mtg_request("account_select_all", "");
+    mtg_request_send(payload, select_user_request_success, select_user_request_failure);
+    return false;
 }
+
+function user_list_populate(response) {
+    let select_request_list = document.getElementById("mtg_select_user");
+    deck_table_clear();
+    card_table_clear();
+    for (let i = 0; i < response.account_dto_list.length; i++) {
+        let account = response.account_dto_list[i];
+        let el = document.createElement("option");
+        el.textContent = account.username;
+        el.username = account.username;
+        el.value = account.account_id;
+        select_request_list.appendChild(el);
+    }
+}
+
+
+function user_list_selected() {
+    let select_user_el = $("#mtg_select_user")[0];
+    let opt = select_user_el.value;
+    let payload = create_mtg_request("deck_select_all_for_account_id", opt);
+    mtg_request_send(payload, select_user_decks_request_success, select_user_decks_request_failure);
+}
+
+function user_name_set() {
+    $(displayed_user).html("Decks:");
+}
+
+function user_name_unset() {
+    $(displayed_user).html("");
+}
+
