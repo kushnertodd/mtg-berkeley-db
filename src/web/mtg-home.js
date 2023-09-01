@@ -11,17 +11,9 @@
     "select_title"
   ];
 */
-let request_parameters = {
-    account_select_all: {"needs_argument": false},
-    deck_select_all_for_account_id: {"needs_argument": true},
-    deck_select_all_cards: {"needs_argument": true},
-};
 
-let table_headers = {
-    "card": ["Card", "Color"],
-    "card_description": ["Item", "Value"],
-    "deck": ["Deck"]
-}
+
+
 
 // after DOM loaded
 let dialog_mode;
@@ -144,7 +136,7 @@ function card_description_table_button_save(e) {
 }
 
 function card_description_table_create(card) {
-    let headers = table_headers["card_description"];
+    let headers = Tables.header("card_description");
     let card_description_table = Table.get({name: "card_description_table"})
     card_description_table.clear();
     card_description_table.add_row({id: "r0"})
@@ -207,7 +199,7 @@ function card_table_clear() {
 }
 
 function card_table_create(response) {
-    let headers = table_headers["card"];
+    let headers = Tables.header("card");
     let card_table = Table.get({name: "card_table"})
     card_table.clear();
     card_table.add_row({id: "r0"})
@@ -312,8 +304,9 @@ function deck_table_row_contextmenu_onlick_handler(e) {
     let deck_id = data.deck_id;
     Table.select_row(deck_row_selected);
     deck_name_set(data.name);
-    let payload = create_mtg_request("deck_select_all_cards", deck_id);
-    mtg_request_send(payload, select_deck_cards_request_success, select_deck_cards_request_failure);
+    let request = new Requests({request : "deck_select_all_cards",
+        arguments: deck_id});
+    request.send(select_deck_cards_request_success, select_deck_cards_request_failure);
 }
 
 function deck_table_row_onlick_handler(e) {
@@ -416,8 +409,8 @@ function select_user_request() {
 }
 
 function user_list_create() {
-    let payload = create_mtg_request("account_select_all", "");
-    mtg_request_send(payload, select_user_request_success, select_user_request_failure);
+    let request = new Requests({request :"account_select_all"});
+    request.send(select_user_request_success, select_user_request_failure);
     return false;
 }
 
