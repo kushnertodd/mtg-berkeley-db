@@ -6,7 +6,7 @@
 class Card_table {
     static table_name = "card";
     static div_id = "card_table";
-    static id = "card_id";
+    static id = "card_table_id";
 
     static label;
     static table;
@@ -17,7 +17,7 @@ class Card_table {
     }
 
     static create(card_list) {
-        let headers = Table.header(Card_description.table_name);
+        let headers = ["Card", "Color"];
         let table = Card_table.table;
         table.clear();
         table.add_row({id: "r0"})
@@ -25,7 +25,7 @@ class Card_table {
         for (let i = 0; i < headers.length; i++)
             table.add_th({
                     row_id: "r0",
-                    id: "h" + i,
+                    id: `h${i}`,
                     text: headers[i],
                     class_name: " header",
                     width: cellWidths[i]
@@ -33,7 +33,7 @@ class Card_table {
             );
         let cards = card_list;
         for (let i = 0; i < cards.length; i++) {
-            let row_id = "r${i}";
+            let row_id = `r${i}`;
             let tr = table.add_row({data: cards[i], id: row_id})
             tr.addEventListener('onclick', Card_table.row_onlick_handler);
             tr.addEventListener('contextmenu', Card_table.row_contextmenu_onlick_handler);
@@ -51,11 +51,11 @@ class Card_table {
     }
 
 
-    label_set() {
+    static label_set() {
         $(displayed_user).html("Decks:");
     }
 
-    label_unset() {
+    static   label_unset() {
         $(displayed_user).html("");
     }
 

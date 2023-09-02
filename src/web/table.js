@@ -101,7 +101,7 @@ class Table {
     }
 
     print(name) {
-        alert("table " + this.name);
+        alert(`table ${this.name}`);
     }
 
     static select_row(tr) {

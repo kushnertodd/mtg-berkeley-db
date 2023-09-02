@@ -6,7 +6,7 @@
 class Card_description_table {
     static table_name = "card_description";
     static div_id = "card_description_table";
-    static id = "card_description_id";
+    static id = "card_description_table_id";
 
     static label;
     static table;
@@ -28,6 +28,7 @@ class Card_description_table {
     static clear() {
         Card_description_table.table.clear();
         Card_description_table.label_unset();
+        Card_description_table.buttons[0].style.display = 'none';
     }
 
     static create(card) {
@@ -39,7 +40,7 @@ class Card_description_table {
         for (let i = 0; i < headers.length; i++)
             table.add_th({
                 row_id: "r0",
-                id: "h${i}",
+                id: `h${i}`,
                 text: headers[i],
                 class_name: " header",
                 width: cellWidths[i]
@@ -87,7 +88,7 @@ class Card_description_table {
             id: Card_description_table.id
         });
         Card_description_table.buttons = $("#card-description-table-buttons");
-        Card_description_table.cancel_button = $("#card-description-table-cance");
+        Card_description_table.cancel_button = $("#card-description-table-cancel");
         Card_description_table.cancel_button[0].addEventListener('click', Card_description_table.button_cancel);
         Card_description_table.label = $("#displayed_card");
         Card_description_table.save_button = $("#card-description-table-save");
@@ -95,7 +96,7 @@ class Card_description_table {
     }
 
     static label_set(card_name) {
-        Card_description_table.label.html("Card: " + card_name);
+        Card_description_table.label.html(`Card: ${card_name}`);
     }
 
     static label_unset() {
@@ -104,7 +105,7 @@ class Card_description_table {
 
     static show(card) {
         Card_description_table.label_set();
-        Card_description_table.buttons[0].style.display = 'block';
+        Card_description_table.buttons.style.display = 'block';
         Card_description_table.save_button[0].data = card;
         Card_description_table.cancel_button[0].data = card;
     }

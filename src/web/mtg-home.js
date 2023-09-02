@@ -1,6 +1,7 @@
 // after DOM loaded
 //let dialog_mode;
 
+
 document.addEventListener("DOMContentLoaded", function () {
     let a = 1;
 });
@@ -16,43 +17,47 @@ $(document).ready(function () {
 
 
 function deck_cards_select_request_failure(req) {
-    alert("select user request failed: '" + req + "'");
+    alert(`select user request failed: ${req}`);
 }
 
 function deck_cards_select_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.class_name);
+    console.log(`class name: {result_obj.class_name}`);
     console.log(data);
     let request_name = result_obj.mtg_request.request;
     display_response(request_name, result_obj);
 }
 
 function user_decks_select_request_failure(req) {
-    alert("select user request failed: '" + req + "'");
+    alert(`select user request failed: '${req}'`);
 }
 
 function user_decks_select_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.class_name);
+    console.log(`class name: {result_obj.class_name}`);
     console.log(data);
     let request_name = result_obj.mtg_request.request;
-    Deck_table.create(result_obj.mtg_request_response);
+    Deck_table.create(result_obj.mtg_request_response.deck_dto_list);
 }
 
 function user_list_create() {
-    let request = new Request({request: "account_select_all"});
-    request.send(user_select_request_success, user_select_request_failure);
-    return false;
+    let request = new Request({
+        request: "account_select_all",
+        args: null,
+
+    });
+    request.send(user_select_request_success,user_select_request_failure);
 }
 
 function user_list_populate(account_dto_list) {
     let select_request_list = document.getElementById("mtg_select_user");
-    select_request_list[0].addEventListener('change', user_list_selected);
+    select_request_list.addEventListener('change', user_list_selected);
     Deck_table.clear();
     Card_table.clear();
-    for (let i = 0; i < response.account_dto_list.length; i++) {
+    Card_description_table.clear();
+    for (let i = 0; i < account_dto_list.length; i++) {
         let account = account_dto_list[i];
         let option = document.createElement("option");
         option.textContent = account.username;
@@ -68,11 +73,9 @@ function user_list_selected() {
     let opt = user_select_el.value;
     let request = new Request({
         request: "deck_select_all_for_account_id",
-        arguments: opt,
-        success_callback: user_decks_select_request_success,
-        failure_callback: user_decks_select_request_failure
+        arguments: opt
     });
-    request.send();
+    request.send(user_decks_select_request_success, user_decks_select_request_failure);
 }
 
 function user_select_request() {
@@ -87,23 +90,22 @@ function user_select_request() {
     let request = new Request({
         request: user_request,
         arguments: arguments,
-        success_callback: user_select_request_success,
-        failure_callback: user_select_request_failure
+
     });
-    request.send();
+    request.send(user_select_request_success,user_select_request_failure);
     return false;
 }
 
 function user_select_request_failure(req) {
-    alert("select user request failed: '" + req + "'");
+    alert(`select user request failed: '${req}'`);
 }
 
 function user_select_request_success(result) {
     const data = JSON.stringify(result);
     let result_obj = JSON.parse(data);
-    console.log("class name: " + result_obj.class_name);
+    console.log(`class name: {result_obj.class_name}`);
     console.log(data);
     let request_name = result_obj.mtg_request.request;
-    user_list_populate(result_obj.mtg_request_response);
+    user_list_populate(result_obj.mtg_request_response.account_dto_list);
 }
 
