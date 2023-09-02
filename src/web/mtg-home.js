@@ -16,19 +16,6 @@ $(document).ready(function () {
 });
 
 
-function deck_cards_select_request_failure(req) {
-    alert(`select user request failed: ${req}`);
-}
-
-function deck_cards_select_request_success(result) {
-    const data = JSON.stringify(result);
-    let result_obj = JSON.parse(data);
-    console.log(`class name: {result_obj.class_name}`);
-    console.log(data);
-    let request_name = result_obj.mtg_request.request;
-    display_response(request_name, result_obj);
-}
-
 function user_decks_select_request_failure(req) {
     alert(`select user request failed: '${req}'`);
 }
@@ -48,7 +35,7 @@ function user_list_create() {
         args: null,
 
     });
-    request.send(user_select_request_success,user_select_request_failure);
+    request.send(user_select_request_success, user_select_request_failure);
 }
 
 function user_list_populate(account_dto_list) {
@@ -92,7 +79,7 @@ function user_select_request() {
         arguments: arguments,
 
     });
-    request.send(user_select_request_success,user_select_request_failure);
+    request.send(user_select_request_success, user_select_request_failure);
     return false;
 }
 

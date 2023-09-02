@@ -85,11 +85,11 @@ class Deck_table {
         Table.select_row(deck_row_selected);
     }
 
-    static    select_deck_cards_request_failure(req) {
+    static select_deck_cards_request_failure(req) {
         alert(`select user request failed: '${req}'`);
     }
 
-    static   select_deck_cards_request_success(result) {
+    static select_deck_cards_request_success(result) {
         const data = JSON.stringify(result);
         let result_obj = JSON.parse(data);
         console.log(`class name: {result_obj.class_name}`);

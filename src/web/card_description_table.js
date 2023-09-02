@@ -32,7 +32,7 @@ class Card_description_table {
     }
 
     static create(card) {
-        let headers = Table.header(Card_description.table_name);
+        let headers = ["Item", "Value"];
         let table = Card_description_table.table;
         Card_description_table.clear();
         table.add_row({id: "r0"})
@@ -104,8 +104,8 @@ class Card_description_table {
     }
 
     static show(card) {
-        Card_description_table.label_set();
-        Card_description_table.buttons.style.display = 'block';
+        Card_description_table.label_set(card.name);
+        Card_description_table.buttons[0].style.display = 'block';
         Card_description_table.save_button[0].data = card;
         Card_description_table.cancel_button[0].data = card;
     }

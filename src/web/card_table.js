@@ -55,7 +55,7 @@ class Card_table {
         $(displayed_user).html("Decks:");
     }
 
-    static   label_unset() {
+    static label_unset() {
         $(displayed_user).html("");
     }
 
@@ -65,7 +65,7 @@ class Card_table {
         let data = card_row_selected.data;
         let card_id = data.card_id;
         Table.select_row(card_row_selected);
-        card_name_set(data.name);
+        //Card_table.label_set(data.name);
         Card_description_table.create(data);
     }
 
