@@ -1,41 +1,18 @@
-/*
-  let request_names = [
-    "deck_select_all_for_account_id",
-    "lookup_ratings",
-    "lookup_title",
-    "search_name",
-    "search_ratings",
-    "search_title",
-    "select_name",
-    "select_ratings",
-    "select_title"
-  ];
-*/
-
-
-
-
 // after DOM loaded
-let dialog_mode;
+//let dialog_mode;
 
 document.addEventListener("DOMContentLoaded", function () {
     let a = 1;
 });
 
-let card_table = undefined;
-let deck_table = undefined;
-
 $(document).ready(function () {
     let card_table = new Table({name: "card_table", div_id: "card_table", id: "card_table"});
-    let card_description_table = new Table({
-        name: "card_description_table",
-        div_id: "card_description_table",
-        id: "card_description_table"
-    });
+    Deck_table.init();
+    Card_table.init();
+    Card_description_table.init();
     let deck_table = new Table({name: "deck_table", div_id: "deck_table", id: "deck_table"});
     user_list_create();
     $("#send_request_button").prop("disabled", true);
-    card_description_table_init();
     /*
         // change movie dialog
 
@@ -119,79 +96,8 @@ $(document).ready(function () {
         */
 });
 
-function card_description_table_button_cancel(e) {
-    alert("cancel!");
-    let card_description_table = Table.get({name: "card_description_table"})
-    card_description_table.clear();
-    card_description_table_hide();
-    card_name_unset();
-}
 
-function card_description_table_button_save(e) {
-    alert("save!");
-    let card_description_table = Table.get({name: "card_description_table"});
-    card_description_table.clear();
-    card_description_table_hide();
-    card_name_unset();
-}
 
-function card_description_table_create(card) {
-    let headers = Tables.header("card_description");
-    let card_description_table = Table.get({name: "card_description_table"})
-    card_description_table.clear();
-    card_description_table.add_row({id: "r0"})
-    // might be the right way to set columns widths:
-    // https://stackoverflow.com/questions/928849/setting-table-column-width
-    let cellWidths = ['50%', '50%'];
-    for (let i = 0; i < headers.length; i++)
-        card_description_table.add_th({
-            row_id: "r0",
-            id: "h" + i,
-            text: headers[i],
-            class_name: " header",
-            width: cellWidths[i]
-        });
-    let name_tr = card_description_table.add_row({data: card.name, id: "r1"});
-    let name_item_td = card_description_table.add_td({row_id: "r1", id: "card-name-item", text: "name"});
-    let name_input_td = card_description_table.add_td({row_id: "r1", id: "card-name-input", text: ""});
-    let name_input = document.createElement("input");
-    name_input.value = card.name;
-    name_input_td.id = "card-name-input";
-    name_input_td.appendChild(name_input);
-    let type_id_tr = card_description_table.add_row({data: card.name, id: "r2"})
-    let type_id_item_td = card_description_table.add_td({row_id: "r2", id: "card-color-item", text: "color"})
-    let type_id_input_td = card_description_table.add_td({row_id: "r2", id: "card-color-input", text: ""});
-    let type_id_input = document.createElement("input");
-    type_id_input.value = card.type_id;
-    type_id_input_td.id = "card-type-id-input";
-    type_id_input_td.defaultValue = card.type_id;
-    type_id_input_td.appendChild(type_id_input);
-    card_description_table_show(card);
-}
-
-function card_description_table_hide() {
-    $("#card-description-table-buttons")[0].style.display = 'none';
-}
-
-function card_description_table_init() {
-    card_description_table_hide();
-    $("#card-description-table-save")[0].addEventListener('click', card_description_table_button_save);
-    $("#card-description-table-cancel")[0].addEventListener('click', card_description_table_button_cancel);
-}
-
-function card_description_table_show(card) {
-    $("#card-description-table-buttons")[0].style.display = 'block';
-    $("#card-description-table-save")[0].data = card;
-    $("#card-description-table-cancel")[0].data = card;
-}
-
-function card_name_set(card_name) {
-    $(displayed_card).html("Card: " + card_name);
-}
-
-function card_name_unset() {
-    $(displayed_card).html("");
-}
 
 function card_table_clear() {
     let card_table = Table.get({name: "card_table"})
@@ -199,7 +105,7 @@ function card_table_clear() {
 }
 
 function card_table_create(response) {
-    let headers = Tables.header("card");
+    let headers = Table.header("card");
     let card_table = Table.get({name: "card_table"})
     card_table.clear();
     card_table.add_row({id: "r0"})
@@ -226,7 +132,7 @@ function card_table_row_contextmenu_onlick_handler(e) {
     let card_id = data.card_id;
     Table.select_row(card_row_selected);
     card_name_set(data.name);
-    card_description_table_create(data);
+    Card_description_table.create(data);
 }
 
 function create_mtg_request(request, arguments) {
@@ -304,7 +210,7 @@ function deck_table_row_contextmenu_onlick_handler(e) {
     let deck_id = data.deck_id;
     Table.select_row(deck_row_selected);
     deck_name_set(data.name);
-    let request = new Requests({request : "deck_select_all_cards",
+    let request = new Request({request : "deck_select_all_cards",
         arguments: deck_id});
     request.send(select_deck_cards_request_success, select_deck_cards_request_failure);
 }
@@ -409,7 +315,7 @@ function select_user_request() {
 }
 
 function user_list_create() {
-    let request = new Requests({request :"account_select_all"});
+    let request = new Request({request :"account_select_all"});
     request.send(select_user_request_success, select_user_request_failure);
     return false;
 }

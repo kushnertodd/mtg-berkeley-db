@@ -27,7 +27,7 @@ class Table {
     }
 
     static header(name) {
-        return Tables.headers[name];
+        return Table.headers[name];
     }
 
     // usage: add_row({id: "id", data: obj, text: "text"});

@@ -1,9 +1,9 @@
 /*
  * requests.js:
- * Requests class
+ * Request class
  */
 
-class Requests {
+class Request {
     static request_parameters = {
         account_select_all: {"argument_count": 0},
         deck_select_all_for_account_id: {"argument_count": 1},
@@ -12,15 +12,15 @@ class Requests {
     // only one request can be active at any time
     static state = null;
     //static request_url = "http://34.106.93.238:8000";
-    static request_url =  "http://localhost:8000";
+    static request_url = "http://localhost:8000";
     request = null;
     arguments = null
     message = null;
     success_callback = null;
-    failure_callback =null;
+    failure_callback = null;
 
     constructor(args) {
-        Requests.state = args.state;
+        Request.state = args.state;
         this.request = args.request;
         this.arguments = args.arguments;
         this.success_callback = args.success_callback;
@@ -29,7 +29,7 @@ class Requests {
     }
 
     create() {
-        let argument_count = Requests.request_parameters[this.request];
+        let argument_count = Request.request_parameters[this.request];
         if (argument_count > 1) {
             return '{"class_name":"Mtg_request",' + '"request":"' + request + '",'
                 + '"arguments":["' + arguments.join('","') + '"]}';
@@ -56,7 +56,7 @@ class Requests {
                         console.log("request success for '${message}'");
                 }, failure: function (result) {
                     if (failure_callback)
-                    failure_callback(result);
+                        failure_callback(result);
                     else
                         console.log("request failure for '${message}'");
                 }
