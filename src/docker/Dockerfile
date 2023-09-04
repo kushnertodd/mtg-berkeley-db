@@ -1,4 +1,5 @@
-FROM ubuntu:latest
+#FROM ubuntu:latest
+FROM ubuntu:23.04
 
 # Create a new directory in the container
 #WORKDIR /app
