@@ -4,11 +4,6 @@
  */
 
 class Table {
-    // headers = {
-    //     "card": ["Card", "Color"],
-    //     "card_description": ["Item", "Value"],
-    //     "deck": ["Deck"]
-    // }
     static tables = {};
     selected_row = null;
     dom = null;
@@ -28,10 +23,6 @@ class Table {
         this.tbody = document.createElement('TBODY');
         table.appendChild(this.tbody);
     }
-
-    // static header(name) {
-    //     return Table.headers[name];
-    // }
 
     // usage: add_row({id: "id", data: obj, text: "text"});
     add_row(args) {

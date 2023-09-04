@@ -86,35 +86,4 @@ class User_Select_list {
             });
         }
     }
-
-    // static user_select_request() {
-    //     let user_request = this.dom[0].value;
-    //     let argument_el = $('#argument_input')[0];
-    //     let argument = argument_el.value;
-    //     let request_descriptor = request_parameters[request];
-    //     if (argument === "" && request_descriptor.needs_argument) {
-    //         argument_el.placeholder = "Request requires value";
-    //         return false;
-    //     }
-    //     let request = new Request({
-    //         request: user_request,
-    //         arguments: arguments,
-    //
-    //     });
-    //     request.send(User_Select_list.user_select_request_success, User_Select_list.user_select_request_failure);
-    //     return false;
-    // }
-
-    // static user_select_request_failure(req) {
-    //     alert(`select user request failed: '${req}'`);
-    // }
-    //
-    // static user_select_request_success(result) {
-    //     const data = JSON.stringify(result);
-    //     let result_obj = JSON.parse(data);
-    //     console.log(`class name: {result_obj.class_name}`);
-    //     console.log(data);
-    //     let request_name = result_obj.mtg_request.request;
-    //     user_list_populate(result_obj.mtg_request_response.account_dto_list);
-    // }
 }
