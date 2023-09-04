@@ -49,12 +49,12 @@ class Request {
                     if (success_callback)
                         success_callback(result);
                     else
-                        console.log(`request success for '${message}'`);
+                        console.log(`request success for '${this.message}'`);
                 }, failure: function (result) {
                     if (failure_callback)
                         failure_callback(result);
                     else
-                        console.log(`request failure for '${message}'`);
+                        console.log(`request failure for '${this.message}'`);
                 }
             });
         } catch (error) {

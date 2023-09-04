@@ -34,7 +34,7 @@ class Card_description_table {
     static create(card) {
         let headers = ["Item", "Value"];
         let table = Card_description_table.table;
-        Card_description_table.clear();
+        table.clear();
         table.add_row({id: "r0"})
         let cellWidths = ['50%', '50%'];
         for (let i = 0; i < headers.length; i++)
@@ -88,6 +88,7 @@ class Card_description_table {
             id: Card_description_table.id
         });
         Card_description_table.buttons = $("#card-description-table-buttons");
+        Card_description_table.buttons[0].style.display = 'none';
         Card_description_table.cancel_button = $("#card-description-table-cancel");
         Card_description_table.cancel_button[0].addEventListener('click', Card_description_table.button_cancel);
         Card_description_table.label = $("#displayed_card");

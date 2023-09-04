@@ -18,15 +18,11 @@ class Deck_table {
 
 
     static create(deck_list) {
+        Card_description_table.clear();
+        Card_table.clear();
         let table = Deck_table.table;
         table.clear();
-        let card_table = Card_table.table;
-        card_table.clear();
-        let card_description_table = Card_description_table.table;
-        card_description_table.clear();
         table.add_row({id: "r0"})
-        // might be the right way to set columns widths:
-        // https://stackoverflow.com/questions/928849/setting-table-column-width
         let header = "Deck";
         table.add_th({
             row_id: "r0",

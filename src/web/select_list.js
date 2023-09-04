@@ -1,120 +1,77 @@
 /*
  * table.js:
- * Table class
+ * Select_list class
  */
 
-class Table {
-    headers = {
-        "card": ["Card", "Color"],
-        "card_description": ["Item", "Value"],
-        "deck": ["Deck"]
-    }
-    static tables = {};
-    selected_row = null;
+class Select_list {
+    static select_lists = {};
+    dom = null;
+    name = null;
+    options = {};
+    select_list = null;
 
-    // usage: constructor({name: "name", div_id: "id", id: "id"});
+    // usage: constructor({name: "name", div_id: "id", id: "id", event_listener: eventListener});
     constructor(args) {
         this.name = args.name;
-        Table.tables[args.name] = this;
+        Select_list.select_lists[args.name] = this;
         this.dom = document.getElementById(args.div_id);
-        let table = document.createElement('TABLE');
-        this.dom.appendChild(table);
-        table.border = "4";
-        table.id = args.id;
-        this.tbody = document.createElement('TBODY');
-        table.appendChild(this.tbody);
-        this.rows = {};
+        this.select_list = document.createElement('SELECT');
+        this.dom.appendChild(this.select_list);
+        if (args.event_listener) addEventListener('change', args.event_listener);
     }
 
-    static header(name) {
-        return Table.headers[name];
-    }
-
-    // usage: add_row({id: "id", data: obj, text: "text"});
-    add_row(args) {
-        let row = document.createElement('TR');
-        this.tbody.appendChild(row)
-        row.table = this;
-        row.id = args.id;
-        if (args.data) row.data = args.data;
-        if (args.text) row.innerText = args.text;
-        this.rows[args.id] = row;
-        row.tds = {};
-        row.ths = {};
-        return row;
-    }
-
-    // usage: add_td({row_id: "row_id", id: "id", text: "text"});
-    add_td(args) {
-        let row = this.rows[args.row_id];
-        let td = document.createElement('TD');
-        td.row = row;
-        row.appendChild(td)
-        td.id = args.id;
-        td.appendChild(document.createTextNode(args.text));
-        row.tds[args.id] = td;
-        return td;
-    }
-
-    // usage: add_th({row_id: "row_id", id: "id", text: "text", class_name: "class_name", width: "cell_width"});
-    add_th(args) {
-        let row = this.rows[args.row_id];
-        let th = document.createElement('TH');
-        th.row = row;
-        row.appendChild(th)
-        th.id = args.id;
-        th.innerText = args.text;
-        if (args.class_name) th.className += args.class_name;
-        if (args.width) th.width = args.width;
-        row.ths[args.id] = th;
+    // usage: add_option({id: "id", data: obj, text: "text", value: "value", selected: bool, disabled: bool});
+    add_option(args) {
+        let option = document.createElement('OPTION');
+        this.select_list.options.add(option)
+        option.select_list = this;
+        if (args.id) option.id = args.id;
+        if (args.data) option.data = args.data;
+        if (args.text) option.text = args.text;
+        if (args.value) option.value = args.value;
+        if (args.selected) option.selected = args.selected;
+        if (args.disabled) option.disabled = args.disabled;
+        if (args.id) this.options[args.id] = option;
+        return option;
     }
 
     // usage: clear();
     clear() {
-        let tbody = this.tbody;
-        if (tbody.children.length > 0) {
-            let rows = tbody.getElementsByTagName('tr');
-            for (let row = rows.length - 1; row >= 0; row--) {
-                tbody.removeChild(rows[row]);
-            }
+        let select_list = this.select_list;
+        for (let i = select_list.length; i > 0; i--) {
+            select_list.remove(i - 1);
         }
     }
 
-    // usage: get_row({row_id: "row_id"});
-    get_row(args) {
-        return this.rows[args.row_id];
+    get_length() {
+        return this.select_list.length;
     }
 
-    // usage: get_th({row_id: "row_id", id: "id"});
-    get_th(args) {
-        return this.rows[args.row_id].ths[args.id];
+    get_option_by_index(index) {
+        return this.select_list.item[index];
     }
 
-    // usage: get_td({row_id: "row_id", id: "id"});
-    get_td(args) {
-        return this.rows[args.row_id].tds[args.id];
+    get_selected_index() {
+        return this.select_list.selectedIndex;
     }
 
-    // usage: get({name: "name"});
-    static get(args) {
-        return Table.tables[args.name];
+    get_selected_option() {
+        if (this.select_list.selectedIndex === -1)
+            return null;
+        else
+            return this.get_option_by_index(get_selected_index());
     }
 
-    print(name) {
-        alert("table " + this.name);
+    remove(index) {
+        this.select_list.remove(index);
     }
 
-    static select_row(tr) {
-        Table.unselect_row();
-        this.selected_row = tr;
-        tr.classList.add("selected");
+    static select_option(index) {
+        this.select_list.selectedIndex = index;
     }
 
-    static unselect_row() {
-        if (this.selected_row) {
-            this.selected_row.classList.remove("selected");
-            this.selected_row = null;
-        }
+    static unselect_options() {
+        this.select_list.selectedIndex = -1
     }
 }
 

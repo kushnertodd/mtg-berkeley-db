@@ -18,6 +18,7 @@ class Card_table {
 
     static create(card_list) {
         let headers = ["Card", "Color"];
+        Card_description_table.clear();
         let table = Card_table.table;
         table.clear();
         table.add_row({id: "r0"})
@@ -48,15 +49,16 @@ class Card_table {
             div_id: Card_table.div_id,
             id: Card_table.id
         });
+        Card_table.label = $("#displayed_deck");
     }
 
 
     static label_set() {
-        $(displayed_user).html("Decks:");
+        Card_table.label.html("Decks:");
     }
 
     static label_unset() {
-        $(displayed_user).html("");
+        Card_table.label.html("");
     }
 
     static row_contextmenu_onlick_handler(e) {

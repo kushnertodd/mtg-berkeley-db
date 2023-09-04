@@ -4,13 +4,17 @@
  */
 
 class Table {
-    headers = {
-        "card": ["Card", "Color"],
-        "card_description": ["Item", "Value"],
-        "deck": ["Deck"]
-    }
+    // headers = {
+    //     "card": ["Card", "Color"],
+    //     "card_description": ["Item", "Value"],
+    //     "deck": ["Deck"]
+    // }
     static tables = {};
     selected_row = null;
+    dom = null;
+    name = null;
+    rows = {};
+    tbody = null;
 
     // usage: constructor({name: "name", div_id: "id", id: "id"});
     constructor(args) {
@@ -23,12 +27,11 @@ class Table {
         table.id = args.id;
         this.tbody = document.createElement('TBODY');
         table.appendChild(this.tbody);
-        this.rows = {};
     }
 
-    static header(name) {
-        return Table.headers[name];
-    }
+    // static header(name) {
+    //     return Table.headers[name];
+    // }
 
     // usage: add_row({id: "id", data: obj, text: "text"});
     add_row(args) {
@@ -98,10 +101,6 @@ class Table {
     // usage: get({name: "name"});
     static get(args) {
         return Table.tables[args.name];
-    }
-
-    print(name) {
-        alert(`table ${this.name}`);
     }
 
     static select_row(tr) {

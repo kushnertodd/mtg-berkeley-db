@@ -16,20 +16,24 @@
     <link rel="stylesheet" href="movie.css">
     <script src="table.js"></script>
     <script src="request.js"></script>
+    <script src="select_list.js"></script>
     <script src="deck_table.js"></script>
     <script src="card_table.js"></script>
     <script src="card_description_table.js"></script>
+    <script src="user_select_list.js"></script>
     <script src="mtg-home.js"></script>
 </head>
 <body style="text-align:center;" id="body">
 <div class="title">Welcome to the Magic Online Card Game!</div>
 
 <p></p>
-<label for="mtg_select_user">Select a user</label>
-<select name="mtg_select_user" id="mtg_select_user">
+
+<div id="select_user_list" class="ui-widget"></div>
+<!--<label for="select_user">Select a user</label>
+<select name="select_user" id="select_user">
     <option>Choose user</option>
 </select>
-
+-->
 <p></p>
 
 <p id="displayed_user" class="username"></p>
