@@ -53,8 +53,8 @@ class Card_table {
     }
 
 
-    static label_set() {
-        Card_table.label.html("Decks:");
+    static label_set(deck_name) {
+        Card_table.label.html(`Deck: ${deck_name}`);
     }
 
     static label_unset() {
@@ -67,7 +67,7 @@ class Card_table {
         let data = card_row_selected.data;
         let card_id = data.card_id;
         Table.select_row(card_row_selected);
-        //Card_table.label_set(data.name);
+        Card_description_table.label_set(data.name);
         Card_description_table.create(data);
     }
 

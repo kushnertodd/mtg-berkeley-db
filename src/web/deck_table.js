@@ -38,7 +38,7 @@ class Deck_table {
             tr.addEventListener('contextmenu', Deck_table.row_contextmenu_onlick_handler);
             table.add_td({row_id: row_id, id: "d0", text: deck_list[i].name})
         }
-        //Deck_table.label_set("username");
+        Deck_table.label_set();
     }
 
 
@@ -48,11 +48,11 @@ class Deck_table {
             div_id: Deck_table.div_id,
             id: Deck_table.id
         });
-        Deck_table.label = $("#displayed_deck");
+        Deck_table.label = $("#displayed_user");
     }
 
     static label_set(deck_name) {
-        Deck_table.label.html(`Deck: ${deck_name}`);
+        Deck_table.label.html("Decks:");
     }
 
     static label_unset() {
@@ -65,7 +65,7 @@ class Deck_table {
         let data = deck_row_selected.data;
         let deck_id = data.deck_id;
         Table.select_row(deck_row_selected);
-        Deck_table.label_set(data.name);
+        Card_table.label_set(data.name);
         let request = new Request({
             request: "deck_select_all_cards",
             arguments: deck_id

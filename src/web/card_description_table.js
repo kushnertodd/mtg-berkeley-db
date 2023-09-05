@@ -12,23 +12,23 @@ class Card_description_table {
     static table;
 
     static buttons;
-    static cancel_button;
     static save_button;
+    static cancel_button;
 
     static button_cancel(e) {
-        alert("cancel!");
-        Card_description_table.clear();
+        // alert("cancel!");
+        // Card_description_table.clear();
     }
 
     static button_save(e) {
-        alert("save!");
-        Card_description_table.clear();
+        // alert("save!");
+        // Card_description_table.clear();
     }
 
     static clear() {
         Card_description_table.table.clear();
         Card_description_table.label_unset();
-        Card_description_table.buttons[0].style.display = 'none';
+        Card_description_table.buttons.hide();
     }
 
     static create(card) {
@@ -87,13 +87,18 @@ class Card_description_table {
             div_id: Card_description_table.div_id,
             id: Card_description_table.id
         });
-        Card_description_table.buttons = $("#card-description-table-buttons");
-        Card_description_table.buttons[0].style.display = 'none';
-        Card_description_table.cancel_button = $("#card-description-table-cancel");
-        Card_description_table.cancel_button[0].addEventListener('click', Card_description_table.button_cancel);
         Card_description_table.label = $("#displayed_card");
-        Card_description_table.save_button = $("#card-description-table-save");
-        Card_description_table.save_button[0].addEventListener('click', Card_description_table.button_save);
+        Card_description_table.buttons = new Button_set({name: "buttons",
+            div_id: "card-description-table-buttons",
+            hidden: true });
+        Card_description_table.save_button = new Button({name: "Save", 
+            id: "card-description-table-save",
+            event_listener: Card_description_table.button_save });
+        Card_description_table.cancel_button = new Button({name: "Save",
+            id: "card-description-table-cancel",
+            event_listener: Card_description_table.button_cancel });
+        Card_description_table.buttons.add_button(Card_description_table.save_button);
+        Card_description_table.buttons.add_button(Card_description_table.cancel_button);
     }
 
     static label_set(card_name) {
@@ -105,10 +110,10 @@ class Card_description_table {
     }
 
     static show(card) {
-        Card_description_table.label_set(card.name);
-        Card_description_table.buttons[0].style.display = 'block';
-        Card_description_table.save_button[0].data = card;
-        Card_description_table.cancel_button[0].data = card;
+        //Card_description_table.label_set(card.name);
+        Card_description_table.buttons.show();
+        //Card_description_table.save_button[0].data = card;
+        //Card_description_table.cancel_button[0].data = card;
     }
 
 }
