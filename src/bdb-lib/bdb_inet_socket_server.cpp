@@ -59,6 +59,7 @@ std::string Bdb_inet_socket_server::http_header(const std::string &request) {
   return
       "HTTP/1.1 200 OK\n"
       "Content-Type: application/json\n"
+      "Access-Control-Allow-Origin: *\n"
       "Content-Length: " + std::to_string(size) + "\n\n"
           + request;
 }

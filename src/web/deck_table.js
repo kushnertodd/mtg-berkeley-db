@@ -85,13 +85,13 @@ class Deck_table {
             disabled:true
         });
         Deck_table.buttons.add_button(Deck_table.show_cards_button);
-        Deck_table.modify_deck_button = new Button({
-            name: "Modify",
-            id: "deck-table-modify-deck",
-            event_listener: Deck_table.button_modify_deck,
-            disabled:true
-        });
-        Deck_table.buttons.add_button(Deck_table.modify_deck_button);
+        // Deck_table.modify_deck_button = new Button({
+        //     name: "Modify",
+        //     id: "deck-table-modify-deck",
+        //     event_listener: Deck_table.button_modify_deck,
+        //     disabled:true
+        // });
+        // Deck_table.buttons.add_button(Deck_table.modify_deck_button);
     }
 
     static label_set() {
