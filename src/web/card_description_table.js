@@ -16,13 +16,15 @@ class Card_description_table {
     static cancel_button;
 
     static button_cancel(e) {
-        // alert("cancel!");
-        // Card_description_table.clear();
+        alert("cancel!");
+        Table.unselect_row();
+        Card_description_table.clear();
     }
 
     static button_save(e) {
-        // alert("save!");
-        // Card_description_table.clear();
+        alert("save!");
+        Table.unselect_row();
+        Card_description_table.clear();
     }
 
     static clear() {
@@ -88,15 +90,21 @@ class Card_description_table {
             id: Card_description_table.id
         });
         Card_description_table.label = $("#displayed_card");
-        Card_description_table.buttons = new Button_set({name: "buttons",
+        Card_description_table.buttons = new Button_set({
+            name: "buttons",
             div_id: "card-description-table-buttons",
-            hidden: true });
-        Card_description_table.save_button = new Button({name: "Save", 
+            hidden: true
+        });
+        Card_description_table.save_button = new Button({
+            name: "Save",
             id: "card-description-table-save",
-            event_listener: Card_description_table.button_save });
-        Card_description_table.cancel_button = new Button({name: "Save",
+            event_listener: Card_description_table.button_save
+        });
+        Card_description_table.cancel_button = new Button({
+            name: "Cancel",
             id: "card-description-table-cancel",
-            event_listener: Card_description_table.button_cancel });
+            event_listener: Card_description_table.button_cancel
+        });
         Card_description_table.buttons.add_button(Card_description_table.save_button);
         Card_description_table.buttons.add_button(Card_description_table.cancel_button);
     }

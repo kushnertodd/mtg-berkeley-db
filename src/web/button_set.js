@@ -15,7 +15,7 @@ class Button_set {
         if (args.name) this.name = args.name;
         if (args.div_id) this.dom = document.getElementById(args.div_id);
         if (args.id) this.name = args.id;
-        if (args.hidden)this.hide();
+        if (args.hidden) this.hide();
     }
 
     // usage: add_button(button);
@@ -24,16 +24,12 @@ class Button_set {
         this.dom.appendChild(button.button);
     }
 
-     hide() {
+    hide() {
         this.dom.style.display = 'none';
     }
 
-     show() {
+    show() {
         this.dom.style.display = 'block';
-        for (let i = 0; i < this.button_set.length; i++) {
-            let button = this.button_set[i];
-            button.button.style.display = 'block';
-        }
     }
 }
 
