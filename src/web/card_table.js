@@ -11,9 +11,27 @@ class Card_table {
     static label;
     static table;
 
+    static buttons;
+    static view_card_button;
+
+    static button_show_cards(e) {
+        e.preventDefault();
+        let deck_row_selected = e.currentTarget;
+        let data = deck_row_selected.data;
+        let deck_id = data.deck_id;
+        Table.select_row(deck_row_selected);
+        //Card_table.label_set(data.name);
+        let request = new Request({
+            request: "deck_select_all_cards",
+            arguments: deck_id
+        });
+        request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
+    }
+
     static clear() {
         Card_table.table.clear();
         Card_table.label_unset();
+        Card_table.buttons.hide();  
     }
 
     static create(card_list) {
@@ -41,6 +59,7 @@ class Card_table {
             table.add_td({row_id: row_id, id: "cards-name", text: cards[i].name})
             table.add_td({row_id: row_id, id: "cards-color", text: cards[i].type_id})
         }
+        Card_table.label_set();
     }
 
     static init() {
@@ -50,10 +69,21 @@ class Card_table {
             id: Card_table.id
         });
         Card_table.label = $("#displayed_deck");
+        Card_table.buttons = new Button_set({
+            name: "buttons",
+            div_id: "card-table-buttons",
+            hidden: true
+        });
+        Card_table.view_card_button = new Button({
+            name: "Save",
+            id: "card-table-view-card",
+            event_listener: Card_table.button_view_card
+        });
+        Card_table.buttons.add_button(Card_table.view_card_button);
     }
 
-
-    static label_set(deck_name) {
+    static label_set() {
+        let deck_name = Deck_table.deck_name;
         Card_table.label.html(`Deck: ${deck_name}`);
     }
 
@@ -67,7 +97,7 @@ class Card_table {
         let data = card_row_selected.data;
         let card_id = data.card_id;
         Table.select_row(card_row_selected);
-        Card_description_table.label_set(data.name);
+        Card_description_table.label_set();
         Card_description_table.create(data);
     }
 
@@ -80,6 +110,6 @@ class Card_table {
     }
 
     static show(card) {
-        Card_table.label_set();
+        Card_table.label_set(card);
     }
 }

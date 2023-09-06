@@ -119,9 +119,7 @@ class Card_description_table {
 
     static show(card) {
         //Card_description_table.label_set(card.name);
-        Card_description_table.buttons.show();
-        //Card_description_table.save_button[0].data = card;
-        //Card_description_table.cancel_button[0].data = card;
+        //Card_description_table.buttons.show();
     }
 
 }

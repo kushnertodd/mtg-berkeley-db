@@ -18,14 +18,16 @@ class Button {
         if (args.name) this.button.value = args.name;
         if (args.id) this.button.id = args.id;
         if (args.event_listener) this.button.addEventListener('click', args.event_listener);
-        if (args.disabled) this.button.disable();
+        if (args.disabled) this.disable();
     }
 
     disable() {
-        button.disable = true;
+        this.button.disable = true;
+        this.button.style.color = "#b0b0b0";
     }
 
     enable() {
-        button.disable = true;
+        this.button.disable = true;
+        this.button.style.color = "#000000";
     }
 }

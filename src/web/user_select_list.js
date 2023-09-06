@@ -9,6 +9,7 @@ class User_Select_list {
     static id = "select_user_id";
 
     static select_list;
+    static data;
     static first = true;
 
     static clear() {
@@ -47,15 +48,20 @@ class User_Select_list {
     }
 
 
-    static user_list_selected() {
+    static user_list_selected(e) {
         if (User_Select_list.first) {
             User_Select_list.first = false;
             User_Select_list.select_list.remove(0);
         }
-        let opt = User_Select_list.select_list.select_list.value;
+        let select_list =User_Select_list.select_list.select_list;
+        let selected_option = select_list.selectedOptions[0];
+        let data = selected_option.data;
+        User_Select_list.data =data;
+        let account_id = data.account_id;
+        User_Select_list.username = data.username;
         let request = new Request({
             request: "deck_select_all_for_account_id",
-            arguments: opt
+            arguments: account_id
         });
         request.send(User_Select_list.user_decks_select_request_success, User_Select_list.user_decks_select_request_failure);
     }
