@@ -114,6 +114,7 @@ class Deck_table {
     }
 
     static row_contextmenu_onlick_handler(e) {
+        // TODO: add unselecting row if already selected, disable show/add card button, remove card/card pool tables
         e.preventDefault();
         let deck_row_selected = e.currentTarget;
         let data = deck_row_selected.data;
