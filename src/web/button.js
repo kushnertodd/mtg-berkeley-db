@@ -9,9 +9,10 @@ class Button {
         this.name = args.name;
         Button.buttons[args.name] = this;
         this.button = document.createElement('button');
-        this.button.style.width = "60px";
-        this.button.style.height = "50px";
+        // https://getbootstrap.com/docs/5.3/components/buttons/
         this.button.style.margin = "4px";
+        this.button.classList.add("btn");
+        this.button.classList.add("btn-primary");
         //this.button.style.fontWeight="bold";
         this.button.style.fontFamily = "Verdana,Arial,sans-serif";
         if (args.name) this.button.innerHTML = args.name;
@@ -23,11 +24,15 @@ class Button {
 
     disable() {
         this.button.disable = true;
-        this.button.style.color = "#b0b0b0";
+        this.button.classList.remove("btn-primary");
+        this.button.classList.add("btn-secondary");
+        //this.button.style.color = "#b0b0b0";
     }
 
     enable() {
         this.button.disable = true;
-        this.button.style.color = "#000000";
+        this.button.classList.remove("btn-secondary");
+        this.button.classList.add("btn-primary");
+        //this.button.style.color = "#000000";
     }
 }
