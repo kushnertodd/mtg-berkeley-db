@@ -13,11 +13,12 @@ class Card_table {
 
     static buttons;
     static remove_card_button;
+    static selected_row;
 
     static button_remove_card(e) {
         e.preventDefault();
-        let card_pool_row_selected = Card_pool_table.selected_row;
-        let card_id = card_pool_row_selected.data.card_id;
+        let card_row_selected = Card_table.selected_row;
+        let card_id = card_row_selected.data.card_id;
         // let request = new Request({
         //     request: "deck_add_card",
         //     arguments: card_id
@@ -51,13 +52,14 @@ class Card_table {
         for (let i = 0; i < cards.length; i++) {
             let row_id = `r${i}`;
             let tr = table.add_row({data: cards[i], id: row_id})
-            tr.addEventListener('onclick', Card_table.row_onlick_handler);
+            tr.addEventListener('click', Card_table.row_onlick_handler);
             //tr.addEventListener('contextmenu', Card_table.row_contextmenu_onlick_handler);
             table.add_td({row_id: row_id, id: "cards_name", text: cards[i].name})
             table.add_td({row_id: row_id, id: "cards_color", text: cards[i].type_id})
         }
         Card_table.label_set();
-        Card_table.buttons.show();    }
+        Card_table.buttons.show();
+    }
 
     static init() {
         Card_table.table = new Table({
@@ -102,9 +104,12 @@ class Card_table {
     static row_onlick_handler(e) {
         e.preventDefault();
         let card_row_selected = e.currentTarget;
-        let data = card_row_selected.row.data;
+        let data = card_row_selected.data;
         let card_id = data.card_id;
-        Table.select_row(card_row_selected);
+        let table = Card_table.table;
+        table.select_row(card_row_selected);
+        Card_table.selected_row = card_row_selected;
+        Card_table.remove_card_button.enable();
     }
 
 }

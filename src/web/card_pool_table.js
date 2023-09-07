@@ -17,7 +17,6 @@ class Card_pool_table {
 
     static button_add_card(e) {
         e.preventDefault();
-        //let deck_row_selected = e.currentTarget;
         let card_pool_row_selected = Card_pool_table.selected_row;
         let card_id = card_pool_row_selected.data.card_id;
         // Table.select_row(deck_row_selected);
