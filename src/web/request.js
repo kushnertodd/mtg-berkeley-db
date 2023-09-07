@@ -8,6 +8,7 @@ class Request {
         account_select_all: {"argument_count": 0},
         deck_select_all_for_account_id: {"argument_count": 1},
         deck_select_all_cards: {"argument_count": 1},
+        deck_select_other_cards: {"argument_count": 1}
     };
     // only one request can be active at any time
     static state = null;

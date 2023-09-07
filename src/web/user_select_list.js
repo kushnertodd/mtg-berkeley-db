@@ -53,10 +53,10 @@ class User_Select_list {
             User_Select_list.first = false;
             User_Select_list.select_list.remove(0);
         }
-        let select_list =User_Select_list.select_list.select_list;
+        let select_list = User_Select_list.select_list.select_list;
         let selected_option = select_list.selectedOptions[0];
         let data = selected_option.data;
-        User_Select_list.data =data;
+        User_Select_list.data = data;
         let account_id = data.account_id;
         User_Select_list.username = data.username;
         let request = new Request({

@@ -51,33 +51,33 @@ class Card_description_table {
         let name_tr = table.add_row({data: card.name, id: name_row_id});
         let name_item_td = table.add_td({
             row_id: name_row_id,
-            id: "card-name-item",
+            id: "card_name_item",
             text: "name"
         });
         let name_input_td = table.add_td({
             row_id: name_row_id,
-            id: "card-name-input",
+            id: "card_name_input",
             text: ""
         });
         let type_id_row_id = "r2";
         let name_input = document.createElement("input");
         name_input.value = card.name;
-        name_input_td.id = "card-name-input";
+        name_input_td.id = "card_name_input";
         name_input_td.appendChild(name_input);
         let type_id_tr = table.add_row({data: card.name, id: type_id_row_id})
         let type_id_item_td = table.add_td({
             row_id: type_id_row_id,
-            id: "card-color-item",
+            id: "card_color_item",
             text: "color"
         })
         let type_id_input_td = table.add_td({
             row_id: type_id_row_id,
-            id: "card-color-input",
+            id: "card_color_input",
             text: ""
         });
         let type_id_input = document.createElement("input");
         type_id_input.value = card.type_id;
-        type_id_input_td.id = "card-type-id-input";
+        type_id_input_td.id = "card_type_id_input";
         type_id_input_td.defaultValue = card.type_id;
         type_id_input_td.appendChild(type_id_input);
         Card_description_table.show(card);
@@ -92,17 +92,17 @@ class Card_description_table {
         Card_description_table.label = $("#displayed_card");
         Card_description_table.buttons = new Button_set({
             name: "buttons",
-            div_id: "card-description-table-buttons",
+            div_id: "card_description_table_buttons",
             hidden: true
         });
         Card_description_table.save_button = new Button({
             name: "Save",
-            id: "card-description-table-save",
+            id: "card_description_table_save",
             event_listener: Card_description_table.button_save
         });
         Card_description_table.cancel_button = new Button({
             name: "Cancel",
-            id: "card-description-table-cancel",
+            id: "card_description_table_cancel",
             event_listener: Card_description_table.button_cancel
         });
         Card_description_table.buttons.add_button(Card_description_table.save_button);

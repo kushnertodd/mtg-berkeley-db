@@ -14,7 +14,7 @@ class Deck_table {
 
     static buttons;
     static show_cards_button;
-    static modify_deck_button;
+    static add_cards_button;
 
     static button_show_cards(e) {
         e.preventDefault();
@@ -29,9 +29,19 @@ class Deck_table {
         request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
     }
 
-    static button_modify_deck(e) {
+    static button_add_cards(e) {
+        e.preventDefault();
+        let table = Deck_table.table;
+        let data = table.selected_row.data;
+        Deck_table.deck_name = data.name;
+        let deck_id = data.deck_id;
+        let request = new Request({
+            request: "deck_select_other_cards",
+            arguments: deck_id
+        });
+        request.send(Deck_table.select_deck_other_cards_request_success, Deck_table.select_deck_other_cards_request_failure);
     }
-    
+
     static clear() {
         Deck_table.table.clear();
         Deck_table.label_unset();
@@ -61,8 +71,8 @@ class Deck_table {
             //tr.addEventListener('contextmenu', Deck_table.row_contextmenu_onlick_handler);
             table.add_td({row_id: row_id, id: "d0", text: deck_list[i].name})
         }
-            Deck_table.label_set();
-            Deck_table.buttons.show();
+        Deck_table.label_set();
+        Deck_table.buttons.show();
     }
 
 
@@ -75,23 +85,23 @@ class Deck_table {
         Deck_table.label = $("#displayed_user");
         Deck_table.buttons = new Button_set({
             name: "buttons",
-            div_id: "deck-table-buttons",
+            div_id: "deck_table_buttons",
             hidden: true
         });
         Deck_table.show_cards_button = new Button({
-            name: "Show",
-            id: "deck-table-show-cards",
+            name: "Show cards",
+            id: "deck_table_show_cards",
             event_listener: Deck_table.button_show_cards,
-            disabled:true
+            disabled: true
         });
         Deck_table.buttons.add_button(Deck_table.show_cards_button);
-        // Deck_table.modify_deck_button = new Button({
-        //     name: "Modify",
-        //     id: "deck-table-modify-deck",
-        //     event_listener: Deck_table.button_modify_deck,
-        //     disabled:true
-        // });
-        // Deck_table.buttons.add_button(Deck_table.modify_deck_button);
+        Deck_table.add_cards_button = new Button({
+            name: "Add cards",
+            id: "deck_table_add_cards",
+            event_listener: Deck_table.button_add_cards,
+            disabled: true
+        });
+        Deck_table.buttons.add_button(Deck_table.add_cards_button);
     }
 
     static label_set() {
@@ -127,6 +137,20 @@ class Deck_table {
         Deck_table.show_cards_button.enable();
     }
 
+    static select_deck_other_cards_request_failure(req) {
+        alert(`select user request failed: '${req}'`);
+    }
+
+    static select_deck_other_cards_request_success(result) {
+        const data = JSON.stringify(result);
+        let result_obj = JSON.parse(data);
+        console.log(`class name: {result_obj.class_name}`);
+        console.log(data);
+        let request_name = result_obj.mtg_request.request;
+        //Card_table.label_set();
+        Card_pool_table.create(result_obj.mtg_request_response.card_dto_list);
+    }
+
     static select_deck_cards_request_failure(req) {
         alert(`select user request failed: '${req}'`);
     }
@@ -138,6 +162,7 @@ class Deck_table {
         console.log(data);
         let request_name = result_obj.mtg_request.request;
         //Card_table.label_set();
+        Deck_table.add_cards_button.enable();
         Card_table.create(result_obj.mtg_request_response.card_dto_list);
     }
 

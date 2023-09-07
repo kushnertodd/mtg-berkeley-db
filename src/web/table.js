@@ -94,13 +94,13 @@ class Table {
         return Table.tables[args.name];
     }
 
-     select_row(tr) {
+    select_row(tr) {
         this.unselect_row();
         this.selected_row = tr;
         tr.classList.add("selected");
     }
 
-     unselect_row() {
+    unselect_row() {
         if (this.selected_row) {
             this.selected_row.classList.remove("selected");
             this.selected_row = null;

@@ -21,6 +21,7 @@
     <script src="select_list.js"></script>
     <script src="deck_table.js"></script>
     <script src="card_table.js"></script>
+    <script src="card_pool_table.js"></script>
     <script src="card_description_table.js"></script>
     <script src="user_select_list.js"></script>
     <script src="mtg-home.js"></script>
@@ -29,30 +30,57 @@
 <div class="title">Welcome to the Magic Online Card Game!</div>
 
 <p></p>
+<div class="container text-center">
 
-<div id="select_user_list" class="ui-widget"></div>
-<p></p>
+    <div id="select_user_list" class="ui-widget"></div>
+    <p></p>
 
-<p id="displayed_user" class="username"></p>
-<div id="deck_table" class="ui-widget"></div>
-<p>
-<p>
-<div id="deck-table-buttons" class="ui-widget"></div>
-<p>
-<p>
+    <div class="row text-center">
+        <div class="col text-center">
+            <p id="displayed_user" class="username"></p>
+            <div id="deck_table" class="ui-widget"></div>
+        </div>
+        <div class="col text-center">
+        </div>
+    </div>
+    <p>
+    <p>
+    <div class="row text-center">
+        <div class="col-4 text-center">
+            <div id="deck_table_buttons" class="ui-widget"></div>
+        </div>
+        <div class="col text-center">
+        </div>
+    </div>
+    <p>
+    <p>
+    <div class="row text-center">
+        <div class="col text-center">
+            <p id="displayed_deck" class="deckname"></p>
+            <div id="card_table" class="ui-widget"></div>
+        </div>
+        <div class="col text-left">
+            <p id="displayed_card_pool" class="poolname"></p>
+            <div id="card_pool_table" class="ui-widget"></div>
+            <p id="displayed_card" class="cardname"></p>
+            <div id="card_description_table" class="ui-widget"></div>
+            <div id="card_description_table_buttons" class="ui-widget"></div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-4 text-center">
+            <div id="card_table_buttons" class="ui-widget"></div>
+        </div>
+        <div class="col-4 text-center">
+            <div id="card_pool_table_buttons" class="ui-widget"></div>
+        </div>
+        <div class="col text-center">
+        </div>
+    </div>
+</div>
 
-<p id="displayed_deck" class="deckname"></p>
-<div id="card_table" class="ui-widget"></div>
 <p>
 <p>
-<div id="card-table-buttons" class="ui-widget"></div>
 <p>
-<p>
-<p id="displayed_card" class="cardname"></p>
-<div id="card_description_table" class="ui-widget"></div>
-<p>
-<p>
-<div id="card-description-table-buttons" class="ui-widget"></div>
-
 </body>
 </html>

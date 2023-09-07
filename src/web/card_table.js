@@ -31,7 +31,7 @@ class Card_table {
     static clear() {
         Card_table.table.clear();
         Card_table.label_unset();
-        Card_table.buttons.hide();  
+        Card_table.buttons.hide();
     }
 
     static create(card_list) {
@@ -55,9 +55,9 @@ class Card_table {
             let row_id = `r${i}`;
             let tr = table.add_row({data: cards[i], id: row_id})
             tr.addEventListener('onclick', Card_table.row_onlick_handler);
-            tr.addEventListener('contextmenu', Card_table.row_contextmenu_onlick_handler);
-            table.add_td({row_id: row_id, id: "cards-name", text: cards[i].name})
-            table.add_td({row_id: row_id, id: "cards-color", text: cards[i].type_id})
+            //tr.addEventListener('contextmenu', Card_table.row_contextmenu_onlick_handler);
+            table.add_td({row_id: row_id, id: "cards_name", text: cards[i].name})
+            table.add_td({row_id: row_id, id: "cards_color", text: cards[i].type_id})
         }
         Card_table.label_set();
     }
@@ -71,12 +71,12 @@ class Card_table {
         Card_table.label = $("#displayed_deck");
         Card_table.buttons = new Button_set({
             name: "buttons",
-            div_id: "card-table-buttons",
+            div_id: "card_table_buttons",
             hidden: true
         });
         Card_table.view_card_button = new Button({
             name: "Save",
-            id: "card-table-view-card",
+            id: "card_table_view_card",
             event_listener: Card_table.button_view_card
         });
         Card_table.buttons.add_button(Card_table.view_card_button);
@@ -109,7 +109,4 @@ class Card_table {
         Table.select_row(card_row_selected);
     }
 
-    static show(card) {
-        Card_table.label_set(card);
-    }
 }

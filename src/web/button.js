@@ -10,7 +10,7 @@ class Button {
         Button.buttons[args.name] = this;
         this.button = document.createElement('button');
         this.button.style.width = "60px";
-        this.button.style.height = "26px";
+        this.button.style.height = "50px";
         this.button.style.margin = "4px";
         //this.button.style.fontWeight="bold";
         this.button.style.fontFamily = "Verdana,Arial,sans-serif";
