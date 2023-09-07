@@ -12,20 +12,17 @@ class Card_table {
     static table;
 
     static buttons;
-    static view_card_button;
+    static remove_card_button;
 
-    static button_show_cards(e) {
+    static button_remove_card(e) {
         e.preventDefault();
-        let deck_row_selected = e.currentTarget;
-        let data = deck_row_selected.data;
-        let deck_id = data.deck_id;
-        Table.select_row(deck_row_selected);
-        //Card_table.label_set(data.name);
-        let request = new Request({
-            request: "deck_select_all_cards",
-            arguments: deck_id
-        });
-        request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
+        let card_pool_row_selected = Card_pool_table.selected_row;
+        let card_id = card_pool_row_selected.data.card_id;
+        // let request = new Request({
+        //     request: "deck_add_card",
+        //     arguments: card_id
+        // });
+        // request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
     }
 
     static clear() {
@@ -60,7 +57,7 @@ class Card_table {
             table.add_td({row_id: row_id, id: "cards_color", text: cards[i].type_id})
         }
         Card_table.label_set();
-    }
+        Card_table.buttons.show();    }
 
     static init() {
         Card_table.table = new Table({
@@ -74,12 +71,13 @@ class Card_table {
             div_id: "card_table_buttons",
             hidden: true
         });
-        Card_table.view_card_button = new Button({
-            name: "Save",
-            id: "card_table_view_card",
-            event_listener: Card_table.button_view_card
+        Card_table.remove_card_button = new Button({
+            name: "Remove card",
+            id: "card_table_remove_card",
+            event_listener: Card_table.button_remove_card,
+            disabled: true
         });
-        Card_table.buttons.add_button(Card_table.view_card_button);
+        Card_table.buttons.add_button(Card_table.remove_card_button);
     }
 
     static label_set() {

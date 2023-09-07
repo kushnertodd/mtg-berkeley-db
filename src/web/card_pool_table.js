@@ -76,7 +76,7 @@ class Card_pool_table {
             hidden: true
         });
         Card_pool_table.add_card_button = new Button({
-            name: "Add",
+            name: "Add card",
             id: "card_table_add_card",
             event_listener: Card_pool_table.button_add_card,
             disabled: true
