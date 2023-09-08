@@ -28,11 +28,17 @@ class Card_pool_table {
         //Card_table.label_set();
         Deck_table.add_cards_button.enable();
         //Card_table.create(result_obj.mtg_request_response.card_dto_list);
-        let request = new Request({
+        let select_all_request = new Request({
             request: "deck_select_all_cards",
             arguments: Deck_table.deck_id
         });
-        request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
+        select_all_request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
+        let select_other_request = new Request({
+            request: "deck_select_other_cards",
+            arguments: deck_id
+        });
+        select_other_request.send(Deck_table.select_deck_other_cards_request_success, Deck_table.select_deck_other_cards_request_failure);
+
     }
 
     static button_add_card(e) {
