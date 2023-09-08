@@ -7,7 +7,6 @@ card_load
 card_lookup
 card_match_name
 card_select_all
-card_select_all_decks
 card_select_all_for_name
 card_select_all_for_type_id
 deck_card_load
@@ -15,6 +14,7 @@ deck_load
 deck_lookup
 deck_match_name
 deck_select_all
+card_select_all_decks
 deck_select_all_cards
 deck_select_all_for_account_id
 deck_select_all_for_name
