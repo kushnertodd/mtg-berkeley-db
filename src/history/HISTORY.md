@@ -38,3 +38,9 @@ You can try:
 - you should see a table with the card name and color, and a field to change them
 - you can't actually change those, but select Save or Cancel and you should get a pop-up and have the card editing table disappear
 - try selecting other users, decks, and cards and see that it works okay
+
+### v0.3
+2023-09-08 version where the web page works:
+- displaying users, decks, cards ('Show Cards' button), and cards not in deck ('Add Cards' button)
+- 'Add card' button works to move card from not in deck to in deck
+- 'Remove card' button does not work
