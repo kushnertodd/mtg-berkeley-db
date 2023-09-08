@@ -507,6 +507,7 @@ bool Mtg_deck_request_handler::handle(Mtg_inet_app_init &mtg_inet_app_init,
       && !Mtg_deck_request_handler::load(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::lookup(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::match_name(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
+      && !Mtg_deck_request_handler::remove_card(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_all(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_all_cards(mtg_inet_app_init, mtg_request, mtg_request_response, errors)
       && !Mtg_deck_request_handler::select_all_for_account_id(mtg_inet_app_init,
@@ -605,6 +606,54 @@ bool Mtg_deck_request_handler::match_name(Mtg_inet_app_init &mtg_inet_app_init,
        "deck_name_triplets",
        mtg_request_response,
        errors);
+  return true;
+}
+
+bool Mtg_deck_request_handler::remove_card(Mtg_inet_app_init &mtg_inet_app_init,
+                                           const Mtg_request &mtg_request,
+                                           Mtg_request_response &mtg_request_response,
+                                           Bdb_errors &errors) {
+  if (mtg_request.request != "deck_remove_card")
+    return false;
+  if (mtg_request.arguments.size() < 2)
+    errors.add("Mtg_card_request_handler::remove_card", "1", "missing deck_id or card_id");
+  Primary_database_config deck_card_primary_database_config;
+  mtg_inet_app_init.bdb_databases_config.select("deck_card", deck_card_primary_database_config, errors);
+  Secondary_database_config deck_card_deck_id_secondary_database_config;
+  deck_card_primary_database_config.select("deck_card_deck_id",
+                                           deck_card_deck_id_secondary_database_config,
+                                           errors);
+  Secondary_database_config deck_card_card_id_secondary_database_config;
+  deck_card_primary_database_config.select("deck_card_card_id",
+                                           deck_card_card_id_secondary_database_config,
+                                           errors);
+  std::unique_ptr<Bdb_key_extractor> mtg_bdb_key_extractor =
+      std::make_unique<Mtg_bdb_key_extractor>();
+  Primary_database
+      deck_card_db(deck_card_primary_database_config, mtg_bdb_key_extractor.get(), mtg_inet_app_init.db_home,
+                   errors);
+  Secondary_database
+      deck_card_deck_id_sdb(deck_card_deck_id_secondary_database_config, mtg_inet_app_init.db_home, errors);
+  Secondary_database
+      deck_card_card_id_sdb(deck_card_card_id_secondary_database_config, mtg_inet_app_init.db_home, errors);
+  if (!errors.has()) {
+    std::string deck_id = mtg_request.arguments.at(0);
+    std::string card_id = mtg_request.arguments.at(1);
+    Deck_card_DTO deck_card_dto_with_key;
+    Deck_card_DAO::delete_deck_card(deck_card_db.bdb_db,
+                                    deck_card_deck_id_sdb.bdb_db,
+                                    deck_card_card_id_sdb.bdb_db,
+                                    deck_id,
+                                    card_id,
+                                    deck_card_dto_with_key,
+                                    errors);
+    if (!errors.has()) {
+      json_object *card_dto_json = deck_card_dto_with_key.to_json(errors);
+      if (!errors.has()) {
+        mtg_request_response.add_response(card_dto_json);
+      }
+    }
+  }
   return true;
 }
 

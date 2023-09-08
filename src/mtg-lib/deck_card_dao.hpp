@@ -24,6 +24,13 @@ class Deck_card_DAO {
                      const std::string &deck_card_id,
                      Deck_card_DTO &deck_card_dto,
                      Bdb_errors &errors);
+  static void delete_deck_card(Bdb_dbp &deck_card_db,
+                               Bdb_dbp &deck_card_deck_id_sdb,
+                               Bdb_dbp &deck_card_card_id_sdb,
+                               const std::string &deck_id,
+                               const std::string &card_id,
+                               Deck_card_DTO &deck_card_dto_with_key,
+                               Bdb_errors &errors);
   static void save(Bdb_dbp &deck_card_db,
                    Deck_card_DTO &deck_card_dto,
                    Deck_card_DTO &deck_card_dto_with_key,

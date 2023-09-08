@@ -19,11 +19,32 @@ class Card_table {
         e.preventDefault();
         let card_row_selected = Card_table.selected_row;
         let card_id = card_row_selected.data.card_id;
-        // let request = new Request({
-        //     request: "deck_add_card",
-        //     arguments: card_id
-        // });
-        // request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
+        let deck_id = Deck_table.deck_id;
+        let request = new Request({
+            request: "deck_remove_card",
+            arguments: [deck_id, card_id]
+        });
+        request.send(Card_table.remove_deck_card_request_success, Card_table.remove_deck_card_request_failure);
+    }
+
+    static remove_deck_card_request_failure(req) {
+        alert(`remove deck card request failed: '${req}'`);
+    }
+
+    static remove_deck_card_request_success(result) {
+        let result_obj = Request.parse_response(result);
+        let request_name = result_obj.mtg_request.request;
+        Deck_table.add_cards_button.enable();
+        let select_all_request = new Request({
+            request: "deck_select_all_cards",
+            arguments: Deck_table.deck_id
+        });
+        select_all_request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
+        let select_other_request = new Request({
+            request: "deck_select_other_cards",
+            arguments: Deck_table.deck_id
+        });
+        select_other_request.send(Deck_table.select_deck_other_cards_request_success, Deck_table.select_deck_other_cards_request_failure);
     }
 
     static clear() {

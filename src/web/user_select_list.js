@@ -35,10 +35,7 @@ class User_Select_list {
     }
 
     static select_users_request_success(result) {
-        const data = JSON.stringify(result);
-        let result_obj = JSON.parse(data);
-        console.log("class name: " + result_obj.class_name);
-        console.log(data);
+        let result_obj = Request.parse_response(result);
         let request_name = result_obj.mtg_request.request;
         User_Select_list.user_list_populate(result_obj.mtg_request_response.account_dto_list);
     }
@@ -71,10 +68,7 @@ class User_Select_list {
     }
 
     static user_decks_select_request_success(result) {
-        const data = JSON.stringify(result);
-        let result_obj = JSON.parse(data);
-        console.log(`class name: {result_obj.class_name}`);
-        console.log(data);
+        let result_obj = Request.parse_response(result);
         let request_name = result_obj.mtg_request.request;
         Deck_table.create(result_obj.mtg_request_response.deck_dto_list);
     }

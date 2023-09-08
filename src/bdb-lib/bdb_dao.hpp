@@ -23,6 +23,39 @@
 class Bdb_DAO {
  public:
 
+  /*!
+   * @brief lookup data DTO T from key DTO K
+   * @param bdb_db database handle
+   * @param bdb_dto_key key DTO for data DTO record
+   * @param bdb_data_dto found data DTO record
+   * @param errors invalid key, write error, or bdb exception
+   */
+  template<typename K>
+  static void delete_key(Bdb_dbp &bdb_db,
+                         const K &bdb_dto_key,
+                         Bdb_errors &errors,
+                         DbTxn *txnid = nullptr) {
+    Bdb_dbt bdb_key_dbt{bdb_dto_key};
+
+    try {
+      int ret = bdb_db->get_db().del(txnid,
+                                     &bdb_key_dbt.get_dbt(),
+                                     0);
+      if (ret) {
+        errors.add("Bdb_DAO::delete_key", "1", "cannot delete key in database "
+            + bdb_db->to_string(), ret);
+      }
+    }
+    catch (DbException &e) {
+      errors.add("Bdb_DAO::delete_key", "2", "delete error in database "
+          + bdb_db->to_string() + std::string(e.what()));
+    }
+    catch (std::exception &e) {
+      errors.add("Bdb_DAO::delete_key", "3", "delete error in database "
+          + bdb_db->to_string() + std::string(e.what()));
+    }
+  }
+
   // https://saturncloud.io/blog/algorithm-for-generating-a-unique-id-in-c/
   static std::string generate_unique_id() {
     // Step 1: Obtain the current system time

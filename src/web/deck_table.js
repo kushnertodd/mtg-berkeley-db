@@ -145,10 +145,7 @@ class Deck_table {
     }
 
     static select_deck_other_cards_request_success(result) {
-        const data = JSON.stringify(result);
-        let result_obj = JSON.parse(data);
-        console.log(`class name: {result_obj.class_name}`);
-        console.log(data);
+        let result_obj = Request.parse_response(result);
         let request_name = result_obj.mtg_request.request;
         //Card_table.label_set();
         Card_pool_table.create(result_obj.mtg_request_response.card_dto_list);
@@ -159,10 +156,7 @@ class Deck_table {
     }
 
     static select_deck_cards_request_success(result) {
-        const data = JSON.stringify(result);
-        let result_obj = JSON.parse(data);
-        console.log(`class name: {result_obj.class_name}`);
-        console.log(data);
+        let result_obj = Request.parse_response(result);
         let request_name = result_obj.mtg_request.request;
         //Card_table.label_set();
         Deck_table.add_cards_button.enable();

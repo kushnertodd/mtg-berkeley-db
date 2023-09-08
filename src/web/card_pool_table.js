@@ -20,10 +20,7 @@ class Card_pool_table {
     }
 
     static select_add_card_request_success(result) {
-        const data = JSON.stringify(result);
-        let result_obj = JSON.parse(data);
-        console.log(`class name: {result_obj.class_name}`);
-        console.log(data);
+        let result_obj = Request.parse_response(result);
         let request_name = result_obj.mtg_request.request;
         //Card_table.label_set();
         Deck_table.add_cards_button.enable();
@@ -38,7 +35,6 @@ class Card_pool_table {
             arguments: Deck_table.deck_id
         });
         select_other_request.send(Deck_table.select_deck_other_cards_request_success, Deck_table.select_deck_other_cards_request_failure);
-
     }
 
     static button_add_card(e) {

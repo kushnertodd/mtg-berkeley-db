@@ -7,6 +7,7 @@ class Request {
     static request_parameters = {
         account_select_all: {"argument_count": 0},
         deck_add_card: {"argument_count": 2},
+        deck_remove_card: {"argument_count": 2},
         deck_select_all_for_account_id: {"argument_count": 1},
         deck_select_all_cards: {"argument_count": 1},
         deck_select_other_cards: {"argument_count": 1}
@@ -39,6 +40,14 @@ class Request {
                 return '{"class_name":"Mtg_request","request":"' + this.request
                     + '","arguments":["' + this.arguments.join('","') + '"]}';
         }
+    }
+
+    static parse_response(result) {
+        const data = JSON.stringify(result);
+        let result_obj = JSON.parse(data);
+        console.log(`class name: {result_obj.class_name}`);
+        console.log(data);
+        return result_obj;
     }
 
     send(success_callback, failure_callback) {

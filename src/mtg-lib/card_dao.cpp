@@ -1,7 +1,6 @@
 #include "bdb_dao.hpp"
 #include "card_dto.hpp"
 #include "card_dao.hpp"
-#include "deck_dto.hpp"
 
 /*!
  * @brief load card database from delimited record file
