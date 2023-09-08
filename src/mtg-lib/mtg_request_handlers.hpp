@@ -302,6 +302,10 @@ class Mtg_card_request_handler {
 
 class Mtg_deck_request_handler {
  public:
+  static bool add_card(Mtg_inet_app_init &mtg_inet_app_init,
+                       const Mtg_request &mtg_request,
+                       Mtg_request_response &mtg_request_response,
+                       Bdb_errors &errors);
   static bool handle(Mtg_inet_app_init &mtg_inet_app_init,
                      const Mtg_request &mtg_request,
                      Mtg_request_response &mtg_request_response,

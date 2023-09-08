@@ -1,8 +1,11 @@
 #pragma once
 
+#include <chrono>
 #include <cstring>
 #include <db_cxx.h>
+#include <functional>
 #include <json-c/json.h>
+#include <random>
 #include <sstream>
 #include <vector>
 #include "bdb_cursor.hpp"
@@ -19,7 +22,33 @@
  */
 class Bdb_DAO {
  public:
-  /*!
+
+  // https://saturncloud.io/blog/algorithm-for-generating-a-unique-id-in-c/
+  static std::string generate_unique_id() {
+    // Step 1: Obtain the current system time
+    auto currentTime = std::chrono::system_clock::now().time_since_epoch().count();
+
+    // Step 2: Generate a random number
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 9999);
+    auto randomNumber = dis(gen);
+
+    // Step 3: Combine the time and random number
+    std::string combinedString = std::to_string(currentTime) + std::to_string(randomNumber);
+
+    // Step 4: Apply a hashing algorithm
+    std::hash<std::string> hasher;
+    std::size_t hashedValue = hasher(combinedString);
+
+    // Step 5: Format the ID (optional)
+    std::string uniqueID = std::to_string(hashedValue);
+
+    // Step 6: Use the ID
+    return uniqueID;
+  }
+
+/*!
    * @brief load and save delimited text file data DTO records
    * @param bdb_db data DTO db
    * @param text_file data DTO delimited text file
@@ -176,6 +205,51 @@ class Bdb_DAO {
         else if (no_overwrite)
           errors.add("Bdb_DAO::save", "2", "key exists in database "
               + bdb_db->to_string(), ret);
+      }
+    }
+    catch (DbException &e) {
+      errors.add("Bdb_DAO::save", "3", "write error in database "
+          + bdb_db->to_string() + std::string(e.what()));
+    }
+    catch (std::exception &e) {
+      errors.add("Bdb_DAO::save", "4", "write error in database "
+          + bdb_db->to_string() + std::string(e.what()));
+    }
+  }
+
+  /*!
+   * @brief lookup data DTO T from key DTO K
+   * @param bdb_db database handle
+   * @param bdb_dto_key key DTO for data DTO record
+   * @param bdb_data_dto found data DTO record
+   * @param errors invalid key, write error, or bdb exception
+   */
+  template<typename K, typename T>
+  static void save_key(Bdb_dbp &bdb_db,
+                       T &bdb_data_dto,
+                       T &bdb_data_dto_with_key,
+                       Bdb_errors &errors,
+                       DbTxn *txnid = nullptr) {
+    try {
+      while (!errors.has()) {
+        std::string unique_id = generate_unique_id();
+        T bdb_data_dto_with_key_1(bdb_data_dto, unique_id);
+        K bdb_dto_key{bdb_data_dto_with_key_1};
+        Bdb_dbt bdb_data_dbt{bdb_data_dto};
+        Bdb_dbt bdb_key_dbt{bdb_dto_key};
+
+        int ret = bdb_db->get_db().put(txnid,
+                                       &bdb_key_dbt.get_dbt(),
+                                       &bdb_data_dbt.get_dbt(),
+                                       0);
+        if (ret) {
+          if (ret != DB_KEYEXIST)
+            errors.add("Bdb_DAO::save", "1", "write error in database "
+                + bdb_db->to_string(), ret);
+        } else {
+          bdb_data_dto_with_key = bdb_data_dto_with_key_1;
+          return;
+        }
       }
     }
     catch (DbException &e) {

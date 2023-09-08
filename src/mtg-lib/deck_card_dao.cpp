@@ -46,10 +46,10 @@ void Deck_card_DAO::lookup(Bdb_dbp &deck_card_db,
  */
 void Deck_card_DAO::save(Bdb_dbp &deck_card_db,
                          Deck_card_DTO &deck_card_dto,
+                         Deck_card_DTO &deck_card_dto_with_key,
                          Bdb_errors &errors) {
-  Deck_card_DTO_key deck_card_dto_key(deck_card_dto);
-  Bdb_DAO::save<Deck_card_DTO_key, Deck_card_DTO>
-      (deck_card_db, deck_card_dto_key, deck_card_dto, errors);
+  Bdb_DAO::save_key<Deck_card_DTO_key, Deck_card_DTO>
+      (deck_card_db, deck_card_dto, deck_card_dto_with_key, errors);
 }
 
 /*!

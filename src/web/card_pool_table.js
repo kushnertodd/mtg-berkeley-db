@@ -15,16 +15,36 @@ class Card_pool_table {
     static add_card_button;
     static selected_row;
 
+    static select_add_card_request_failure(req) {
+        alert(`select user request failed: '${req}'`);
+    }
+
+    static select_add_card_request_success(result) {
+        const data = JSON.stringify(result);
+        let result_obj = JSON.parse(data);
+        console.log(`class name: {result_obj.class_name}`);
+        console.log(data);
+        let request_name = result_obj.mtg_request.request;
+        //Card_table.label_set();
+        Deck_table.add_cards_button.enable();
+        //Card_table.create(result_obj.mtg_request_response.card_dto_list);
+        let request = new Request({
+            request: "deck_select_all_cards",
+            arguments: Deck_table.deck_id
+        });
+        request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
+    }
+
     static button_add_card(e) {
         e.preventDefault();
         let card_pool_row_selected = Card_pool_table.selected_row;
         let card_id = card_pool_row_selected.data.card_id;
-        // Table.select_row(deck_row_selected);
-        // let request = new Request({
-        //     request: "deck_select_other_cards",
-        //     arguments: card_id
-        // });
-        // request.send(Deck_table.select_deck_card_pool_request_success, Deck_table.select_deck_card_pool_request_failure);
+        let deck_id = Deck_table.deck_id;
+        let request = new Request({
+            request: "deck_add_card",
+            arguments: [deck_id, card_id]
+        });
+        request.send(Card_pool_table.select_add_card_request_success, Card_pool_table.select_add_card_request_failure);
     }
 
     static clear() {

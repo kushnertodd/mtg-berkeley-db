@@ -6,6 +6,7 @@
 class Request {
     static request_parameters = {
         account_select_all: {"argument_count": 0},
+        deck_add_card: {"argument_count": 2},
         deck_select_all_for_account_id: {"argument_count": 1},
         deck_select_all_cards: {"argument_count": 1},
         deck_select_other_cards: {"argument_count": 1}

@@ -11,6 +11,7 @@ class Deck_table {
     static label;
     static table;
     static deck_name;
+    static deck_id;
 
     static buttons;
     static show_cards_button;
@@ -20,6 +21,7 @@ class Deck_table {
         e.preventDefault();
         let table = Deck_table.table;
         let data = table.selected_row.data;
+        Deck_table.deck_id = data.deck_id;
         Deck_table.deck_name = data.name;
         let deck_id = data.deck_id;
         let request = new Request({

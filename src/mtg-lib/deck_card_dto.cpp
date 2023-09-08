@@ -6,6 +6,15 @@
 #include "bdb_tokens.hpp"
 #include "deck_card_dto.hpp"
 
+Deck_card_DTO::Deck_card_DTO(std::string deck_id_, std::string card_id_) :
+    deck_id(std::move(deck_id_)),
+    card_id(std::move(card_id_)) {}
+
+Deck_card_DTO::Deck_card_DTO(Deck_card_DTO &deck_card_DTO, std::string &deck_card_id_) :
+    deck_card_id(std::move(deck_card_id_)),
+    deck_id(std::move(deck_card_DTO.deck_id)),
+    card_id(std::move(deck_card_DTO.card_id)) {}
+
 Deck_card_DTO::Deck_card_DTO(void *buffer) {
   deserialize(buffer);
 }

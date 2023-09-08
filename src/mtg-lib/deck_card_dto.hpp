@@ -13,6 +13,8 @@ class Deck_card_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string deck_id{};
   std::string card_id{};
   Deck_card_DTO() = default;
+  Deck_card_DTO(std::string deck_id_, std::string card_id_);
+  Deck_card_DTO(Deck_card_DTO &deck_card_DTO, std::string &deck_card_id_);
   explicit Deck_card_DTO(void *buffer);
   Deck_card_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
   [[nodiscard]] size_t buffer_size() const;

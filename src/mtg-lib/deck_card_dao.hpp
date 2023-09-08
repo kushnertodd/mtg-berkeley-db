@@ -26,6 +26,7 @@ class Deck_card_DAO {
                      Bdb_errors &errors);
   static void save(Bdb_dbp &deck_card_db,
                    Deck_card_DTO &deck_card_dto,
+                   Deck_card_DTO &deck_card_dto_with_key,
                    Bdb_errors &errors);
   static void select_by_card_sdb(Bdb_dbp &deck_card_card_id_sdb,
                                  const std::string &card_id,
@@ -60,9 +61,9 @@ class Deck_card_DAO {
                                Deck_DTO_list &deck_dto_list,
                                Bdb_errors &errors);
   static void select_other_cards(Bdb_dbp &deck_card_deck_id_sdb,
-                                         Bdb_dbp &deck_card_db,
-                                         Bdb_dbp &card_db,
-                                         const std::string &deck_id,
-                                         Card_DTO_list &card_dto_list,
-                                         Bdb_errors &errors);
+                                 Bdb_dbp &deck_card_db,
+                                 Bdb_dbp &card_db,
+                                 const std::string &deck_id,
+                                 Card_DTO_list &card_dto_list,
+                                 Bdb_errors &errors);
 };
