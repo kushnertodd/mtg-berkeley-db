@@ -1,21 +1,98 @@
-2023-09-05
+2023-09-08
 To install docker version on Google cloud, do this:
 - start instances tkllc-lucy-game-design-instance-1 and app-bdb-inet-lookup-instance-1 if not already started
-- on tkllc-lucy-game-design-instance-1
-  - upload all web files from src/web to tkllc-lucy-game-design-instance-1
-  - ssh to the vm
+- on tkllc-lucy-game-design-instance-1:
+  - open ssh
+  - remove files from home directory:
+    $ rm *.js *.css *.html favicon.ico
+  - upload:
+    *.js
+    *.css
+    *.html
+    favicon.ico
+ all web files from src/web to tkllc-lucy-game-design-instance-1
   - modify request.js to select the request_url to 34.106.93.238:8000 instead of localhost
 
    //static request_url = "http://34.106.93.238:8000";
     static request_url = "http://localhost:8000";
   - sudo cp all the files to /var/www/html
-- on app-bdb-inet-lookup-instance-1
-  - run 'sh build.sh' in src/docker
-  - upload all files in src/docker to app-bdb-inet-lookup-instance-1
-  - run:
+- locally:
+  - build mtg_app clean
+  - run in src/scripts in one window:
+    $ sh mtg_app.sh
+    (make sure there are no connect errors, else see section at the end)
+  - run in src/scripts in another window:
+    $ sh rm-db-samples.sh
+    (ensure src/data/db is clean)
+    $ sh check.sh
+    $ sh dump_db_samples.sh
+    $ diff dump_sample.txt dump_sample_init.txt
+    (make sure diff is clean)
+  - run in src/docker:
+    (start docker for windows if using)
     $ sh stop_images.sh
     $ sh remove_images.sh
+    $ docker images
+    (ensure none)
+    $ rm *db mtg_app
+    $ sh build.sh
+    $ sh run_api.sh
+    (see container-id)
+    $ docker logs <container-id>
+    (ensure there are no errors)
+    (if so, check with localhost web page, no database changes)
+  - on app-bdb-inet-lookup-instance-1:
+   + open ssh
+   + delete files in home directory:
+     $ rm *db *json *sh mtg_app
+   + upload files from src/docker to instance:
+     account.db
+     account_email.sdb
+     account_username.sdb
+     account_username_triplets.db
+     bdb_databases.json
+     build_api.sh
+     card.db
+     card_name.sdb
+     card_name_triplets.db
+     card_type_id.sdb
+     deck_account_id.sdb
+     deck_card_card_id.sdb
+     deck_card.db
+     deck_card_deck_id.sdb
+     deck.db
+     deck_name.sdb
+     deck_name_triplets.db
+     Dockerfile
+     mtg_app
+     mtg_app.sh
+     remove_images.sh
+     run_api.sh
+     stop_images.sh
+  - on app-bdb-inet-lookup-instance-1 run:
+    $ sh stop_images.sh
+    $ sh remove_images.sh
+    (ensure none)
     $ sh build_api.sh
     $ sh run_api.sh
 
 You should be able to connect from http://35.192.73.70/mtg-home.html and see the 'Welcome to the Magic Online Card Game!' page.
+
+2023-09-08 v0.3 instructions
+- select a user
+- select a deck
+- click Show cards, deck cards should appear 
+- click Add cards, all cards not in deck should appear 
+- select card not in deck and click Add card
+- the card should be moved to the deck cards
+
+What to do if running mtg_app gives connect errors:
+- try exiting windows terminal and clion and restart
+- try rebooting laptop
+
+You may need some tools to check ports if you can't start mtg_app:
+- netstat
+  + install with:
+    $ sudo apt install net-tools
+  + check port 8000 in use:
+    $ netstat -ntlp 

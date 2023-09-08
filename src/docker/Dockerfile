@@ -8,6 +8,7 @@ FROM ubuntu:23.04
 COPY ./mtg_app.sh /
 RUN chmod 755 /mtg_app.sh 
 COPY ./mtg_app .
+RUN chmod 755 /mtg_app 
 COPY ./bdb_databases.json .
 COPY ./account.db .
 COPY ./account_email.sdb .
