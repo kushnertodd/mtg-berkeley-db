@@ -10,7 +10,7 @@ Deck_card_DTO::Deck_card_DTO(std::string deck_id_, std::string card_id_) :
     deck_id(std::move(deck_id_)),
     card_id(std::move(card_id_)) {}
 
-Deck_card_DTO::Deck_card_DTO(Deck_card_DTO &deck_card_DTO, std::string &deck_card_id_) :
+Deck_card_DTO::Deck_card_DTO(Deck_card_DTO deck_card_DTO, std::string &deck_card_id_) :
     deck_card_id(std::move(deck_card_id_)),
     deck_id(std::move(deck_card_DTO.deck_id)),
     card_id(std::move(deck_card_DTO.card_id)) {}
@@ -32,6 +32,13 @@ size_t Deck_card_DTO::buffer_size() const {
   len += Bdb_serialization::buffer_len_string(deck_id);
   len += Bdb_serialization::buffer_len_string(card_id);
   return len;
+}
+
+void Deck_card_DTO::create(const Deck_card_DTO &deck_card_dto,
+                           const std::string &deck_card_id_) {
+  deck_card_id = deck_card_id_;
+  deck_id = deck_card_dto.deck_id;
+  card_id = deck_card_dto.card_id;
 }
 
 void *Deck_card_DTO::deserialize(void *buffer) {
@@ -138,10 +145,8 @@ json_object *Deck_card_DTO::to_json(Bdb_errors &errors) const {
                          json_object_new_string(class_deck_card().c_str()));
   json_object_object_add(root, "deck_card_id",
                          json_object_new_string(deck_card_id.c_str()));
-  json_object_object_add(root, "primaryDeck_card",
+  json_object_object_add(root, "deck_id",
                          json_object_new_string(deck_id.c_str()));
-  json_object_object_add(root, "birthYear",
-                         json_object_new_string(card_id.c_str()));
   return root;
 }
 

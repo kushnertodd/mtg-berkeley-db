@@ -545,8 +545,8 @@ bool Mtg_deck_request_handler::add_card(Mtg_inet_app_init &mtg_inet_app_init,
   Secondary_database
       deck_card_deck_id_sdb(deck_card_deck_id_secondary_database_config, mtg_inet_app_init.db_home, errors);
   if (!errors.has()) {
-    std::string card_id = mtg_request.arguments.at(0);
-    std::string deck_id = mtg_request.arguments.at(1);
+    std::string deck_id = mtg_request.arguments.at(0);
+    std::string card_id = mtg_request.arguments.at(1);
     Deck_card_DTO deck_card_dto(deck_id, card_id);
     Deck_card_DTO deck_card_dto_with_key;
     Deck_card_DAO::save(deck_card_db.bdb_db,

@@ -233,9 +233,9 @@ class Bdb_DAO {
     try {
       while (!errors.has()) {
         std::string unique_id = generate_unique_id();
-        T bdb_data_dto_with_key_1(bdb_data_dto, unique_id);
-        K bdb_dto_key{bdb_data_dto_with_key_1};
-        Bdb_dbt bdb_data_dbt{bdb_data_dto};
+        bdb_data_dto_with_key.create(bdb_data_dto, unique_id);
+        K bdb_dto_key{bdb_data_dto_with_key};
+        Bdb_dbt bdb_data_dbt{bdb_data_dto_with_key};
         Bdb_dbt bdb_key_dbt{bdb_dto_key};
 
         int ret = bdb_db->get_db().put(txnid,
@@ -246,10 +246,8 @@ class Bdb_DAO {
           if (ret != DB_KEYEXIST)
             errors.add("Bdb_DAO::save", "1", "write error in database "
                 + bdb_db->to_string(), ret);
-        } else {
-          bdb_data_dto_with_key = bdb_data_dto_with_key_1;
+        } else
           return;
-        }
       }
     }
     catch (DbException &e) {

@@ -35,7 +35,7 @@ class Card_pool_table {
         select_all_request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
         let select_other_request = new Request({
             request: "deck_select_other_cards",
-            arguments: deck_id
+            arguments: Deck_table.deck_id
         });
         select_other_request.send(Deck_table.select_deck_other_cards_request_success, Deck_table.select_deck_other_cards_request_failure);
 

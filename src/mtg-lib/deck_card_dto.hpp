@@ -14,10 +14,11 @@ class Deck_card_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string card_id{};
   Deck_card_DTO() = default;
   Deck_card_DTO(std::string deck_id_, std::string card_id_);
-  Deck_card_DTO(Deck_card_DTO &deck_card_DTO, std::string &deck_card_id_);
+  Deck_card_DTO(Deck_card_DTO deck_card_DTO, std::string &deck_card_id_);
   explicit Deck_card_DTO(void *buffer);
   Deck_card_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
   [[nodiscard]] size_t buffer_size() const;
+  void create(const Deck_card_DTO &deck_card_dto, const std::string &deck_card_id_);
   void *deserialize(void *buffer);
   void from_json(json_object *jobj, Bdb_errors &errors);
   static int get_deck_card_deck_id(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);

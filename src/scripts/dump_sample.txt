@@ -4,7 +4,7 @@
 VERSION=3
 format=print
 type=btree
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  1\00
  1\00ShadowCalibrator\00dkushner42@gmail.com\002023-08-24\00
@@ -21,7 +21,7 @@ format=print
 type=btree
 duplicates=1
 dupsort=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  dkushner42@gmail.com\00
  1\00
@@ -38,7 +38,7 @@ format=print
 type=btree
 duplicates=1
 dupsort=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  Accalia\00
  2\00
@@ -54,7 +54,7 @@ VERSION=3
 format=print
 type=btree
 duplicates=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  acc\00
  2\00\05\00\00\00\01\00\00\00
@@ -121,7 +121,7 @@ DATA=END
 VERSION=3
 format=print
 type=btree
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  1\00
  1\00Inkrise Infiltrator\00red\00
@@ -148,7 +148,7 @@ format=print
 type=btree
 duplicates=1
 dupsort=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  Angelic Guardian\00
  4\00
@@ -174,7 +174,7 @@ VERSION=3
 format=print
 type=btree
 duplicates=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  ake\00
  7\00\0e\00\00\00\01\00\00\00
@@ -379,7 +379,7 @@ format=print
 type=btree
 duplicates=1
 dupsort=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  black\00
  7\00
@@ -404,7 +404,7 @@ DATA=END
 VERSION=3
 format=print
 type=btree
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  1\00
  1\001\00Dan's Red-green\00
@@ -427,7 +427,7 @@ format=print
 type=btree
 duplicates=1
 dupsort=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  1\00
  1\00
@@ -448,14 +448,14 @@ DATA=END
 VERSION=3
 format=print
 type=btree
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  1\00
  1\001\001\00
  10\00
  10\005\008\00
- 10191014579299196093\00
- \00\00\00
+ 10895554115725215019\00
+ 10895554115725215019\002\001\00
  11\00
  11\006\002\00
  12\00
@@ -485,12 +485,12 @@ format=print
 type=btree
 duplicates=1
 dupsort=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
- \00
- 10191014579299196093\00
  1\00
  1\00
+ 1\00
+ 10895554115725215019\00
  2\00
  11\00
  3\00
@@ -522,14 +522,14 @@ format=print
 type=btree
 duplicates=1
 dupsort=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
- \00
- 10191014579299196093\00
  1\00
  1\00
  1\00
  2\00
+ 2\00
+ 10895554115725215019\00
  2\00
  3\00
  2\00
@@ -559,7 +559,7 @@ format=print
 type=btree
 duplicates=1
 dupsort=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  Dad's Red-green\00
  6\00
@@ -581,7 +581,7 @@ VERSION=3
 format=print
 type=btree
 duplicates=1
-db_pagesize=4096
+db_pagesize=512
 HEADER=END
  ack\00
  4\00\0b\00\00\00\01\00\00\00
