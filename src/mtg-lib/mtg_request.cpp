@@ -15,6 +15,7 @@ Mtg_request::Mtg_request(const std::string &request, Bdb_errors &errors) {
         Bdb_json_utils::get_json_string("Mtg_request_handler::Mtg_request", "1",
                                         request_json, "class_name",
                                         errors);
+    if (!errors.has())
     if (request_class_name != Mtg_request::class_name())
       errors.add("Mtg_request_handler::Mtg_request", "2", "invalid request class: "
           + request_class_name);
