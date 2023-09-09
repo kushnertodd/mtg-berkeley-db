@@ -44,3 +44,9 @@ You can try:
 - displaying users, decks, cards ('Show Cards' button), and cards not in deck ('Add Cards' button)
 - 'Add card' button works to move card from not in deck to in deck
 - 'Remove card' button does not work
+
+### v0.4
+2023-09-09 version 
+- the 'Remove card' button works
+- the screens and buttons were refactored to be more intuitive
+- instructions are in src/docker/instructions.txt

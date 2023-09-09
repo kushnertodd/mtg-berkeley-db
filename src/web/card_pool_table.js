@@ -10,10 +10,12 @@ class Card_pool_table {
 
     static label;
     static table;
+    static selected_row;
+    static card_name;
+    static card_id;
 
     static buttons;
     static add_card_button;
-    static selected_row;
 
     static select_add_card_request_failure(req) {
         alert(`select user request failed: '${req}'`);
@@ -23,18 +25,18 @@ class Card_pool_table {
         let result_obj = Request.parse_response(result);
         let request_name = result_obj.mtg_request.request;
         //Card_table.label_set();
-        Deck_table.add_cards_button.enable();
+        //Deck_table.add_cards_button.enable();
         //Card_table.create(result_obj.mtg_request_response.card_dto_list);
         let select_all_request = new Request({
             request: "deck_select_all_cards",
             arguments: Deck_table.deck_id
         });
-        select_all_request.send(Deck_table.select_deck_cards_request_success, Deck_table.select_deck_cards_request_failure);
+        select_all_request.send(Card_table.select_deck_cards_request_success, Card_table.select_deck_cards_request_failure);
         let select_other_request = new Request({
             request: "deck_select_other_cards",
             arguments: Deck_table.deck_id
         });
-        select_other_request.send(Deck_table.select_deck_other_cards_request_success, Deck_table.select_deck_other_cards_request_failure);
+        select_other_request.send(Card_pool_table.select_deck_other_cards_request_success, Card_pool_table.select_deck_other_cards_request_failure);
     }
 
     static button_add_card(e) {
@@ -57,7 +59,7 @@ class Card_pool_table {
 
     static create(card_list) {
         let headers = ["Card", "Color"];
-        Card_description_table.clear();
+        //Card_description_table.clear();
         let table = Card_pool_table.table;
         table.clear();
         table.add_row({id: "r0"})
@@ -71,17 +73,19 @@ class Card_pool_table {
                     width: cellWidths[i]
                 }
             );
-        let card_pool = card_list;
-        for (let i = 0; i < card_pool.length; i++) {
-            let row_id = `r${i}`;
-            let tr = table.add_row({data: card_pool[i], id: row_id})
-            tr.addEventListener('click', Card_pool_table.row_onlick_handler);
-            //tr.addEventListener('contextmenu', Card_pool_table.row_contextmenu_onlick_handler);
-            table.add_td({row_id: row_id, id: "card_pool_name", text: card_pool[i].name})
-            table.add_td({row_id: row_id, id: "card_pool_color", text: card_pool[i].type_id})
+        if (card_list) {
+            for (let i = 0; i < card_list.length; i++) {
+                let row_id = `r${i}`;
+                let tr = table.add_row({data: card_list[i], id: row_id})
+                tr.addEventListener('click', Card_pool_table.row_onlick_handler);
+                //tr.addEventListener('contextmenu', Card_pool_table.row_contextmenu_onlick_handler);
+                table.add_td({row_id: row_id, id: "card_pool_name", text: card_list[i].name})
+                table.add_td({row_id: row_id, id: "card_pool_color", text: card_list[i].type_id})
+            }
+            Card_pool_table.label_set();
+            Card_pool_table.buttons.show();
         }
-        Card_pool_table.label_set();
-        Card_pool_table.buttons.show();
+        Card_pool_table.add_card_button.disable();
     }
 
     static init() {
@@ -98,7 +102,7 @@ class Card_pool_table {
         });
         Card_pool_table.add_card_button = new Button({
             name: "Add card",
-            id: "card_table_add_card",
+            id: "card_table_add_card_id",
             event_listener: Card_pool_table.button_add_card,
             disabled: true
         });
@@ -114,24 +118,35 @@ class Card_pool_table {
         Card_pool_table.label.html("");
     }
 
-    static row_contextmenu_onlick_handler(e) {
-        e.preventDefault();
-        let card_row_selected = e.currentTarget;
-        let data = card_row_selected.data;
-        let card_id = data.card_id;
-        Table.select_row(card_row_selected);
-        Card_description_table.label_set();
-        Card_description_table.create(data);
-    }
+    // static row_contextmenu_onlick_handler(e) {
+    //     e.preventDefault();
+    //     let card_row_selected = e.currentTarget;
+    //     let data = card_row_selected.data;
+    //     let card_id = data.card_id;
+    //     Table.select_row(card_row_selected);
+    //     Card_description_table.label_set();
+    //     Card_description_table.create(data);
+    // }
 
     static row_onlick_handler(e) {
         e.preventDefault();
         let card_pool_row_selected = e.currentTarget;
-        let data = card_pool_row_selected.data;
-        let card_id = data.card_id;
-        let table = Card_pool_table.table;
-        table.select_row(card_pool_row_selected);
         Card_pool_table.selected_row = card_pool_row_selected;
+        Card_pool_table.table.select_row(card_pool_row_selected);
+        let card = card_pool_row_selected.data;
+        Card_pool_table.card_id = card.card_id;
+        Card_pool_table.card_name = card.name;
         Card_pool_table.add_card_button.enable();
+    }
+
+    static select_deck_other_cards_request_failure(req) {
+        alert(`select user request failed: '${req}'`);
+    }
+
+    static select_deck_other_cards_request_success(result) {
+        let result_obj = Request.parse_response(result);
+        //let request_name = result_obj.mtg_request.request;
+        //Card_table.label_set();
+        Card_pool_table.create(result_obj.mtg_request_response.card_dto_list);
     }
 }

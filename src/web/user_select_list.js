@@ -45,6 +45,20 @@ class User_Select_list {
     }
 
 
+    static user_list_populate(account_dto_list) {
+        let select_list = User_Select_list.select_list;
+        select_list.clear();
+        select_list.add_option({text: "Select user", disabled: true});
+        for (let i = 0; i < account_dto_list.length; i++) {
+            let account = account_dto_list[i];
+            select_list.add_option({
+                data: account,
+                text: account.username,
+                value: account.account_id
+            });
+        }
+    }
+
     static user_list_selected(e) {
         if (User_Select_list.first) {
             User_Select_list.first = false;
@@ -60,30 +74,7 @@ class User_Select_list {
             request: "deck_select_all_for_account_id",
             arguments: account_id
         });
-        request.send(User_Select_list.user_decks_select_request_success, User_Select_list.user_decks_select_request_failure);
+        request.send(Deck_table.user_decks_select_request_success, Deck_table.user_decks_select_request_failure);
     }
 
-    static user_decks_select_request_failure(req) {
-        alert(`select decks request failed: '${req}'`);
-    }
-
-    static user_decks_select_request_success(result) {
-        let result_obj = Request.parse_response(result);
-        let request_name = result_obj.mtg_request.request;
-        Deck_table.create(result_obj.mtg_request_response.deck_dto_list);
-    }
-
-    static user_list_populate(account_dto_list) {
-        let select_list = User_Select_list.select_list;
-        select_list.clear();
-        select_list.add_option({text: "Select user", disabled: true});
-        for (let i = 0; i < account_dto_list.length; i++) {
-            let account = account_dto_list[i];
-            select_list.add_option({
-                data: account,
-                text: account.username,
-                value: account.account_id
-            });
-        }
-    }
 }

@@ -1,2 +1,2 @@
-ls -l ../data/db/sample
+ls -l ../data/db
 
