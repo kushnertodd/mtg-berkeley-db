@@ -26,12 +26,12 @@ For web files or if src/web files change:
 
 ->  static request_url = "http://34.106.93.238:8000";
     //static request_url = "http://localhost:8000";
-	
+    
   - run:
     $ sudo cp *.js *.css *.html /var/www/html
   - to be sure they copied okay, in /var/www/html run:
     $ for f in *.js *.css *.html; do echo $f; diff $f ~/$f; done
-	(ensure the diff is clean)
+    (ensure the diff is clean)
 
 For api server or if any of these files change:
 
@@ -49,21 +49,22 @@ For api server or if any of these files change:
       (make sure there are no connect errors, else see section at the end)
     + in another window run:
       $ sh rm-db-samples.sh
-	  $ sh ls-db-samples.sh
+      $ sh ls-db-samples.sh
       (ensure src/data/db is clean)
       $ sh check.sh
-	  (ensure all requests succeed)
+      (ensure all requests succeed)
       $ sh dump_db_samples.sh
       $ diff dump_sample.txt dump_sample_init.txt
       (make sure diff is clean)
-	+ stop mtg_app.sh
+  - stop mtg_app.sh
   - in src/docker run:
     (start docker for windows if using)
     $ sh stop_images.sh
     $ sh remove_images.sh
-	$ docker ps
+    $ docker ps
     $ docker images
     (ensure images are gone)
+  + note that the docker uses the data files in data/
     $ rm *db mtg_app
     $ sh build.sh
     $ sh run_api.sh
@@ -71,8 +72,8 @@ For api server or if any of these files change:
     $ docker logs --follow <container-id>
     (ensure you see 'server socket opened (3)')
     (open src/weblocalhost/mtg-home.html web page in chrome, select a user and deck to make sure is working)
-	(run '$ sh stop_images.sh' is passes)
-	
+    (run '$ sh stop_images.sh' is passes)
+    
 - on app-bdb-inet-lookup-instance-1:
  + open ssh
  + delete files in home directory:

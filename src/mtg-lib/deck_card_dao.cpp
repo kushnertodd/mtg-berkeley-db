@@ -46,8 +46,12 @@ void Deck_card_DAO::delete_deck_card(Bdb_dbp &deck_card_db,
         errors.add("Deck_card_DAO::delete_deck_card", "1", "no deck_card matching deck_id " +
             deck_id + ", card_id " + card_id);
       else if (matched_deck_card_dto_key_list.list.size() > 1)
-        errors.add("Deck_card_DAO::delete_deck_card", "1", "too many deck_cards matching deck_id " +
-            deck_id + ", card_id " + card_id);
+        // TODO: kludge
+        //        errors.add("Deck_card_DAO::delete_deck_card", "1", "too many deck_cards matching deck_id " +
+        //            deck_id + ", card_id " + card_id);
+        Bdb_DAO::delete_key<Deck_card_DTO_key>(deck_card_db,
+                                               matched_deck_card_dto_key_list.list.front(),
+                                               errors);
       else {
         Bdb_DAO::delete_key<Deck_card_DTO_key>(deck_card_db,
                                                matched_deck_card_dto_key_list.list.front(),
