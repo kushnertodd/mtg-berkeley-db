@@ -78,7 +78,7 @@ For api server or if any of these files change:
  + open ssh
  + delete files in home directory:
    $ rm *db *json *sh mtg_app Dockerfile
- + upload files from src/docker to instance:
+ + if you want fresh db files, upload files from src/docker to instance:
    account.db
    account_email.sdb
    account_username.sdb
@@ -104,6 +104,11 @@ For api server or if any of these files change:
    stop_images.sh
    
  + in the home directory run:
+  = first time:
+    $ mkdir data
+    $ cp *db data
+  = if you want to start with fresh data files:
+    $ cp *db data
   $ sh stop_images.sh
   $ sh remove_images.sh
   $ docker ps
