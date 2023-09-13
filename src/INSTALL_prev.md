@@ -33,22 +33,8 @@ Instructions to build for these platforms follow.
 # Linux development tools and libraries <a id="linux-development"/>
 These are instructions to prepare the Linux build environment.
 
-## Linux development tools for Ubuntu 
-To develop under native Ubuntu, 
-- Install latest Ubuntu version ISO from the [Ubuntu download](https://ubuntu.com/download/desktop) page
-- Install [Rufus](https://rufus.ie/en/,install) or other tool to burn the ISO to a USB formatted as FAT32
-- Burn ISO to a USB and boot the new system from the USB
-- Select Install Ubuntu
-- Accept system updates
-- Install other useful utilities:  
-Vim
-```
-$ sudo apt install vim
-```
-Chrome
-
-## Linux C++ Development Tools for Windows 10 <a id="linux-c++-development-tools"/>
-To develop under Windows 10, linux development tools for Windows 10 include:
+## Linux C++ Development Tools <a id="linux-c++-development-tools"/>
+Linux development tools include:
 - JetBrains CLion
 - WSL2 Linux distribution for Windows 10
 - Windows Terminal
@@ -75,7 +61,7 @@ $ wsl --install
 The install instructions are currently for Pengwin or Ubuntu.
 The Linux build is currently tested on Windows 10 WSL2 with [Pengwin](https://www.whitewaterfoundry.com/),
 
-#### Linux Distributions for WSL2
+#### Linux Distributions
 Linux development was done under Windows 10 WSL2 with [Pengwin](https://www.whitewaterfoundry.com/), 
 which may be obtained from the Microsoft Store.
 [Ubuntu](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
@@ -94,7 +80,7 @@ Windows Terminal may be obtained from the Microsoft Store.
 This is a Microsoft [tutorial](https://learn.microsoft.com/en-us/windows/terminal/install) for starting with Windows Terminal.
 Scott Hanselman has an excellent [video](https://www.youtube.com/watch?v=FC-gLkYWXLw) on using Windows Terminal.
 
-## Linux Build Tools <a id="linux-build-tools"/>
+### Linux Build Tools <a id="linux-build-tools"/>
 There are several Linux C++ libraries and tools required for the build.
 Pengwin and Ubuntu use the`apt`command to install many Linux library and tool packages:
 ```
@@ -111,19 +97,16 @@ debugger, libraries, other development tools required for the build.
 `build-essential`includes:
   - [g++, gcc](https://gcc.gnu.org/)
   - [make](https://www.gnu.org/software/make/)  
-  - [git](https://git-scm.com/)   
+Using an IDE such as CLion for debugginer, you
+likely want to load gdb. 
 They are installed with:
 ```
 $ sudo apt-get update
-$ sudo apt install build-essential 
-```
-- Using an IDE such as CLion for debugger, you likely want to load gdb. 
-```
+$ sudo apt install build-essential git
 $ sudo apt install gdb
 ```
 
 ### Git <a id="linux-git-tool"/>
-(build-essential installs git)
 [git](https://git-scm.com/) is required for the build. 
 It can be installed with this command:
 ```
@@ -131,9 +114,6 @@ $ sudo apt-get update
 $ sudo apt install git
 ```
 ### Cmake <a id="linux-cmake-tool"/>
-ubuntu: installs cmake 3.27.4 with:
-$ sudo snap install --classic cmake  
-[unconfirmed]
 Mtg Berkeley DB is written in C++. 
 [Cmake](https://cmake.org/) is used for building C++ applications.
 The build requires the latest version, currently 3.26.1.
@@ -149,15 +129,14 @@ $ make
 $ sudo make install
 ```
 Cmake requires an additional tool be installed,`pkg-config`:
-[unconfirmed]
 ```
 $ sudo apt-get update
 $ sudo apt install pkg-config
 ```
+* Developer note: cmake 3.27.0 has a dependency on `libjsoncpp25` and `libssl3` in Ubuntu.
 ## Linux C++ Libraries <a id="linux-c++-libraries"/>
 Various C++ libraries are required for the Linux build.
 ### pthreads Library <a id="linux-pthreads-library"/>
-[unconfirmed]
 Linux`pthreads`is a C++ threading library is required for the build.
 It should already be installed in Linux. 
 In the event it is not, it can be installed with this command:
@@ -166,13 +145,12 @@ $ sudo apt-get update
 $ sudo apt install libpthread-stubs0-dev
 ```
 ### OpenSSL Library <a id="linux-openssl-library"/>
-[unconfirmed]
 Linux [OpenSSL](https://www.openssl.org/) is a secure communications C++ library required for the build.
 It can be [installed](https://learnubuntu.com/install-openssl/) these instructions:
 ```
 $ sudo apt-get update
 $ sudo apt install openssl
-$ sudo apt install libssl-dev [confirmed]
+$ sudo apt install libssl-dev
 ```
 ### json-c Library <a id="linux-json-c-library"/> 
 [json-c](https://github.com/json-c/json-c) is a C-based JSON manipulation library.
@@ -180,26 +158,16 @@ The following will download the latest version of`json-c`from the git repository
 static libraries and install them in`/usr/local`:
 ```
 $ git clone git@github.com:json-c/json-c.git
-$ git clone https://github.com/json-c/json-c.git
-
 ```
 At this point, manually edit`json-c/json_util.h`to change JSON_FILE_BUF_SIZE from 4096 to 65536.
 ```
 #define JSON_FILE_BUF_SIZE 65536
 ```
 Continue the build:
-[built shared anyway]
-/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so.0.600.6
-/usr/lib/x86_64-linux-gnu/libjson-c.so.5
-/usr/lib/x86_64-linux-gnu/libjson-c.a
-/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so.0
-/usr/lib/x86_64-linux-gnu/libjson-c.so.5.1.0
-
 ```
-$ mkdir json-c-build]
+$ mkdir json-c-build
 $ cd json-c-build
 $ cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/usr ../json-c 
-$ cmake -DBUILD_SHARED_LIBS=OFF ../json-c 
 $ cmake --build .
 $ sudo cmake --install . 
 ```
@@ -216,7 +184,6 @@ https://www.oracle.com/database/technologies/related/berkeleydb-downloads.html
 - Right-click/drag the zip using File Explorer and select Expand into a directory named V*nnnnnn-nn*.
 
 [Build](https://docs.oracle.com/cd/E17276_01/html/installation/build_unix.html) using these instructions.
-[unconfirmed]
 - In Linux, first install`autoconf`and other required development tools:
   - [autoconf](https://askubuntu.com/questions/290194/how-to-install-autoconf)
   - [libtool](https://www.gnu.org/software/make/)
@@ -228,7 +195,7 @@ Install these with:
 $ sudo apt-get update
 $ sudo apt-get install autoconf
 $ sudo apt-get install libtool
-$ sudo apt install libssl-dev [needed]
+$ sudo apt install libssl-dev
 $ sudo apt install libdb5.3-dev
 ```
 To build, let BDB_HOME be the Berkeley DB installation directory, e.g.,V*nnnnnn-nn*/db-18.1.40:
@@ -238,12 +205,9 @@ $ ../dist/configure --prefix=/usr --enable-cxx --disable-shared
 $ make
 $ sudo make install
 ```
-## Curl
-needed for scripts
-$ sudo apt install curl
-## Doxygen
-need to install doxygen
-$ sudo apt install doxygen
+There are some other`configure` arguments described in these files:  
+- `$BDB_HOME/docs/installation/build_unix_conf.html`  
+- `$BDB_HOME/docs/installation/build_unix_flags.html` 
 # Windows development tools and libraries installation <a id="windows-development"/>
 - Windows development was done under Windows 10
   - Windows 11 is claimed compatible but is reportedly bloatware
