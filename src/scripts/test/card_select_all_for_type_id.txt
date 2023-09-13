@@ -14,15 +14,13 @@
         "class_card":"Card_DTO",
         "card_id":"5",
         "name":"Spiritual Guardian",
-        "type_id":"white",
-        "score":""
+        "type_id":"white"
       },
       {
         "class_card":"Card_DTO",
         "card_id":"6",
         "name":"Scheming Aspirant",
-        "type_id":"white",
-        "score":""
+        "type_id":"white"
       }
     ]
   }

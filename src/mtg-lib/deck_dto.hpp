@@ -13,6 +13,7 @@ class Deck_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string deck_id{};
   std::string account_id{};
   std::string name{};
+  std::string score{};
   Deck_DTO() = default;
   Deck_DTO(std::string deck_id_, std::string account_id_, std::string name_);
   explicit Deck_DTO(void *buffer);

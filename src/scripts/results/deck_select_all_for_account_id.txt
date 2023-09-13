@@ -14,15 +14,13 @@
         "class_deck":"Deck_DTO",
         "deck_id":"3",
         "account_id":"2",
-        "name":"Josh's Green-white",
-        "score":""
+        "name":"Josh's Green-white"
       },
       {
         "class_deck":"Deck_DTO",
         "deck_id":"4",
         "account_id":"2",
-        "name":"Josh's White-black",
-        "score":""
+        "name":"Josh's White-black"
       }
     ]
   }

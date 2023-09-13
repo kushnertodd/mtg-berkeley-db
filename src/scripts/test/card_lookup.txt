@@ -11,7 +11,6 @@
     "class_card":"Card_DTO",
     "card_id":"1",
     "name":"Inkrise Infiltrator",
-    "type_id":"red",
-    "score":""
+    "type_id":"red"
   }
 }

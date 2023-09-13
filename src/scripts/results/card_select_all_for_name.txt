@@ -14,8 +14,7 @@
         "class_card":"Card_DTO",
         "card_id":"4",
         "name":"Angelic Guardian",
-        "type_id":"green",
-        "score":""
+        "type_id":"green"
       }
     ]
   }

@@ -13,7 +13,6 @@
     "class_deck":"Deck_DTO",
     "deck_id":"5",
     "account_id":"3",
-    "name":"Dad's White-blue",
-    "score":""
+    "name":"Dad's White-blue"
   }
 }

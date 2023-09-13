@@ -16,15 +16,13 @@
         "class_card":"Card_DTO",
         "card_id":"3",
         "name":"Spririt Sisters Call",
-        "type_id":"green",
-        "score":"30"
+        "type_id":"green"
       },
       {
         "class_card":"Card_DTO",
         "card_id":"5",
         "name":"Spiritual Guardian",
-        "type_id":"white",
-        "score":"12"
+        "type_id":"white"
       }
     ]
   }

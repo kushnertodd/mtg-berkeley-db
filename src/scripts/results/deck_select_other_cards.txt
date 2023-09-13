@@ -14,43 +14,37 @@
         "class_card":"Card_DTO",
         "card_id":"2",
         "name":"Phyrexian Missionary",
-        "type_id":"red",
-        "score":""
+        "type_id":"red"
       },
       {
         "class_card":"Card_DTO",
         "card_id":"4",
         "name":"Angelic Guardian",
-        "type_id":"green",
-        "score":""
+        "type_id":"green"
       },
       {
         "class_card":"Card_DTO",
         "card_id":"5",
         "name":"Spiritual Guardian",
-        "type_id":"white",
-        "score":""
+        "type_id":"white"
       },
       {
         "class_card":"Card_DTO",
         "card_id":"6",
         "name":"Scheming Aspirant",
-        "type_id":"white",
-        "score":""
+        "type_id":"white"
       },
       {
         "class_card":"Card_DTO",
         "card_id":"7",
         "name":"Phyrexian Awakening",
-        "type_id":"black",
-        "score":""
+        "type_id":"black"
       },
       {
         "class_card":"Card_DTO",
         "card_id":"8",
         "name":"Serra Angel",
-        "type_id":"black",
-        "score":""
+        "type_id":"black"
       }
     ]
   }

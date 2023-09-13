@@ -156,7 +156,7 @@ json_object *Account_DTO::to_json(Bdb_errors &errors) const {
   json_object_object_add(root, "username", json_object_new_string(username.c_str()));
   json_object_object_add(root, "email", json_object_new_string(email.c_str()));
   json_object_object_add(root, "created", json_object_new_string(created.c_str()));
-  json_object_object_add(root, "score", json_object_new_string(score.c_str()));
+  //json_object_object_add(root, "score", json_object_new_string(score.c_str()));
   return root;
 }
 
