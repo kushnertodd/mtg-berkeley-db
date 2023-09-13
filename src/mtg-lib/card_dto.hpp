@@ -14,7 +14,6 @@ class Card_DTO { // use Mtg_DTO as pattern but do not inherit
   std::string card_id{};
   std::string name{};
   std::string type_id{};
-  std::string score{};
   Card_DTO() = default;
   Card_DTO(std::string card_id_,
            std::string name_,

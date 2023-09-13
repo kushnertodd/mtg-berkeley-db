@@ -92,7 +92,7 @@ Some packages are not available under`apt`, or some`apt`packages
 have versions that are too old to use.
 In those cases, they can be directly downloaded from a web site or built from source.
 
-The Linux`build-essentials`package installs the C++ compiler, 
+The Linux`build-essential`package installs the C++ compiler, 
 debugger, libraries, other development tools required for the build.
 `build-essential`includes:
   - [g++, gcc](https://gcc.gnu.org/)
@@ -102,7 +102,7 @@ likely want to load gdb.
 They are installed with:
 ```
 $ sudo apt-get update
-$ sudo apt install build-essentials git
+$ sudo apt install build-essential git
 $ sudo apt install gdb
 ```
 
@@ -122,8 +122,8 @@ Select the latest source from the`Unix/Linux Source`link on the [download websit
 e.g.,`cmake-3.26.3.tar.gz`, 
 and [build](https://cmake.org/install/) with these instructions:
 ```
-$ gunzip -c cmake-3.26.3.tar.gz | tar xvf -
-$ cd cmake-3.26.3
+$ gunzip -c cmake-3.27.0-rc4.tar.gz | tar xvf -
+$ cd cmake-3.27.0
 $ ./configure --prefix=/usr
 $ make
 $ sudo make install
@@ -133,6 +133,7 @@ Cmake requires an additional tool be installed,`pkg-config`:
 $ sudo apt-get update
 $ sudo apt install pkg-config
 ```
+* Developer note: cmake 3.27.0 has a dependency on `libjsoncpp25` and `libssl3` in Ubuntu.
 ## Linux C++ Libraries <a id="linux-c++-libraries"/>
 Various C++ libraries are required for the Linux build.
 ### pthreads Library <a id="linux-pthreads-library"/>
@@ -149,6 +150,7 @@ It can be [installed](https://learnubuntu.com/install-openssl/) these instructio
 ```
 $ sudo apt-get update
 $ sudo apt install openssl
+$ sudo apt install libssl-dev
 ```
 ### json-c Library <a id="linux-json-c-library"/> 
 [json-c](https://github.com/json-c/json-c) is a C-based JSON manipulation library.
@@ -156,9 +158,16 @@ The following will download the latest version of`json-c`from the git repository
 static libraries and install them in`/usr/local`:
 ```
 $ git clone git@github.com:json-c/json-c.git
+```
+At this point, manually edit`json-c/json_util.h`to change JSON_FILE_BUF_SIZE from 4096 to 65536.
+```
+#define JSON_FILE_BUF_SIZE 65536
+```
+Continue the build:
+```
 $ mkdir json-c-build
 $ cd json-c-build
-$ cmake ../json-c 
+$ cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/usr ../json-c 
 $ cmake --build .
 $ sudo cmake --install . 
 ```
@@ -192,20 +201,13 @@ $ sudo apt install libdb5.3-dev
 To build, let BDB_HOME be the Berkeley DB installation directory, e.g.,V*nnnnnn-nn*/db-18.1.40:
 ```
 $ cd $BDB_HOME/build_unix
-$ ../dist/configure --prefix=/usr --enable-cxx 
+$ ../dist/configure --prefix=/usr --enable-cxx --disable-shared 
 $ make
 $ sudo make install
 ```
 There are some other`configure` arguments described in these files:  
 - `$BDB_HOME/docs/installation/build_unix_conf.html`  
 - `$BDB_HOME/docs/installation/build_unix_flags.html` 
-For example, `--disable-shared` allows building static libraries only.
--  Open source C++ web framework
-
-  - Windows installation
-  - Linux installation
-  - Environment variables
-  - API
 # Windows development tools and libraries installation <a id="windows-development"/>
 - Windows development was done under Windows 10
   - Windows 11 is claimed compatible but is reportedly bloatware

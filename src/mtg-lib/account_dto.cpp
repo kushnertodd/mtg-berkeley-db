@@ -76,9 +76,9 @@ int Account_DTO::get_account_email(Db *dbp, const Dbt *pkey, const Dbt *pdata, D
   skey->set_flags(DB_DBT_APPMALLOC);
   std::string email = account_dto.email;
   size_t keylen = email.size() + 1;
-  char *card_id_buf = (char *) malloc(keylen);
-  std::strcpy(card_id_buf, email.c_str());
-  skey->set_data(card_id_buf);
+  char *account_id_buf = (char *) malloc(keylen);
+  std::strcpy(account_id_buf, email.c_str());
+  skey->set_data(account_id_buf);
   skey->set_size(keylen);
   return 0;
 }
@@ -91,9 +91,9 @@ int Account_DTO::get_account_username(Db *dbp, const Dbt *pkey, const Dbt *pdata
   skey->set_flags(DB_DBT_APPMALLOC);
   std::string username = account_dto.username;
   size_t keylen = username.size() + 1;
-  char *card_id_buf = (char *) malloc(keylen);
-  std::strcpy(card_id_buf, username.c_str());
-  skey->set_data(card_id_buf);
+  char *account_id_buf = (char *) malloc(keylen);
+  std::strcpy(account_id_buf, username.c_str());
+  skey->set_data(account_id_buf);
   skey->set_size(keylen);
   return 0;
 }
