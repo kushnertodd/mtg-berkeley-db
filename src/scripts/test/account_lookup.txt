@@ -12,7 +12,6 @@
     "account_id":"1",
     "username":"ShadowCalibrator",
     "email":"dkushner42@gmail.com",
-    "created":"2023-08-24",
-    "score":""
+    "created":"2023-08-24"
   }
 }

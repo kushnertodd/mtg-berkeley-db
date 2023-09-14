@@ -2,6 +2,7 @@ __db.*
 *.db
 *.sdb
 *.log
+build/
 cmake-build-debug/
 CMakeFiles/
 build/
