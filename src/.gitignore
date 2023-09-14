@@ -4,3 +4,4 @@ __db.*
 *.log
 cmake-build-debug/
 CMakeFiles/
+build/
