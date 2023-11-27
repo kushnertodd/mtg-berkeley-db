@@ -177,6 +177,17 @@ void Primary_database_config::from_json(json_object *jobj, Bdb_errors &errors) {
                                         true);
   if (!errors.has() && has_duplicates_str == "true")
     has_duplicates = true;
+  // parse: ' { "variables": ... '
+  json_object *variables_json = nullptr;
+  if (!errors.has())
+    variables_json =
+        Bdb_json_utils::get_json_object("Primary_database_config::from_json",
+                                        "1",
+                                        jobj,
+                                        "variables",
+                                        json_type_array,
+                                        errors,
+                                        true);
   // parse: ' { "secondary_databases": ... `
   json_object *secondary_databases_json = nullptr;
   if (!errors.has())

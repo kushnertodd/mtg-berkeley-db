@@ -3,6 +3,7 @@
 #include <json-c/json.h>
 #include <filesystem>
 #include <map>
+#include <utility>
 #include "bdb_errors.hpp"
 
 /*!
@@ -21,6 +22,7 @@ class Secondary_database_config {
   std::string name{};
   std::string filename{};
   std::string key_extractor{};
+  std::string key{};
 
   Secondary_database_config() = default;
   Secondary_database_config(const Secondary_database_config &other) = default;
@@ -52,11 +54,18 @@ class Secondary_database_config {
 
 using Secondary_database_config_map = std::map<std::string, Secondary_database_config>;
 using Secondary_database_config_map_iter = Secondary_database_config_map::iterator;
+
+class Database_variables_config {
+  std::map<std::string, std::string> variables_map;
+  void add(const std::string& name, std::string value) { variables_map[name] = std::move(value); }
+  };
+
 class Primary_database_config {
  public:
   static std::string class_name() { return "Primary_database_config"; }
   std::string name{};
   std::string filename{};
+  Database_variables_config database_variables_config;
   Secondary_database_config_map secondary_database_config_map;
   bool has_duplicates{};
 

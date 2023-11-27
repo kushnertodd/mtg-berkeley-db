@@ -5,18 +5,27 @@
       "class_name": "Primary_database_config",
       "name": "account",
       "filename": "account.db",
+      "variables": {
+        "account_id": "string",
+        "username": "string",
+        "email": "string",
+        "created": "string",
+        "score": "string"
+      },
       "secondary_databases": [
         {
           "class_name": "Secondary_database_config",
           "name": "account_email",
           "filename": "account_email.sdb",
-          "key_extractor": "get_account_email"
+          "key_extractor": "get_account_email",
+          "key": "email"
         },
         {
           "class_name": "Secondary_database_config",
           "name": "account_username",
           "filename": "account_username.sdb",
-          "key_extractor": "get_account_username"
+          "key_extractor": "get_account_username",
+          "key": "username"
         }
       ]
     },
@@ -30,6 +39,11 @@
       "class_name": "Primary_database_config",
       "name": "card",
       "filename": "card.db",
+      "variables": {
+        "card_id": "string",
+        "name": "string",
+        "type_id": "string"
+      },
       "secondary_databases": [
         {
           "class_name": "Secondary_database_config",
@@ -55,18 +69,25 @@
       "class_name": "Primary_database_config",
       "name": "deck",
       "filename": "deck.db",
+      "variables": {
+        "deck_id": "string",
+        "account_id": "string",
+        "name": "string"
+      },
       "secondary_databases": [
         {
           "class_name": "Secondary_database_config",
           "name": "deck_account_id",
           "filename": "deck_account_id.sdb",
-          "key_extractor": "get_deck_account_id"
+          "key_extractor": "get_deck_account_id",
+          "key": "account_id"
         },
         {
           "class_name": "Secondary_database_config",
           "name": "deck_name",
           "filename": "deck_name.sdb",
-          "key_extractor": "get_deck_name"
+          "key_extractor": "get_deck_name",
+          "key": "name"
         }
       ]
     },
@@ -74,18 +95,25 @@
       "class_name": "Primary_database_config",
       "name": "deck_card",
       "filename": "deck_card.db",
+      "variables": {
+        "deck_card_id": "string",
+        "deck_id": "string",
+        "card_id": "string"
+      },
       "secondary_databases": [
         {
           "class_name": "Secondary_database_config",
           "name": "deck_card_card_id",
           "filename": "deck_card_card_id.sdb",
-          "key_extractor": "get_deck_card_card_id"
+          "key_extractor": "get_deck_card_card_id",
+          "key": "card_id"
         },
         {
           "class_name": "Secondary_database_config",
           "name": "deck_card_deck_id",
           "filename": "deck_card_deck_id.sdb",
-          "key_extractor": "get_deck_card_deck_id"
+          "key_extractor": "get_deck_card_deck_id",
+          "key": "deck_id"
         }
       ]
     },
