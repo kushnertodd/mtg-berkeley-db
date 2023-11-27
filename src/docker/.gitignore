@@ -1,0 +1,4 @@
+*.out
+bdb_inet_lookup
+mtg_app
+*db

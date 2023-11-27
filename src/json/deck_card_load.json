@@ -1,0 +1,7 @@
+{
+  "class_name": "Mtg_request",
+  "request": "deck_card_load",
+  "arguments": [
+    "deck_card.tsv"
+  ]
+}

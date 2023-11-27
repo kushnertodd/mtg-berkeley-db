@@ -1,0 +1,9 @@
+{
+  "class_name": "Mtg_request",
+  "request": "card_update",
+  "arguments": [
+    "4",
+    "Angelic Guardian",
+    "red"
+  ]
+}

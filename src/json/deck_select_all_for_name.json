@@ -1,0 +1,7 @@
+{
+  "class_name": "Mtg_request",
+  "request": "deck_select_all_for_name",
+  "arguments": [
+    "Dan's Red-green"
+  ]
+}

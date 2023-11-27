@@ -1,0 +1,14 @@
+{
+  "class_name":"Mtg_request_response",
+  "mtg_request":{
+    "class_name":"Mtg_request",
+    "request":"card_load",
+    "arguments":[
+      "card.tsv"
+    ]
+  },
+  "mtg_request_response":{
+    "class_name":"Mtg_request_response",
+    "record_count":"9"
+  }
+}

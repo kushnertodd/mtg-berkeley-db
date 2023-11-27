@@ -1,0 +1,49 @@
+{
+  "class_name":"Mtg_request_response",
+  "mtg_request":{
+    "class_name":"Mtg_request",
+    "request":"deck_select_all",
+    "arguments":[]
+  },
+  "mtg_request_response":{
+    "class_deck":"Deck_DTO_list",
+    "deck_dto_list":[
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"1",
+        "account_id":"1",
+        "name":"Dan's Red-green"
+      },
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"2",
+        "account_id":"1",
+        "name":"Dan's Green-white"
+      },
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"3",
+        "account_id":"2",
+        "name":"Josh's Green-white"
+      },
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"4",
+        "account_id":"2",
+        "name":"Josh's White-black"
+      },
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"5",
+        "account_id":"3",
+        "name":"Dad's White-black"
+      },
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"6",
+        "account_id":"3",
+        "name":"Dad's Red-green"
+      }
+    ]
+  }
+}

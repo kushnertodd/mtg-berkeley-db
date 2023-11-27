@@ -1,0 +1,7 @@
+{
+  "class_name": "Mtg_request",
+  "request": "deck_lookup",
+  "arguments": [
+    "1"
+  ]
+}

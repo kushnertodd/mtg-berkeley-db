@@ -1,0 +1,7 @@
+{
+  "class_name": "Mtg_request",
+  "request": "search_ratings",
+  "arguments": [
+    "nm0000026"
+  ]
+}

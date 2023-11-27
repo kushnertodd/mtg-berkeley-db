@@ -1,0 +1,21 @@
+{
+  "class_name":"Mtg_request_response",
+  "mtg_request":{
+    "class_name":"Mtg_request",
+    "request":"deck_select_all_for_name",
+    "arguments":[
+      "Dan's Red-green"
+    ]
+  },
+  "mtg_request_response":{
+    "class_deck":"Deck_DTO_list",
+    "deck_dto_list":[
+      {
+        "class_deck":"Deck_DTO",
+        "deck_id":"1",
+        "account_id":"1",
+        "name":"Dan's Red-green"
+      }
+    ]
+  }
+}

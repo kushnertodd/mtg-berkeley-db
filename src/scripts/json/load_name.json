@@ -1,0 +1,7 @@
+{
+  "class_name": "Mtg_request",
+  "request": "load_name",
+  "arguments": [
+    "name.basics.tsv"
+  ]
+}

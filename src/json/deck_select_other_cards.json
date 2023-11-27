@@ -1,0 +1,7 @@
+{
+  "class_name": "Mtg_request",
+  "request": "deck_select_other_cards",
+  "arguments": [
+    "1"
+  ]
+}

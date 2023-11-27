@@ -1,0 +1,27 @@
+{
+  "class_name":"Mtg_request_response",
+  "mtg_request":{
+    "class_name":"Mtg_request",
+    "request":"card_select_all_for_type_id",
+    "arguments":[
+      "white"
+    ]
+  },
+  "mtg_request_response":{
+    "class_card":"Card_DTO_list",
+    "card_dto_list":[
+      {
+        "class_card":"Card_DTO",
+        "card_id":"5",
+        "name":"Spiritual Guardian",
+        "type_id":"white"
+      },
+      {
+        "class_card":"Card_DTO",
+        "card_id":"6",
+        "name":"Scheming Aspirant",
+        "type_id":"white"
+      }
+    ]
+  }
+}

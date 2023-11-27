@@ -1,0 +1,164 @@
+2023-09-08
+Deploying mtg-berkeley=db to Google Cloud
+
+There are two instances:
+
+- tkllc-lucy-game-design-instance-1 
+Apache web server for web files
+- app-bdb-inet-lookup-instance-1
+Docker container for api server
+
+First step:
+- open page https://console.cloud.google.com/compute/instances?project=tkllc-lucy-game-design
+- start instances tkllc-lucy-game-design-instance-1 and app-bdb-inet-lookup-instance-1 if not already started
+
+For web files or if src/web files change:
+
+- on tkllc-lucy-game-design-instance-1:
+  - open ssh
+  - remove files from home directory:
+    $ rm *.js *.css *.html
+  - upload:
+    *.js
+    *.css
+    *.html
+  - modify request.js to select the request_url to 34.106.93.238:8000 instead of localhost
+
+->  static request_url = "http://34.106.93.238:8000";
+    //static request_url = "http://localhost:8000";
+    
+  - run:
+    $ sudo cp *.js *.css *.html /var/www/html
+  - to be sure they copied okay, in /var/www/html run:
+    $ for f in *.js *.css *.html; do echo $f; diff $f ~/$f; done
+    (ensure the diff is clean)
+
+For api server or if any of these files change:
+
+- src/apps/mtg_app.cpp
+- src/bdb-lib
+- src/docker
+- src/mtg-lib
+- src/util-lib
+
+- locally:
+  - build mtg_app clean
+  - in src/scripts
+    + in one window run:
+      $ sh mtg_app.sh
+      (make sure there are no connect errors, else see section at the end)
+    + in another window run:
+      $ sh rm-db-samples.sh
+      $ sh ls-db-samples.sh
+      (ensure src/data/db is clean)
+      $ sh check.sh
+      (ensure all requests succeed)
+      $ sh dump_db_samples.sh
+      $ diff dump_sample.txt dump_sample_init.txt
+      (make sure diff is clean)
+  - stop mtg_app.sh
+  - in src/docker run:
+    (start docker for windows if using)
+    $ sh stop_images.sh
+    $ sh remove_images.sh
+    $ docker ps
+    $ docker images
+    (ensure images are gone)
+  + note that the docker uses the data files in data/
+    $ rm *db mtg_app
+    $ sh build.sh
+    $ sh run_api.sh
+    (see container-id)
+    $ docker logs --follow <container-id>
+    (ensure you see 'server socket opened (3)')
+    (open src/weblocalhost/mtg-home.html web page in chrome, select a user and deck to make sure is working)
+    (run '$ sh stop_images.sh' is passes)
+    
+- on app-bdb-inet-lookup-instance-1:
+ + open ssh
+ + delete files in home directory:
+   $ rm *db *json *sh mtg_app Dockerfile
+ + if you want fresh db files, upload files from src/docker to instance:
+   account.db
+   account_email.sdb
+   account_username.sdb
+   account_username_triplets.db
+   bdb_databases.json
+   build_api.sh
+   card.db
+   card_name.sdb
+   card_name_triplets.db
+   card_type_id.sdb
+   deck_account_id.sdb
+   deck_card_card_id.sdb
+   deck_card.db
+   deck_card_deck_id.sdb
+   deck.db
+   deck_name.sdb
+   deck_name_triplets.db
+   Dockerfile
+   mtg_app
+   mtg_app.sh
+   remove_images.sh
+   run_api.sh
+   stop_images.sh
+   
+ + in the home directory run:
+  = first time:
+    $ mkdir data
+    $ cp *db data
+  = if you want to start with fresh data files:
+    $ cp *db data
+  $ sh stop_images.sh
+  $ sh remove_images.sh
+  $ docker ps
+  $ docker images
+  (ensure images are gone)
+  $ sh build_api.sh
+  $ sh run_api.sh
+
+You should be able to connect from http://35.192.73.70/mtg-home.html and see the 'Welcome to the Magic Online Card Game!' page.
+
+2023-09-09 v0.3 instructions
+- connect from http://35.192.73.70/mtg-home.html and see the 'Welcome to the Magic Online Card Game!' page
+- select a user
+  + the deck list should appear
+- select a deck
+  + the deck row should be highlighted
+  + the Edit Deck button appears in blue (enabled)
+  + the card table appears below
+- select the other deck, those deck cards should appear
+- click Edit Deck
+  + the Edit deck button should become grey (disabled)
+  + a Remove card button should appear over the cards as grey
+  + a table of available cards should appear on the right with an Add card button as grey
+- select a card in the left card list
+  + the card row should be highlighted
+  + the Remove card button should change to blue
+- click Remove card
+  + the card should move to the available card list
+  + the Remove Card button should become grey
+- select a card in the available card list
+  + the card row should be highlighted
+  + the Add card button should change to blue
+- click Add card
+  + the carAddd should move to the left card list
+  + the Remove Card button should become grey
+- keep clicking cards in the left and available list and move them back and forth
+  + try emptying one of the lists and make sure you can move cards back into it
+- select another deck 
+  + the deck row should be highlighted
+  + the Edit Deck button appears in blue
+  + the card table appears below
+  + the available card list disappears
+- try editing that deck 
+- select another user
+  + the deck list should appear
+  + all other tables should disappear
+  
+You may need some tools to check ports if you can't start mtg_app:
+- netstat
+  + install with:
+    $ sudo apt install net-tools
+  + check port 8000 in use:
+    $ netstat -ntlp 

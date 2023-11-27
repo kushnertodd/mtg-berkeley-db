@@ -1,0 +1,7 @@
+{
+  "class_name": "Mtg_request",
+  "request": "load_principals",
+  "arguments": [
+    "title.principals.tsv"
+  ]
+}
